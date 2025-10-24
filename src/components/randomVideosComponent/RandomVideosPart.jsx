@@ -24,21 +24,21 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
     }
 
     // 📺 Get Channel Avatar
-    // async function fetchChannelData() {
-    //   try {
-    //     const channel = await GetChannelData(item?.snippet?.channelId, apikey);
-    //     if (channel?.snippet?.thumbnails?.default?.url) {
-    //       setChannelAvatar(channel?.snippet?.thumbnails?.default?.url);
-    //       setViewCount(channel?.statistics?.viewCount);
-    //       setUserName(channel?.snippet?.customUrl);
-    //     }
-    //   } catch (err) {
-    //     console.error("Fetch Data Error:" + err);
-    //     setPageError(true);
-    //   }
-    // }
+    async function fetchChannelData() {
+      try {
+        const channel = await GetChannelData(item?.snippet?.channelId, apikey);
+        if (channel?.snippet?.thumbnails?.default?.url) {
+          setChannelAvatar(channel?.snippet?.thumbnails?.default?.url);
+          setViewCount(channel?.statistics?.viewCount);
+          setUserName(channel?.snippet?.customUrl);
+        }
+      } catch (err) {
+        console.error("Fetch Data Error:" + err);
+        setPageError(true);
+      }
+    }
 
-    // fetchChannelData();
+    fetchChannelData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, apikey]);
@@ -73,7 +73,7 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
           {/* Title and Meta */}
           <div className="flex flex-col justify-start overflow-hidden">
             <Link to={`/watch?v=${item?.id?.videoId}`}>
-              <h3 className="truncate text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
+              <h3 className="line-clamp-2 text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
                 {item?.snippet?.title}
               </h3>
             </Link>

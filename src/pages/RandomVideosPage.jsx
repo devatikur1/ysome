@@ -15,7 +15,6 @@ import {
 import { GetDataWithSearch } from "../utils/GetDataWithSearch";
 import { useScroll } from "motion/react";
 
-
 export default function RandomVideosPage() {
   // apikeys
   const apiKeys = [apiKey1, apiKey2, apiKey3, apiKey4, apiKey5, apiKey6];
@@ -29,8 +28,11 @@ export default function RandomVideosPage() {
   // Parent Width
   const [apiKey, setApiKey] = useState(apiKeys[apiIndex]);
 
-  // Parent Width
-  const [parentWidth, setParentWidth] = useState(window.innerWidth);
+  // Parent Width && Height
+  const [parentWidth, setParentWidth] = useState(
+    window.innerWidth - (isReSideBarShow ? 250 : 60)
+  );
+  const [parentHeight, setParentHeight] = useState(window.innerHeight - 60);
 
   // containerRef
   const containerRef = useRef(null);
@@ -64,18 +66,23 @@ export default function RandomVideosPage() {
   // -------------------------
   // Handle window resize
   // -------------------------
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth - (isReSideBarShow ? 250 : 60);
       setParentWidth(width);
+      setParentHeight(window.innerHeight - 60);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [isReSideBarShow]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // -------------------------
   // Update grid columns
   // -------------------------
+
   useEffect(() => {
     if (parentWidth >= 1920) setGridCols("grid-cols-4");
     else if (parentWidth >= 1024) setGridCols("grid-cols-3");
@@ -88,23 +95,21 @@ export default function RandomVideosPage() {
   // -------------------------
   const fetchData = async ({ maxResults, nxtPgTokens }) => {
     if (resultsCount > 500) return;
-    setPageLoading(true);
-    setPageError(false);
-
     try {
-      // const results = await Promise.all(
-      //   queries.map((q, idx) =>
-      //     GetDataWithSearch({
-      //       maxResults,
-      //       query: q,
-      //       nxtPgToken: nxtPgTokens?.[idx]?.token || "",
-      //       key: apiKey,
-      //     })
-      //   )
-      // );
+      setPageError(false);
+      const results = await Promise.all(
+        queries.map((q, idx) =>
+          GetDataWithSearch({
+            maxResults,
+            query: q,
+            nxtPgToken: nxtPgTokens?.[idx]?.token || "",
+            key: apiKey,
+          })
+        )
+      );
 
       // Handle result
-      let results = JSON.parse(localStorage.getItem("data"));
+      // let results = JSON.parse(localStorage.getItem("data"));
 
       const newNextTokens = [];
 
@@ -112,26 +117,27 @@ export default function RandomVideosPage() {
         results.forEach((data, idx) => {
           if (!data?.items) return;
 
-          setResultsCount((p) => p + data.items.length);
-          setItems((prev) => {
-            const existingIds = new Set(prev.map((i) => i?.id?.videoId));
-            const filtered = data.items.filter(
-              (i) => !existingIds.has(i?.id?.videoId)
-            );
-            return [...prev, ...filtered];
-          });
+          setTimeout(async () => {
+            setResultsCount((p) => p + data.items.length);
+            setItems((prev) => {
+              const existingIds = new Set(prev.map((i) => i?.id?.videoId));
+              const filtered = data.items.filter(
+                (i) => !existingIds.has(i?.id?.videoId)
+              );
+              return [...prev, ...filtered];
+            });
 
-          newNextTokens.push({
-            query: queries[idx],
-            token: data?.nextPageToken || null,
-          });
+            newNextTokens.push({
+              query: queries[idx],
+              token: data?.nextPageToken || null,
+            });
+          }, 3000);
         });
 
         setNextPageTokens(newNextTokens);
       } else {
         setPageError(true);
       }
-      setPageLoading(false);
     } catch (err) {
       console.error("Fetch Data Error:" + err);
       setPageError(true);
@@ -143,7 +149,9 @@ export default function RandomVideosPage() {
   // -------------------------
   // Initial fetch
   // -------------------------
+
   useEffect(() => {
+    setPageLoading(true);
     fetchData({
       maxResults: Math.floor(100 / queries.length),
       nxtPgTokens: nextPageTokens,
@@ -153,7 +161,7 @@ export default function RandomVideosPage() {
   }, []);
 
   // -------------------------
-  // ApiKEy pagination
+  // ApiKey pagination
   // -------------------------
 
   useEffect(() => {
@@ -162,6 +170,7 @@ export default function RandomVideosPage() {
         const newKey = apiKeys[apiIndex + 1];
         setApiIndex((p) => p + 1);
         setApiKey(newKey);
+        setPageLoading(true);
         fetchData({
           maxResults: Math.floor(100 / queries.length),
           nxtPgTokens: null,
@@ -193,11 +202,13 @@ export default function RandomVideosPage() {
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (value) => {
       if (
-        value > 0.8 &&
+        value > 0.9 &&
         !pageLoading &&
         nextPageTokens.length > 0 &&
-        scrollTriggeredRef.current === true
+        !scrollTriggeredRef.current
       ) {
+        console.log("update");
+        setPageLoading(true);
         scrollTriggeredRef.current = true;
         fetchData({
           maxResults: Math.floor(60 / queries.length),
@@ -205,6 +216,7 @@ export default function RandomVideosPage() {
         }).finally(() => {
           setTimeout(() => (scrollTriggeredRef.current = false), 300);
         });
+        console.log("update-2");
       }
     });
     return () => unsubscribe();
@@ -225,18 +237,27 @@ export default function RandomVideosPage() {
 
   useEffect(() => {
     console.log(resultsCount);
-  }, [resultsCount]);
+    console.log(pageLoading);
+  }, [resultsCount, pageLoading]);
 
   // -------------------------
   // Render
   // -------------------------
   return (
     <>
-      {!pageError && items?.length > 0 && (
+      {!pageError && (
         <main
           ref={containerRef}
+          style={{
+            maxWidth: `${parentWidth}px`,
+            minWidth: `${parentWidth}px`,
+            width: `${parentWidth}px`,
+            maxHeight: `${parentHeight}px`,
+            minHeight: `${parentHeight}px`,
+            height: `${parentHeight}px`,
+          }}
           className={clsx(
-            "w-full h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden overflow-y-auto custom-scroll",
+            "h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden overflow-y-auto custom-scroll",
             gridCols
           )}
         >
@@ -249,19 +270,19 @@ export default function RandomVideosPage() {
             />
           ))}
 
-          {pageLoading &&
-            [...Array(10)].map((_, i) => <YouTubeLoading key={i} />)}
+          {pageLoading === true &&
+            [...Array(13)].map((_, i) => <YouTubeLoading key={i} />)}
         </main>
       )}
-      {pageError && items?.length == 0 && (
+      {pageError && items?.length === 0 && (
         <NoInterNetComponent
-          fetchData={() =>
-            fetchData({
-              maxResults: Math.floor(200 / queries.length),
-              nxtPgTokens: null,
-            })
-          }
-          queries={queries}
+          fetchData={() => {
+             setPageLoading(true);
+             fetchData({
+               maxResults: Math.floor(100 / queries.length),
+               nxtPgTokens: nextPageTokens,
+             });
+          }}
         />
       )}
     </>
