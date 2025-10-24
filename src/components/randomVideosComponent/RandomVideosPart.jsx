@@ -5,12 +5,15 @@ import { GetChannelData } from "../../utils/GetChannelData";
 import millify from "millify";
 import profile from "../../assets/emptyProfilePic.jpg";
 
-export default function RandomVideosPart({ item, apikey, setPageError }) {
+export default function RandomVideosPart({
+  item,
+  apikey,
+  videosData,
+  channelsData,
+}) {
   const [time, setTime] = useState("");
   const [channelAvatar, setChannelAvatar] = useState(profile);
-  const [viewCount, setViewCount] = useState(
-    150000
-  );
+  const [viewCount, setViewCount] = useState(150000);
   const [username, setUserName] = useState("@something");
 
   useEffect(() => {
@@ -23,26 +26,10 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
       setTime(date);
     }
 
-    // 📺 Get Channel Avatar
-    async function fetchChannelData() {
-      try {
-        const channel = await GetChannelData(item?.snippet?.channelId, apikey);
-        setChannelAvatar(channel?.snippet?.thumbnails);
-        if (channel?.snippet?.thumbnails?.default?.url) {
-          setChannelAvatar(channel?.snippet?.thumbnails?.default?.url);
-          setViewCount(channel?.statistics?.viewCount);
-          setUserName(channel?.snippet?.customUrl);
-        }
-      } catch (err) {
-        console.error("Fetch Data Error:" + err);
-        setPageError(true);
-      }
-    }
-
-    fetchChannelData();
+    // setViewCount(videosData?.[item?.id?.videoId].viewCount);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item, apikey]);
+  }, [item, videosData]);
 
   return (
     <section className=" hover:scale-[1.01] transition-transform duration-300">

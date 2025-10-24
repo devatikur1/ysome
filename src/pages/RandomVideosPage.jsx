@@ -11,9 +11,12 @@ import {
   apiKey4,
   apiKey5,
   apiKey6,
+  VideoData1,
 } from "../utils/data";
-import { GetDataWithSearch } from "../utils/GetDataWithSearch";
 import { useScroll } from "motion/react";
+import { GetDataWithSearch } from "../utils/GetDataWithSearch";
+import { GetChannelData } from "../utils/GetChannelData";
+import { GetVideoData } from "../utils/GetVideoData";
 
 export default function RandomVideosPage() {
   // apikeys
@@ -23,7 +26,7 @@ export default function RandomVideosPage() {
   const { isReSideBarShow, HomePageOutletWidth, HomePageHeight } =
     useContext(UiContext);
 
-  //
+  // api key index
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
@@ -44,6 +47,12 @@ export default function RandomVideosPage() {
 
   // Items & Next Page Tokens & Maxmimam result
   const [items, setItems] = useState([]);
+
+  const [itemsChannelIds, setItemsChannelIds] = useState([]);
+  const [itemsVideoIds, setItemsVideoIds] = useState([]);
+  const [videosData, setVideosData] = useState({});
+  const [channelsData, setChannelsData] = useState({});
+
   const [nextPageTokens, setNextPageTokens] = useState([]);
   const [resultsCount, setResultsCount] = useState(0);
 
@@ -75,54 +84,137 @@ export default function RandomVideosPage() {
   // Fetch data function
   // -------------------------
   const fetchData = async ({ maxResults, nxtPgTokens }) => {
-      try {
-        setPageError(false);
-        const results = await Promise.all(
-          queries.map((q, idx) =>
-            GetDataWithSearch({
-              maxResults,
-              query: q,
-              nxtPgToken: nxtPgTokens?.[idx]?.token || "",
-              key: apiKey,
-            })
-          )
-        );
+    try {
+      setPageError(false);
+      const results = await Promise.all(
+        queries.map((q, idx) =>
+          GetDataWithSearch({
+            maxResults,
+            query: q,
+            nxtPgToken: nxtPgTokens?.[idx]?.token || "",
+            key: apiKey,
+          })
+        )
+      );
 
-        // Handle result
+      // Handle result
+      // const results = JSON.parse(localStorage.getItem("data"));
 
-        const newNextTokens = [];
+      const newNextTokens = [];
+      const newChannelIds = new Set();
+      const newVideoIds = new Set();
 
-        if (results.some((r) => (r === null ? false : true))) {
-          results.forEach((data, idx) => {
-            if (!data?.items) return;
+      if (results.some((r) => (r === null ? false : true))) {
+        results.forEach((data, idx) => {
+          if (!data?.items) return;
 
-            setResultsCount((p) => p + data.items.length);
-            setItems((prev) => {
-              const existingIds = new Set(prev.map((i) => i?.id?.videoId));
-              const filtered = data.items.filter(
-                (i) => !existingIds.has(i?.id?.videoId)
-              );
-              return [...prev, ...filtered];
-            });
-
-            newNextTokens.push({
-              query: queries[idx],
-              token: data?.nextPageToken || null,
-            });
+          setResultsCount((p) => p + data.items.length);
+          setItems((prev) => {
+            const existingIds = new Set(prev.map((i) => i?.id?.videoId));
+            const filtered = data.items.filter(
+              (i) => !existingIds.has(i?.id?.videoId)
+            );
+            return [...prev, ...filtered];
           });
 
-          setNextPageTokens(newNextTokens);
-          setPageLoading(false);
-        } else {
-          setPageError(true);
-          setPageLoading(false);
-        }
+          data.items.forEach((d) => {
+            // ✅ Channel ID add
+            if (d?.snippet?.channelId) {
+              newChannelIds.add(d.snippet.channelId);
+            }
+
+            // ✅ Video ID add
+            if (d?.id?.videoId) {
+              newVideoIds.add(d.id.videoId);
+            }
+          });
+
+          newNextTokens.push({
+            query: queries[idx],
+            token: data?.nextPageToken || null,
+          });
+        });
+
+        setNextPageTokens(newNextTokens);
+        // ✅ Set update করুন (merge previous + new)
+        setItemsChannelIds((prevSet) => {
+          const merged = new Set(prevSet);
+          newChannelIds.forEach((id) => merged.add(id));
+          return Array.from(merged);
+        });
+
+        setItemsVideoIds((prevSet) => {
+          const merged = new Set(prevSet);
+          newVideoIds.forEach((id) => merged.add(id));
+          return Array.from(merged);
+        });
+        setPageLoading(false);
+      } else {
+        setPageError(true);
+        setPageLoading(false);
+      }
+    } catch (err) {
+      console.error("Fetch Data Error:" + err);
+      setPageError(true);
+    }
+  };
+
+  // -------------------------
+  // Fetch Chanale data function
+  // -------------------------
+
+  useEffect(() => {
+    if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
+
+    // 📺 Get Channel Avatar
+    async function fetchVideoData(videoId) {
+      try {
+        const videoItem = await GetVideoData(videoId, apiKey);
+        console.log(videoItem);
+        setVideosData((prev) => ({
+          ...prev,
+          [videoId]: {
+            viewCount: videoItem?.statistics?.viewCount,
+            channelId: videoItem?.snippet?.channelId,
+          },
+        }));
       } catch (err) {
         console.error("Fetch Data Error:" + err);
-        setPageError(true);
       }
-    
-  };
+    }
+
+    async function fetchChanaleData(ChanaleId) {
+      try {
+        const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
+        console.log(ChanaleItem);
+        setChannelsData((prev) => ({
+          ...prev,
+          [ChanaleId]: {
+            customUrl: ChanaleItem?.snippet?.customUrl,
+            thumbnails: ChanaleItem?.snippet?.thumbnails,
+          },
+        }));
+      } catch (err) {
+        console.error("Fetch Data Error:" + err);
+        // setVideoDataError(true);
+      }
+    }
+
+    async function callData() {
+      itemsVideoIds.map(async (vid) => {
+        console.log(vid);
+
+        await fetchVideoData(vid);
+      });
+      itemsChannelIds.map(async (cid) => {
+        console.log(cid);
+        await fetchChanaleData(cid);
+      });
+      setItemsChannelIds([]);
+      setItemsVideoIds([]);
+    }
+    callData();
+  }, [itemsChannelIds, itemsVideoIds, apiKey]);
 
   // -------------------------
   // Initial fetch
@@ -206,7 +298,7 @@ export default function RandomVideosPage() {
 
     return () => unsubscribe();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefReady, pageLoading, nextPageTokens.length]);
 
   // -------------------------
@@ -216,7 +308,8 @@ export default function RandomVideosPage() {
   useEffect(() => {
     console.log(resultsCount);
     console.log(pageLoading);
-  }, [resultsCount, pageLoading]);
+    console.log(channelsData);
+  }, [resultsCount, pageLoading, channelsData]);
 
   // -------------------------
   // Render
@@ -243,8 +336,8 @@ export default function RandomVideosPage() {
             <RandomVideosPart
               key={idx}
               item={item}
-              apikey={apiKey6}
-              setPageError={setPageError}
+              videosData={videosData}
+              channelsData={channelsData}
             />
           ))}
 
@@ -254,6 +347,14 @@ export default function RandomVideosPage() {
       )}
       {pageError && items?.length === 0 && (
         <NoInterNetComponent
+          style={{
+            maxWidth: `${HomePageOutletWidth}px`,
+            minWidth: `${HomePageOutletWidth}px`,
+            width: `${HomePageOutletWidth}px`,
+            maxHeight: `${HomePageHeight}px`,
+            minHeight: `${HomePageHeight}px`,
+            height: `${HomePageHeight}px`,
+          }}
           fetchData={() => {
             setPageLoading(true);
             fetchData({
