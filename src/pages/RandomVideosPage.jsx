@@ -11,6 +11,7 @@ import {
   apiKey4,
   apiKey5,
   apiKey6,
+  VideoData1,
 } from "../utils/data";
 import { useScroll } from "motion/react";
 import { GetDataWithSearch } from "../utils/GetDataWithSearch";
@@ -29,7 +30,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(apiKeys[apiIndex]);
+  const [apiKey, setApiKey] = useState(VideoData1);
 
   // containerRef
   const containerRef = useRef(null);
@@ -172,8 +173,8 @@ export default function RandomVideosPage() {
         setVideosData((prev) => ({
           ...prev,
           [videoId]: {
-            viewCount: videoItem?.statistics?.viewCount,
-            channelId: videoItem?.snippet?.channelId,
+            viewCount: videoItem?.statistics?.viewCount || null,
+            channelId: videoItem?.snippet?.channelId || null,
           },
         }));
       } catch (err) {
@@ -199,12 +200,9 @@ export default function RandomVideosPage() {
 
     async function callData() {
       itemsVideoIds.map(async (vid) => {
-        console.log(vid);
-
         await fetchVideoData(vid);
       });
       itemsChannelIds.map(async (cid) => {
-        console.log(cid);
         await fetchChanaleData(cid);
       });
       setItemsChannelIds([]);
