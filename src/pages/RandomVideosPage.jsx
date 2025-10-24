@@ -11,7 +11,6 @@ import {
   apiKey4,
   apiKey5,
   apiKey6,
-  VideoData1,
 } from "../utils/data";
 import { useScroll } from "motion/react";
 import { GetDataWithSearch } from "../utils/GetDataWithSearch";

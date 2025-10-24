@@ -26,8 +26,8 @@ export default function RandomVideosPart({
     }
 
     setViewCount(videosData?.[item?.id?.videoId].viewCount);
-    setUserName(channelsData?.[item?.id?.channelId].customUrl);
-    setChannelAvatar(channelsData?.[item?.id?.channelId].thumbnails.default.url);
+    setUserName(channelsData?.[item?.snippet?.channelId].customUrl);
+    setChannelAvatar(channelsData?.[item?.snippet?.channelId].thumbnails.default.url);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, videosData]);
