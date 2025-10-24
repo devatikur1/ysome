@@ -18,17 +18,8 @@ export default function Header() {
 
     // relative sidebar
     setIsReSideBarShow,
-
-    // fixed sidebar
-    setIsFxSideBarShow,
   } = useContext(UiContext);
   let isLogged = true;
-
-  useEffect(() => {
-    setIsFxSideBarShow(false);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <header className="w-full h-full max-h-[60px] flex justify-between items-center px-5 py-2 border-border border-b *:select-none">

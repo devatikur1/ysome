@@ -8,26 +8,26 @@
 
 
 /* Custom Scroll Style */
-.custom-scroll::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 6px;
 }
 
-.custom-scroll::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.custom-scroll::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: rgba(100, 100, 100, 0.4);
   border-radius: 9999px;
   transition: background-color 0.3s ease;
 }
 
-.custom-scroll::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background-color: rgba(100, 100, 100, 0.7);
 }
 
 /* For Firefox */
-.custom-scroll {
+* {
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 100, 100, 0.4) transparent;
 }
