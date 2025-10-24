@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { UiContext } from "../contexts/Ui/UiContext";
@@ -30,12 +31,10 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData1);
+  const [apiKey, setApiKey] = useState(apiKey1);
 
-  // containerRef
+  // refs
   const containerRef = useRef(null);
-
-  // containerRef
   const scrollTriggeredRef = useRef(false);
 
   // Loading & Error
@@ -55,9 +54,6 @@ export default function RandomVideosPage() {
 
   const [nextPageTokens, setNextPageTokens] = useState([]);
   const [resultsCount, setResultsCount] = useState(0);
-
-  // ref isRefReady
-  const [isRefReady, setIsRefReady] = useState(false);
 
   // Queries
   const queries = [
@@ -85,6 +81,8 @@ export default function RandomVideosPage() {
   const fetchData = async ({ maxResults, nxtPgTokens }) => {
     try {
       setPageError(false);
+
+      // Handle using api result
       const results = await Promise.all(
         queries.map((q, idx) =>
           GetDataWithSearch({
@@ -96,7 +94,7 @@ export default function RandomVideosPage() {
         )
       );
 
-      // Handle result
+      // Handle test er loge result
       // const results = JSON.parse(localStorage.getItem("data"));
 
       const newNextTokens = [];
@@ -116,15 +114,15 @@ export default function RandomVideosPage() {
             return [...prev, ...filtered];
           });
 
-          data.items.forEach((d) => {
-            // ✅ Channel ID add
-            if (d?.snippet?.channelId) {
-              newChannelIds.add(d.snippet.channelId);
+          data.items.forEach((i) => {
+            // ✅ add Channel ID
+            if (i?.snippet?.channelId) {
+              newChannelIds.add(i.snippet.channelId);
             }
 
-            // ✅ Video ID add
-            if (d?.id?.videoId) {
-              newVideoIds.add(d.id.videoId);
+            // ✅ add Video ID
+            if (i?.id?.videoId) {
+              newVideoIds.add(i.id.videoId);
             }
           });
 
@@ -137,15 +135,15 @@ export default function RandomVideosPage() {
         setNextPageTokens(newNextTokens);
 
         setItemsChannelIds((prevSet) => {
-          const merged = new Set(prevSet);
-          newChannelIds.forEach((id) => merged.add(id));
-          return Array.from(merged);
+          const mergedChannelIds = new Set(prevSet);
+          newChannelIds.forEach((id) => mergedChannelIds.add(id));
+          return Array.from(mergedChannelIds);
         });
 
         setItemsVideoIds((prevSet) => {
-          const merged = new Set(prevSet);
-          newVideoIds.forEach((id) => merged.add(id));
-          return Array.from(merged);
+          const mergedVideoIds = new Set(prevSet);
+          newVideoIds.forEach((id) => mergedVideoIds.add(id));
+          return Array.from(mergedVideoIds);
         });
 
         setPageLoading(false);
@@ -159,17 +157,18 @@ export default function RandomVideosPage() {
     }
   };
 
-  // -------------------------
-  // Fetch Chanale data function
-  // -------------------------
+  // ------------------------------------
+  // Fetch Channel && video data function
+  // ------------------------------------
 
   useEffect(() => {
-    if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
 
-    // 📺 Get Channel Avatar
+    // 📺 Video Data
     async function fetchVideoData(videoId) {
       try {
         const videoItem = await GetVideoData(videoId, apiKey);
+        console.log(videoItem?.statistics?.viewCount);
+
         setVideosData((prev) => ({
           ...prev,
           [videoId]: {
@@ -179,9 +178,11 @@ export default function RandomVideosPage() {
         }));
       } catch (err) {
         console.error("Fetch Data Error:" + err);
+        setPageError(true);
       }
     }
 
+    // 📺 Channel Data
     async function fetchChanaleData(ChanaleId) {
       try {
         const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
@@ -194,20 +195,28 @@ export default function RandomVideosPage() {
         }));
       } catch (err) {
         console.error("Fetch Data Error:" + err);
-        // setVideoDataError(true);
+        setPageError(true);
       }
     }
 
+    // main funtion
     async function callData() {
+      if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
+      // 📺 Get all Video Data
       itemsVideoIds.map(async (vid) => {
         await fetchVideoData(vid);
       });
+
+      // 📺 Get all Channel Data
       itemsChannelIds.map(async (cid) => {
         await fetchChanaleData(cid);
       });
+
       setItemsChannelIds([]);
       setItemsVideoIds([]);
     }
+
+    // call funtion
     callData();
   }, [itemsChannelIds, itemsVideoIds, apiKey]);
 
@@ -221,12 +230,10 @@ export default function RandomVideosPage() {
       maxResults: Math.floor(100 / queries.length),
       nxtPgTokens: nextPageTokens,
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // -------------------------
-  // ApiKey pagination
+  // ApiKey chnager
   // -------------------------
 
   useEffect(() => {
@@ -242,27 +249,13 @@ export default function RandomVideosPage() {
         });
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageError]);
 
-  // -------------------------
-  // Ref ready checking
-  // -------------------------
+  // ------------------------------
+  // Scroll base get videos data
+  // ------------------------------
 
-  useEffect(() => {
-    if (containerRef.current) {
-      setIsRefReady(true);
-    }
-  }, [pageError, items]);
-
-  // -------------------------
-  // Scroll pagination
-  // -------------------------
-
-  const { scrollYProgress } = useScroll({
-    container: containerRef,
-  });
+  const { scrollYProgress } = useScroll({ container: containerRef });
 
   useEffect(() => {
     if (!scrollYProgress) return;
@@ -292,19 +285,15 @@ export default function RandomVideosPage() {
     });
 
     return () => unsubscribe();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRefReady, pageLoading, nextPageTokens.length]);
+  }, [scrollYProgress, pageLoading, nextPageTokens.length, resultsCount]);
 
   // -------------------------
   // Temp
   // -------------------------
 
-  // useEffect(() => {
-  //   console.log(resultsCount);
-  //   console.log(pageLoading);
-  //   console.log(channelsData);
-  // }, [resultsCount, pageLoading, channelsData]);
+  useEffect(() => {
+    console.log(videosData);
+  }, [videosData]);
 
   // -------------------------
   // Render
