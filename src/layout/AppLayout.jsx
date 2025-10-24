@@ -5,6 +5,7 @@ import Search from "../components/header/part/Search";
 import { UiContext } from "../contexts/Ui/UiContext";
 import { AnimatePresence } from "motion/react";
 import Notification from "../components/header/part/Notification";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 export default function AppLayout() {
   const {
@@ -56,6 +57,7 @@ export default function AppLayout() {
       <aside className="w-full h-full flex flex-col overflow-hidden">
         <Header />
         <Outlet />
+        <SpeedInsights />
       </aside>
       <AnimatePresence>
         {isSearchShow === true && (
