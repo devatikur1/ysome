@@ -77,19 +77,18 @@ export default function RandomVideosPage() {
   const fetchData = async ({ maxResults, nxtPgTokens }) => {
       try {
         setPageError(false);
-        // const results = await Promise.all(
-        //   queries.map((q, idx) =>
-        //     GetDataWithSearch({
-        //       maxResults,
-        //       query: q,
-        //       nxtPgToken: nxtPgTokens?.[idx]?.token || "",
-        //       key: apiKey,
-        //     })
-        //   )
-        // );
+        const results = await Promise.all(
+          queries.map((q, idx) =>
+            GetDataWithSearch({
+              maxResults,
+              query: q,
+              nxtPgToken: nxtPgTokens?.[idx]?.token || "",
+              key: apiKey,
+            })
+          )
+        );
 
         // Handle result
-        let results = JSON.parse(localStorage.getItem("data"));
 
         const newNextTokens = [];
 
@@ -244,7 +243,7 @@ export default function RandomVideosPage() {
             <RandomVideosPart
               key={idx}
               item={item}
-              apikey={apiKey}
+              apikey={apiKey6}
               setPageError={setPageError}
             />
           ))}

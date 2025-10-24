@@ -53,7 +53,7 @@ export default function AppLayout() {
 
   return (
     <>
-      <aside className="w-full h-full flex flex-col">
+      <aside className="w-full h-full flex flex-col overflow-hidden">
         <Header />
         <Outlet />
       </aside>

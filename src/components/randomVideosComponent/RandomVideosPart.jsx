@@ -27,6 +27,7 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
     async function fetchChannelData() {
       try {
         const channel = await GetChannelData(item?.snippet?.channelId, apikey);
+        setChannelAvatar(channel?.snippet?.thumbnails);
         if (channel?.snippet?.thumbnails?.default?.url) {
           setChannelAvatar(channel?.snippet?.thumbnails?.default?.url);
           setViewCount(channel?.statistics?.viewCount);
