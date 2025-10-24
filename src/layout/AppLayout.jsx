@@ -57,7 +57,10 @@ export default function AppLayout() {
       <aside className="w-full h-full flex flex-col overflow-hidden">
         <Header />
         <Outlet />
-        <SpeedInsights />
+        <SpeedInsights
+          route="/"
+          sampleRate={0.5}
+        />
       </aside>
       <AnimatePresence>
         {isSearchShow === true && (
