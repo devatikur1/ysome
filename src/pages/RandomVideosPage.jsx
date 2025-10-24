@@ -61,10 +61,9 @@ export default function RandomVideosPage() {
 
   // Queries
   const queries = [
-    "Hindi viral songs",
-    "Viral Indian songs",
-    "World history documentary",
-    "Economy of Muslim countries analysis",
+    "Islamic Gojol Urdu",
+    "Islamic Gojol Bangla",
+    "Bangladesh history documentary",
   ];
 
   // -------------------------
@@ -136,7 +135,7 @@ export default function RandomVideosPage() {
         });
 
         setNextPageTokens(newNextTokens);
-        // ✅ Set update করুন (merge previous + new)
+
         setItemsChannelIds((prevSet) => {
           const merged = new Set(prevSet);
           newChannelIds.forEach((id) => merged.add(id));
@@ -148,6 +147,7 @@ export default function RandomVideosPage() {
           newVideoIds.forEach((id) => merged.add(id));
           return Array.from(merged);
         });
+
         setPageLoading(false);
       } else {
         setPageError(true);
@@ -170,7 +170,6 @@ export default function RandomVideosPage() {
     async function fetchVideoData(videoId) {
       try {
         const videoItem = await GetVideoData(videoId, apiKey);
-        console.log(videoItem);
         setVideosData((prev) => ({
           ...prev,
           [videoId]: {
@@ -186,7 +185,6 @@ export default function RandomVideosPage() {
     async function fetchChanaleData(ChanaleId) {
       try {
         const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
-        console.log(ChanaleItem);
         setChannelsData((prev) => ({
           ...prev,
           [ChanaleId]: {
@@ -305,11 +303,11 @@ export default function RandomVideosPage() {
   // Temp
   // -------------------------
 
-  useEffect(() => {
-    console.log(resultsCount);
-    console.log(pageLoading);
-    console.log(channelsData);
-  }, [resultsCount, pageLoading, channelsData]);
+  // useEffect(() => {
+  //   console.log(resultsCount);
+  //   console.log(pageLoading);
+  //   console.log(channelsData);
+  // }, [resultsCount, pageLoading, channelsData]);
 
   // -------------------------
   // Render

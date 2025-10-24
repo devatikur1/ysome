@@ -1,7 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { GetChannelData } from "../../utils/GetChannelData";
 import millify from "millify";
 import profile from "../../assets/emptyProfilePic.jpg";
 
@@ -26,7 +25,9 @@ export default function RandomVideosPart({
       setTime(date);
     }
 
-    // setViewCount(videosData?.[item?.id?.videoId].viewCount);
+    setViewCount(videosData?.[item?.id?.videoId].viewCount);
+    setUserName(channelsData?.[item?.id?.channelId].customUrl);
+    setChannelAvatar(channelsData?.[item?.id?.channelId].thumbnails.default.url);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, videosData]);
