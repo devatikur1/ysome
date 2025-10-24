@@ -9,7 +9,7 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
   const [time, setTime] = useState("");
   const [channelAvatar, setChannelAvatar] = useState(profile);
   const [viewCount, setViewCount] = useState(
-    Math.floor(150000 * Math.random())
+    150000
   );
   const [username, setUserName] = useState("@something");
 
@@ -44,7 +44,7 @@ export default function RandomVideosPart({ item, apikey, setPageError }) {
   }, [item, apikey]);
 
   return (
-    <section className="block hover:scale-[1.01] transition-transform duration-300">
+    <section className=" hover:scale-[1.01] transition-transform duration-300">
       <article className="flex flex-col gap-3 w-full">
         {/* Thumbnail */}
         <Link
