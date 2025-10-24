@@ -167,8 +167,6 @@ export default function RandomVideosPage() {
     async function fetchVideoData(videoId) {
       try {
         const videoItem = await GetVideoData(videoId, apiKey);
-        console.log(videoItem?.statistics?.viewCount);
-
         setVideosData((prev) => ({
           ...prev,
           [videoId]: {
@@ -261,9 +259,6 @@ export default function RandomVideosPage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", (value) => {
-      console.log(value);
-      console.log(value > 0.9);
-      console.log(scrollTriggeredRef);
       if (
         value > 0.9 &&
         !pageLoading &&
@@ -273,8 +268,6 @@ export default function RandomVideosPage() {
       ) {
         scrollTriggeredRef.current = true;
         setPageLoading(true);
-        console.log(value);
-
         fetchData({
           maxResults: Math.floor(60 / queries.length),
           nxtPgTokens: nextPageTokens,
