@@ -30,7 +30,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData1);
+  const [apiKey, setApiKey] = useState(apiKeys[apiIndex]);
 
   // containerRef
   const containerRef = useRef(null);
@@ -170,6 +170,8 @@ export default function RandomVideosPage() {
     async function fetchVideoData(videoId) {
       try {
         const videoItem = await GetVideoData(videoId, apiKey);
+        console.log(videoItem?.statistics?.viewCount);
+        
         setVideosData((prev) => ({
           ...prev,
           [videoId]: {
@@ -300,11 +302,9 @@ export default function RandomVideosPage() {
   // Temp
   // -------------------------
 
-  // useEffect(() => {
-  //   console.log(resultsCount);
-  //   console.log(pageLoading);
-  //   console.log(channelsData);
-  // }, [resultsCount, pageLoading, channelsData]);
+  useEffect(() => {
+    console.log(videosData);
+  }, [videosData]);
 
   // -------------------------
   // Render

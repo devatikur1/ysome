@@ -24,10 +24,22 @@ export default function RandomVideosPart({
     } else {
       setTime(date);
     }
+    const videoId = item?.id?.videoId;
+    const channelId = item?.snippet?.channelId;
 
-    setViewCount(videosData?.[item?.id?.videoId].viewCount);
-    setUserName(channelsData?.[item?.snippet?.channelId].customUrl);
-    setChannelAvatar(channelsData?.[item?.snippet?.channelId].thumbnails.default.url);
+    const viewCount = videosData?.[videoId]?.viewCount || 0;
+
+    const channelCustomUrl = channelsData?.[channelId]?.customUrl || "";
+    const channelThumbnail =
+      channelsData?.[channelId]?.thumbnails?.default?.url || "";
+    setViewCount(viewCount);
+    setUserName(channelCustomUrl);
+    setChannelAvatar(channelThumbnail);
+    // console.log(videosData?.[item?.id?.videoId].viewCount);
+    // console.log(channelsData?.[item?.snippet?.channelId].customUrl);
+    // console.log(
+    //   channelsData?.[item?.snippet?.channelId].thumbnails.default.url
+    // );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, videosData]);
