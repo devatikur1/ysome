@@ -31,7 +31,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(apiKey1);
+  const [apiKey, setApiKey] = useState(VideoData1);
 
   // refs
   const containerRef = useRef(null);
@@ -93,7 +93,6 @@ export default function RandomVideosPage() {
           })
         )
       );
-
       // Handle test er loge result
       // const results = JSON.parse(localStorage.getItem("data"));
 
@@ -105,7 +104,7 @@ export default function RandomVideosPage() {
         results.forEach((data, idx) => {
           if (!data?.items) return;
 
-          setResultsCount((p) => p + data.items.length);
+
           setItems((prev) => {
             const existingIds = new Set(prev.map((i) => i?.id?.videoId));
             const filtered = data.items.filter(
@@ -162,7 +161,6 @@ export default function RandomVideosPage() {
   // ------------------------------------
 
   useEffect(() => {
-
     // 📺 Video Data
     async function fetchVideoData(videoId) {
       try {
@@ -285,8 +283,9 @@ export default function RandomVideosPage() {
   // -------------------------
 
   useEffect(() => {
-    console.log(videosData);
-  }, [videosData]);
+    setResultsCount(items.length);
+    console.log(resultsCount);
+  }, [items, videosData, resultsCount]);
 
   // -------------------------
   // Render
@@ -319,7 +318,7 @@ export default function RandomVideosPage() {
           ))}
 
           {pageLoading === true &&
-            [...Array(13)].map((_, i) => <YouTubeLoading key={i} />)}
+            [...Array(1)].map((_, i) => <YouTubeLoading key={i} />)}
         </main>
       )}
       {pageError && items?.length === 0 && (

@@ -35,6 +35,7 @@ export default function UiContextProvider({ children }) {
     };
 
     handleResize();
+    
     // add listener
     window.addEventListener("resize", handleResize);
 

@@ -61,6 +61,7 @@ export default function SideBar({ type = "", Height }) {
         width: isReSideBarShow ? 260 : 60,
         minWidth: isReSideBarShow ? 260 : 60,
         opacity: 1,
+        height: Height, 
         minHeight: Height,
       }}
       exit={{ width: 0, opacity: 0, minHeight: Height }}

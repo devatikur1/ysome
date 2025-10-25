@@ -35,11 +35,6 @@ export default function RandomVideosPart({
     setViewCount(viewCount);
     setUserName(channelCustomUrl);
     setChannelAvatar(channelThumbnail);
-    // console.log(videosData?.[item?.id?.videoId].viewCount);
-    // console.log(channelsData?.[item?.snippet?.channelId].customUrl);
-    // console.log(
-    //   channelsData?.[item?.snippet?.channelId].thumbnails.default.url
-    // );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, videosData]);
@@ -63,24 +58,24 @@ export default function RandomVideosPart({
         {/* Video Info */}
         <article className="flex gap-4">
           {/* Channel Avatar */}
-          <Link to={`/${username}`} className="min-w-10 h-10">
+          <Link to={`/${username}`} className="min-w-10 max-w-10 h-10 max-h-10">
             <img
-              className="w-full h-full rounded-full object-cover"
+              className="w-full h-full rounded-full object-cover border border-border"
               src={channelAvatar}
-              alt={"Profile pic"}
+              alt={"Profile"}
             />
           </Link>
 
           {/* Title and Meta */}
           <div className="flex flex-col justify-start overflow-hidden">
             <Link to={`/watch?v=${item?.id?.videoId}`}>
-              <h3 className="line-clamp-2 text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
+              <h3 className="line-clamp-2 text-[0.85rem]  lg:text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
                 {item?.snippet?.title}
               </h3>
             </Link>
 
             <Link to={`/${username}`}>
-              <p className="text-[0.9rem] truncate text-subtext/90">
+              <p className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90">
                 {item?.snippet?.channelTitle}
               </p>
             </Link>
@@ -88,7 +83,7 @@ export default function RandomVideosPart({
             {/* Meta Row */}
             <Link
               to={`/watch?v=${item?.id?.videoId}`}
-              className="flex items-center gap-1 text-sm text-neutral-400 mt-1"
+              className="flex items-center gap-1 text-xs lg:text-sm text-neutral-400 mt-1"
             >
               <span className="text-white/80 font-medium">
                 {millify(viewCount)}
