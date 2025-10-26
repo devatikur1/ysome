@@ -318,7 +318,7 @@ export default function RandomVideosPage() {
           ))}
 
           {pageLoading === true &&
-            [...Array(1)].map((_, i) => <YouTubeLoading key={i} />)}
+            [...Array(13)].map((_, i) => <YouTubeLoading key={i} />)}
         </main>
       )}
       {pageError && items?.length === 0 && (

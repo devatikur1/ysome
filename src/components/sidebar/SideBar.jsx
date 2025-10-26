@@ -15,7 +15,7 @@ const menuItems = [
     section: null,
     items: [
       { icon: <Home />, label: "Home", to: "/" },
-      { icon: <ShortsIcon />, label: "Shorts", to: "/shorts/id" },
+      { icon: <ShortsIcon />, label: "Shorts", to: "/shorts" },
       { icon: <SubscriptionsIcon />, label: "Subscriptions", to: "/channels" },
     ],
   },

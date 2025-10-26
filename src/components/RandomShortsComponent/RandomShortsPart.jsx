@@ -1,139 +1,126 @@
-import {
-  MoveDown,
-  MoveUp,
-  Heart,
-  MessageCircle,
-  Share2,
-} from "lucide-react";
-import React, { useState } from "react";
-import DescriptionIcon from "../../others/DescriptionIcon";
-import { AnimatePresence, motion } from "motion/react";
+import { MoveDown, MoveUp, Volume2, VolumeX } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import moment from "moment";
+import millify from "millify";
 
-export default function RandomShortsPart({ style, snippet }) {
-  const [IsShowDes, setIsShowDes] = useState(false);
+export default function RandomShortsPart({
+  style,
+  HomePageHeight,
+  item,
+  isPrevDisabled,
+  isNextDisabled,
+  nextVid,
+  prevVid,
+}) {
+  const [isMuted, setIsMuted] = useState(true); // ✅ শুরুতে muted থাকবে
+  const [active, setActive] = useState(true); // ✅ শুরুতে muted থাকবে
+  const playerRef = useRef(null); // ✅ iframe reference
+
+  // ✅ Mute/Unmute toggle করার function
+  const toggleMute = () => {
+    if (playerRef.current) {
+      if (isMuted) {
+        // Unmute করার command
+        playerRef.current.contentWindow.postMessage(
+          '{"event":"command","func":"unMute","args":""}',
+          "*"
+        );
+      } else {
+        // Mute করার command
+        playerRef.current.contentWindow.postMessage(
+          '{"event":"command","func":"mute","args":""}',
+          "*"
+        );
+      }
+      setIsMuted(!isMuted);
+    }
+  };
+
   return (
-    <aside className="relative w-[40%] h-[100%] flex gap-6 justify-center items-end overflow-hidden">
+    <article className="relative w-full md:w-[420px] lg:w-[460px] xl:w-[450px] h-full flex gap-6 justify-center items-end overflow-hidden">
       <section
         style={style}
-        className="relative w-[80%] h-[100%] flex justify-center items-center overflow-hidden bg-black rounded-2xl"
+        className="relative w-full h-full flex justify-center items-center overflow-hidden bg-black rounded-2xl"
       >
-        {/* Thumbnail as background */}
-        <article className="w-full h-full">
-          <img
-            src={"https://i.ibb.co/9mxNn8Pv/videoframe-290.png"}
-            alt={snippet?.title}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </article>
-        motion
-        <AnimatePresence>
-          {IsShowDes && (
-            <motion.article
-              initial={{ height: 0 }}
-              animate={{
-                height: "auto",
-              }}
-              exit={{ height: 0 }}
-              transition={{
-                duration: 0.5
-              }}
-              className="absolute bottom-0 flex flex-col justify-start bg-bg-Primary w-full px-5 py-5 gap-2"
-            >
-              <h2 className="font-semibold text-xl text-text pb-2">
-                Description
-              </h2>
-              <hr className="h-[1px] border-none bg-border" />
-              <div className="py-1">
-                <p className="text-subtext text-[0.9rem]">{snippet?.title}</p>
+        {active === true ? (
+          <>
+            {/* ✅ YouTube Video Player */}
+            <article className="relative w-full h-full">
+              <div className="relative w-full h-full overflow-hidden">
+                <iframe
+                  ref={playerRef}
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${item?.id?.videoId}?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&modestbranding=1`}
+                  title={item?.snippet?.title || "YouTube Shorts"}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  className="rounded-2xl"
+                ></iframe>
+
+                {/* ✅ Top overlay - title/logo hide */}
+                <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b bg-black to-transparent pointer-events-none z-10"></div>
+
+                {/* ✅ Bottom overlay - controls hide  */}
+                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t bg-black pointer-events-none z-10"></div>
               </div>
-              <hr className="h-[1px] border-none bg-border" />
-              <div className="flex justify-between w-full px-6 mt-5">
-                {/* Likes */}
-
-                <article
-                  className="flex flex-col items-center justify-around"
-                  aria-label="208 thousand likes"
-                >
-                  <span className="text-[1rem]">
-                    <span>208K</span>
-                  </span>
-                  <span>
-                    <span className="text-xs text-subtext">Likes</span>
-                  </span>
-                </article>
-
-                {/* Views */}
-
-                <article
-                  className="flex flex-col items-center justify-center"
-                  aria-label="9,694,478 views"
-                >
-                  <span>
-                    <span>9,694,478</span>
-                  </span>
-                  <span>
-                    <span className="text-xs text-subtext">Views</span>
-                  </span>
-                </article>
-
-                {/* Upload Date */}
-
-                <article
-                  className="flex flex-col items-center justify-center"
-                  aria-label="Oct 17, 2025"
-                >
-                  <span className="ytwFactoidRendererValue">
-                    <span>Oct 17</span>
-                  </span>
-                  <span className="ytwFactoidRendererLabel">
-                    <span className="text-xs text-subtext">2025</span>
-                  </span>
-                </article>
+              <button
+                onClick={toggleMute}
+                className="absolute bottom-24 left-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-300 z-10"
+              >
+                {isMuted ? (
+                  <VolumeX size={24} strokeWidth={2} />
+                ) : (
+                  <Volume2 size={24} strokeWidth={2} />
+                )}
+              </button>
+            </article>
+          </>
+        ) : (
+          <>
+            {/* ✅ YouTube Video Player */}
+            <article className="relative w-full h-full">
+              <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
+                <img
+                  className="w-full"
+                  src={item.snippet.thumbnails.high.url}
+                  alt=""
+                />
               </div>
-              <div className="bg-surface text-subtext mx-5 mt-5 rounded-md px-4 py-2">
-                {snippet?.description}
+              <div className="absolute w-full h-full flex justify-center items-center overflow-hidden">
+                <div>
+
+                </div>
               </div>
-            </motion.article>
-          )}
-        </AnimatePresence>
+            </article>
+          </>
+        )}
       </section>
 
-      {/* Right Side Actions */}
-      <section className="-translate-y-3 flex flex-col items-center justify-center gap-6">
-        <article className="flex flex-col items-center gap-1">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all cursor-pointer">
-            <Heart size={24} className="text-text" />
-          </div>
-          <span className="text-text text-xs font-semibold">12.5K</span>
-        </article>
-
-        <article className="flex flex-col items-center gap-1">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all cursor-pointer">
-            <MessageCircle size={24} className="text-text" />
-          </div>
-          <span className="text-text text-xs font-semibold">1.2K</span>
-        </article>
-
-        <article className="flex flex-col items-center gap-1">
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all cursor-pointer">
-            <Share2 size={24} className="text-text" />
-          </div>
-          <span className="text-text text-xs font-semibold">Share</span>
-        </article>
-
-        <article
-          onClick={() => setIsShowDes((p) => !p)}
-          className="flex flex-col items-center gap-1"
+      {/* ✅ Right Side Buttons (Like, Comment, Share, Description) */}
+      <section
+        style={{ height: `${HomePageHeight}px` }}
+        className="fixed right-10 flex flex-col justify-center items-center md:hidden -translate-y-3 gap-6 z-20"
+      >
+        <button
+          onClick={prevVid}
+          disabled={isPrevDisabled}
+          className="pointer-events-auto w-[60px] h-[60px] bg-black/50 hover:bg-black/70 hover:scale-[0.95] transition-all duration-300 rounded-full flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
         >
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-white/30 transition-all cursor-pointer">
-            <div>
-              <DescriptionIcon size={24} className="text-text" />
-            </div>
-          </div>
+          <MoveUp size={25} strokeWidth={2} className="text-white" />
+        </button>
 
-          <span className="text-text text-xs font-semibold">Description</span>
-        </article>
+        <button
+          onClick={nextVid}
+          disabled={isNextDisabled}
+          className="pointer-events-auto w-[60px] h-[60px] bg-black/50 hover:bg-black/70 hover:scale-[0.95] transition-all duration-300 rounded-full flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
+        >
+          <MoveDown size={25} strokeWidth={2} className="text-white" />
+        </button>
       </section>
-    </aside>
+    </article>
   );
 }
