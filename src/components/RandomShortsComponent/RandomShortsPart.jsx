@@ -1,13 +1,14 @@
 import { MoveDown, MoveUp, Volume2, VolumeX, Pause, Play } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import moment from "moment";
-import millify from "millify";
+import { Link } from "react-router-dom";
 
 export default function RandomShortsPart({
   style,
   HomePageHeight,
+  VideoID,
   item,
+  channelData,
   isPrevDisabled,
   isNextDisabled,
   nextVid,
@@ -19,7 +20,7 @@ export default function RandomShortsPart({
   const playerRef = useRef(null);
 
   useEffect(() => {
-    if (!isMuted && playerRef.current) {
+    if (isMuted === false && playerRef.current) {
       const timer = setTimeout(() => {
         playerRef.current.contentWindow.postMessage(
           '{"event":"command","func":"unMute","args":""}',
@@ -32,7 +33,7 @@ export default function RandomShortsPart({
   }, [item?.id?.videoId, isMuted]);
 
   useEffect(() => {
-    if (isPlaying && playerRef.current) {
+    if (isPlaying === true && playerRef.current) {
       const timer = setTimeout(() => {
         playerRef.current.contentWindow.postMessage(
           '{"event":"command","func":"playVideo","args":""}',
@@ -44,9 +45,10 @@ export default function RandomShortsPart({
     }
   }, [item?.id?.videoId, isPlaying]);
 
+  // ✅ jokhon volume btn e cliik korbe tokhon eta kaj korbe
   const toggleMute = () => {
     if (playerRef.current) {
-      if (isMuted) {
+      if (isMuted === true) {
         playerRef.current.contentWindow.postMessage(
           '{"event":"command","func":"unMute","args":""}',
           "*"
@@ -61,9 +63,10 @@ export default function RandomShortsPart({
     }
   };
 
+  // ✅ jokhon video te clcik korbe tokhon eta kaj korbe
   const togglePlayPause = () => {
     if (playerRef.current) {
-      if (isPlaying) {
+      if (isPlaying === true) {
         playerRef.current.contentWindow.postMessage(
           '{"event":"command","func":"pauseVideo","args":""}',
           "*"
@@ -80,6 +83,9 @@ export default function RandomShortsPart({
     }
   };
 
+  // ----------------------------
+  // Render
+  // ----------------------------
   return (
     <article className="relative w-full md:w-[420px] lg:w-[460px] xl:w-[450px] h-full flex gap-6 justify-center items-end overflow-hidden">
       <section
@@ -88,13 +94,12 @@ export default function RandomShortsPart({
       >
         <article className="relative w-full h-full">
           <div className="relative w-full h-full overflow-hidden">
-
             {/* ✅ YouTube iframe */}
             <iframe
               ref={playerRef}
               width="100%"
               height="100%"
-              src={`https://www.youtube.com/embed/${item?.id?.videoId}?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&modestbranding=1`}
+              src={`https://www.youtube.com/embed/${VideoID}?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&modestbranding=1`}
               title={item?.snippet?.title || "YouTube Shorts"}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -140,14 +145,23 @@ export default function RandomShortsPart({
             </div>
 
             {/* ✅ Bottom Section - title/mute-box etc */}
-            <div className="absolute bottom-0 left-0 right-0 w-full h-48 bg-black pointer-events-none z-20">
-              <div className="w-full h-full flex justify-between items-end px-4 py-5 pointer-events-auto">
-                
+            <div className="absolute bottom-0 left-0 right-0 w-full h-32 py-5 bg-black pointer-events-none z-20">
+              <div className="w-full h-full flex justify-between items-end px-4 pointer-events-auto">
                 {/* ✅ Left side */}
-                <div className="w-[85%] flex flex-col gap-2 ">
-                  <p className="text-[0.95rem] text-subtext">
-                    {item?.snippet?.channelTitle}
-                  </p>
+                <div className="w-[85%] flex flex-col gap-5 ">
+                  <Link
+                    to={`/channels/${channelData?.snippet?.customUrl}`}
+                    className="flex flex-row items-center gap-1.5"
+                  >
+                    <img
+                      className="w-[28px] rounded-full"
+                      src={channelData?.snippet.thumbnails.high.url}
+                      alt={channelData?.snippet?.customUrl}
+                    />
+                    <p className="text-[0.9rem] font-medium text-subtext">
+                      {channelData?.snippet?.customUrl}
+                    </p>
+                  </Link>
                   <h3 className="text-text text-sm font-semibold line-clamp-2">
                     {item?.snippet?.title}
                   </h3>
@@ -171,10 +185,8 @@ export default function RandomShortsPart({
                 </div>
               </div>
             </div>
-
           </div>
         </article>
-
       </section>
 
       {/* ✅ Right Side Navigation Buttons */}

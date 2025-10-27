@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MoveDown, MoveUp } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,186 +9,205 @@ import { GetChannelData } from "../utils/GetChannelData";
 import { GetVideoData } from "../utils/GetVideoData";
 
 export default function RandomShortsPage() {
-  const { isReSideBarShow, HomePageOutletWidth, HomePageHeight } =
-    useContext(UiContext);
+  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
 
   const params = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [VideoID, setVideoID] = useState(Object.values(params)[0]);
   const [items, setItems] = useState([]);
+
+  // exitsChannel Data & IDs management
+  const [exitsChannelIds, setExitsChannelIds] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ExitsChannelIds")) || [];
+    } catch {
+      return [];
+    }
+  });
+  const [exitsChannelData, setExitsChannelData] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ExitsChannelData")) || {};
+    } catch {
+      return {};
+    }
+  });
+
+  // Channel
   const [itemsChannelIds, setItemsChannelIds] = useState([]);
-  const [itemsVideoIds, setItemsVideoIds] = useState([]);
-  const [videosData, setVideosData] = useState({});
-  const [channelsData, setChannelsData] = useState({});
+  const [channelsData, setChannelsData] = useState(
+    JSON.parse(localStorage.getItem("ExitsChannelData")) || {}
+  );
+
+  // Queries
+  const [queries, setQueries] = useState(localStorage.getItem("queries"));
+
+  // currentIndex of items video
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // ----------------------------
-  // Load Data from LocalStorage
+  // Load Data from API/LocalStorage
   // ----------------------------
 
   useEffect(() => {
     let id = Object.values(params)[0];
-    console.log(id);
+    console.log("Video ID from params:", id);
 
-    if (id === "") {
-      // data
-      let data = JSON.parse(localStorage.getItem("data"));
-      setData(data);
-      const mainItems = data.flatMap((d) => d.items);
-      setItems(mainItems);
-      navigate(`/shorts/${mainItems[0].id.videoId}`);
-      console.log(mainItems[0].id.videoId);
-      setCurrentIndex(0);
+    if (!id || id === "") {
+      try {
+        // ✅ load data LocalStorage
+        const data = JSON.parse(localStorage.getItem("data")) || [];
+
+        // ❌ load data LocalStorage eta empty hole ja korbe
+        if (data.length === 0) {
+          console.warn("No data found in localStorage");
+          return;
+        }
+
+        // ✅ map dat with flat
+        const mainItems = data.flatMap((d) => d.items);
+
+        if (mainItems.length > 0) {
+          setItems(mainItems);
+          let mountVideoId = mainItems[0]?.id?.videoId;
+          setVideoID(mountVideoId);
+          navigate(`/shorts/${mountVideoId}`);
+          setCurrentIndex(0);
+        }
+      } catch (error) {
+        console.error("Error", error);
+      }
     } else {
-      async function fetchVideoData(videoId) {
+      async function fetchVideoData() {
+        console.log("Fetching video data for ID:", id);
+
         try {
-          const videoItem = await GetVideoData(videoId, VideoData1);
-          console.log(videoItem);
-          let obj;
-          if (videoItem !== null) {
-            obj = {
-              kind: videoItem.kind,
-              etag: videoItem.etag,
-              id: {
-                kind: "youtube#video",
-                videoId: videoItem.id,
-              },
-              snippet: {
-                publishedAt: videoItem.snippet.publishedAt,
-                channelId: videoItem.snippet.channelId,
-                title: videoItem.snippet.title,
-                description: videoItem.snippet.description,
-                thumbnails: videoItem.snippet.thumbnails,
-                channelTitle: videoItem.snippet.channelTitle,
-                liveBroadcastContent: videoItem.snippet.liveBroadcastContent,
-                publishTime: videoItem.snippet.publishTime,
-              },
-            };
+          // ✅ API theke video fetch
+          const videoItem = await GetVideoData(id, VideoData2);
+
+          // ❌ API theke video fetch na aile ja hobe
+          if (!videoItem) {
+            console.error("Video not found");
+            return;
           }
 
-          // data
-          let data = JSON.parse(localStorage.getItem("data"));
-          setData(data);
-          const mainItems = data.flatMap((d) => d.items);
-          setItems([obj, ...mainItems]);
-          navigate(`/shorts/${mainItems[0].id.videoId}`);
-          console.log(mainItems[0].id.videoId);
-          setCurrentIndex(0);
+          // ✅ Video object create
+          const obj = {
+            kind: videoItem.kind,
+            etag: videoItem.etag,
+            id: {
+              kind: "youtube#video",
+              videoId: videoItem.id,
+            },
+            snippet: {
+              publishedAt: videoItem.snippet.publishedAt,
+              channelId: videoItem.snippet.channelId,
+              title: videoItem.snippet.title,
+              description: videoItem.snippet.description,
+              thumbnails: videoItem.snippet.thumbnails,
+              channelTitle: videoItem.snippet.channelTitle,
+              liveBroadcastContent: videoItem.snippet.liveBroadcastContent,
+              publishTime: videoItem.snippet.publishTime,
+            },
+          };
+
+          // ✅ LocalStorage e existing data milabo temporay
+          const data = JSON.parse(localStorage.getItem("data")) || [];
+          const existingItems = data.flatMap((d) => d.items);
+
+          // ✅ new ta agee first add hobe video
+          const mainItems = [obj, ...existingItems];
+
+          if (mainItems.length > 0) {
+            setItems(mainItems);
+            let mountVideoId = mainItems[0]?.id?.videoId;
+            setVideoID(mountVideoId);
+            navigate(`/shorts/${mountVideoId}`);
+            setCurrentIndex(0);
+          }
         } catch (err) {
-          console.error("Fetch Data Error:" + err);
+          console.error("Fetch Data Error:", err);
         }
       }
 
-      // Fetch Video Data
-      fetchVideoData(id);
+      fetchVideoData();
     }
-  }, []);
+  }, []); // ✅ Empty dependency - mount
 
-  // useEffect(() => {
-  //   if (!data) return;
+  // -----------------------------------------------------------------------
+  // Extract Channel IDs 😒 alada kore ante hobe tai eke barti kore ante hoy
+  // -----------------------------------------------------------------------
 
-  //   const newChannelIds = new Set();
-  //   const newVideoIds = new Set();
+  useEffect(() => {
+    const newChannelIds = new Set();
 
-  //   const mainItems = data.flatMap((md) => md.items);
-  //   setItems(mainItems);
-  //   data.map((d) => {
-  //     d.items.map((i) => {
-  //       // ✅ add Channel ID
-  //       if (i?.snippet?.channelId) {
-  //         newChannelIds.add(i.snippet.channelId);
-  //       }
+    // ✅ add Channel Id
+    items.forEach((i) => {
+      if (i?.snippet?.channelId) {
+        newChannelIds.add(i.snippet.channelId);
+      }
+    });
 
-  //       // ✅ add Video ID
-  //       if (i?.id?.videoId) {
-  //         newVideoIds.add(i.id.videoId);
-  //       }
-  //     });
-  //   });
+    // ✅ filter by the ExitsChannel Id
+    setExitsChannelIds((p) => {
+      const fillterChannelID = new Set(p);
+      Array.from(newChannelIds).forEach((fcid) => fillterChannelID.add(fcid));
 
-  //   setItemsChannelIds((prevSet) => {
-  //     const mergedChannelIds = new Set(prevSet);
-  //     newChannelIds.forEach((id) => mergedChannelIds.add(id));
-  //     return Array.from(mergedChannelIds);
-  //   });
+      const arr = Array.from(fillterChannelID);
+      setItemsChannelIds(arr);
+      localStorage.setItem("ExitsChannelIds", JSON.stringify(arr));
 
-  //   setItemsVideoIds((prevSet) => {
-  //     const mergedVideoIds = new Set(prevSet);
-  //     newVideoIds.forEach((id) => mergedVideoIds.add(id));
-  //     return Array.from(mergedVideoIds);
-  //   });
-  // }, [data]);
-
-  // ------------------------------------
-  // Temp Data
-  // ------------------------------------
-
-  // useEffect(() => {
-  //   console.log(channelsData);
-  //   console.log(videosData);
-  // }, [channelsData, videosData]);
+      return arr;
+    });
+  }, [items]); // <= jokhon items change hobe tokhon ey poro kaj ta aber o korbe
 
   // ------------------------------------
   // Fetch Channel && video data function
   // ------------------------------------
 
-  // useEffect(() => {
-  //   // 📺 Video Data
-  //   async function fetchVideoData(videoId) {
-  //     try {
-  //       const videoItem = await GetVideoData(videoId, VideoData1);
-  //       setVideosData((prev) => ({
-  //         ...prev,
-  //         [videoId]: {
-  //           channelId: videoItem?.snippet?.channelId || null,
-  //           viewCount: videoItem?.statistics?.viewCount || null,
-  //           likeCount: videoItem?.statistics?.likeCount || null,
-  //           commentCount: videoItem?.statistics?.commentCount || null,
-  //         },
-  //       }));
-  //     } catch (err) {
-  //       console.error("Fetch Data Error:" + err);
-  //     }
-  //   }
+  useEffect(() => {
+    // 📺 Channel Data
+    async function fetchChanaleData(ChanaleId) {
+      try {
+        const ChanaleItem = await GetChannelData(ChanaleId, VideoData2);
+        setChannelsData((prev) => ({
+          ...prev,
+          [ChanaleId]: ChanaleItem,
+        }));
+      } catch (err) {
+        console.error("Fetch Data Error:" + err);
+      }
+    }
 
-  //   // 📺 Channel Data
-  //   async function fetchChanaleData(ChanaleId) {
-  //     try {
-  //       const ChanaleItem = await GetChannelData(ChanaleId, VideoData1);
-  //       setChannelsData((prev) => ({
-  //         ...prev,
-  //         [ChanaleId]: {
-  //           customUrl: ChanaleItem?.snippet?.customUrl,
-  //           thumbnails: ChanaleItem?.snippet?.thumbnails,
-  //         },
-  //       }));
-  //     } catch (err) {
-  //       console.error("Fetch Data Error:" + err);
-  //     }
-  //   }
+    // main funtion
+    async function callData() {
+      if (itemsChannelIds.length === 0) return;
 
-  //   // main funtion
-  //   async function callData() {
-  //     if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
-  //     // 📺 Get all Video Data
-  //     itemsVideoIds.map(async (vid) => {
-  //       await fetchVideoData(vid);
-  //     });
+      // 📺 Get Channel Data
+      itemsChannelIds.map(async (cid) => {
+        await fetchChanaleData(cid);
+      });
 
-  //     // 📺 Get all Channel Data
-  //     itemsChannelIds.map(async (cid) => {
-  //       await fetchChanaleData(cid);
-  //     });
+      setItemsChannelIds([]);
+    }
 
-  //     setItemsChannelIds([]);
-  //     setItemsVideoIds([]);
-  //   }
+    // call funtion
+    callData();
+    console.log(itemsChannelIds);
 
-  //   // call funtion
-  //   callData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemsChannelIds, VideoData1]);
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [itemsChannelIds, itemsVideoIds, VideoData1]);
+  // -----------------
+  // set channelsData
+  // -----------------
+
+  useEffect(() => {
+    if (channelsData.length === 0) return;
+    setExitsChannelData(() => {
+      localStorage.setItem("ExitsChannelData", JSON.stringify(channelsData));
+      return channelsData;
+    });
+  }, [channelsData]); // <= jokhon items change hobe tokhon ey poro kaj ta aber o korbe
 
   // ----------------------------
   // Scroll or Button Navigation
@@ -199,7 +219,7 @@ export default function RandomShortsPage() {
       setCurrentIndex(nextIndex);
       // URL update
       const nextVideoId = items[nextIndex]?.id?.videoId;
-      console.clear();
+      setVideoID(nextVideoId);
       if (nextVideoId) navigate(`/shorts/${nextVideoId}`);
     }
   }
@@ -210,7 +230,7 @@ export default function RandomShortsPage() {
       setCurrentIndex(prevIndex);
       // URL update
       const prevVideoId = items[prevIndex]?.id?.videoId;
-      console.clear();
+      setVideoID(prevVideoId);
       if (prevVideoId) navigate(`/shorts/${prevVideoId}`);
     }
   }
@@ -243,7 +263,17 @@ export default function RandomShortsPage() {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, items]); // dependency add korলাম
+  }, [currentIndex, items]);
+
+  // ------------------------------------
+  // Temp Data
+  // ------------------------------------
+
+  useEffect(() => {
+    console.log(channelsData);
+    console.log(exitsChannelIds);
+    console.log(exitsChannelData);
+  }, [channelsData, exitsChannelIds, exitsChannelData]);
 
   // ----------------------------
   // Render
@@ -282,7 +312,9 @@ export default function RandomShortsPage() {
             maxWidth: `${HomePageOutletWidth}px`,
           }}
           HomePageHeight={HomePageHeight}
+          VideoID={VideoID}
           item={items[currentIndex]}
+          channelData={channelsData[items[currentIndex]?.snippet?.channelId]}
           isPrevDisabled={currentIndex === 0}
           isNextDisabled={currentIndex === items?.length - 1}
           nextVid={nextVid}
@@ -309,7 +341,7 @@ export default function RandomShortsPage() {
 
         <button
           onClick={nextVid}
-          disabled={currentIndex === data?.items?.length - 1}
+          disabled={currentIndex === items?.length - 1}
           className="pointer-events-auto w-[60px] h-[60px] bg-black/50 hover:bg-black/70 hover:scale-[0.95] transition-all duration-300 rounded-full flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
         >
           <MoveDown size={25} strokeWidth={2} className="text-white" />

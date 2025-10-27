@@ -56,11 +56,7 @@ export default function RandomVideosPage() {
   const [resultsCount, setResultsCount] = useState(0);
 
   // Queries
-  const queries = [
-    "Islamic Gojol Urdu",
-    "Islamic Gojol Bangla",
-    "Bangladesh history documentary",
-  ];
+  const [queries, setQueries] = useState(localStorage.getItem("queries"));
 
   // -------------------------
   // Update grid columns

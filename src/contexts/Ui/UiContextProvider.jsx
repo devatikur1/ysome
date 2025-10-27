@@ -30,6 +30,18 @@ export default function UiContextProvider({ children }) {
   });
 
   useEffect(() => {
+    localStorage.setItem(
+      "queries",
+      JSON.stringify([
+        "Islamic Gojol Urdu",
+        "Islamic Gojol Bangla",
+        "Bangladesh history documentary",
+      ])
+    );
+  }, [])
+  
+
+  useEffect(() => {
     const handleResize = () => {
       setHomePageWidth(window.innerWidth);
       setHomePageHeight(window.innerHeight - 60);
