@@ -6,7 +6,7 @@ export default function UiContextProvider({ children }) {
   const searchBtnRef = useRef(null);
   const [isNotificationShow, setNotificationShow] = useState(false);
   const notificationBtnRef = useRef(null);
-  const [isReSideBarShow, setIsReSideBarShow] = useState(false);
+  const [isReSideBarShow, setIsReSideBarShow] = useState(true);
 
   // some
   const [HomePageWidth, setHomePageWidth] = useState(`${window.innerWidth}px`);

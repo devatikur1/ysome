@@ -43,25 +43,27 @@ export default function RandomShortsPage() {
         try {
           const videoItem = await GetVideoData(videoId, VideoData1);
           console.log(videoItem);
-
-          let obj = {
-            kind: videoItem.kind,
-            etag: videoItem.etag,
-            id: {
-              kind: "youtube#video",
-              videoId: videoItem.id,
-            },
-            snippet: {
-              publishedAt: videoItem.snippet.publishedAt,
-              channelId: videoItem.snippet.channelId,
-              title: videoItem.snippet.title,
-              description: videoItem.snippet.description,
-              thumbnails: videoItem.snippet.thumbnails,
-              channelTitle: videoItem.snippet.channelTitle,
-              liveBroadcastContent: videoItem.snippet.liveBroadcastContent,
-              publishTime: videoItem.snippet.publishTime,
-            },
-          };
+          let obj;
+          if (videoItem !== null) {
+            obj = {
+              kind: videoItem.kind,
+              etag: videoItem.etag,
+              id: {
+                kind: "youtube#video",
+                videoId: videoItem.id,
+              },
+              snippet: {
+                publishedAt: videoItem.snippet.publishedAt,
+                channelId: videoItem.snippet.channelId,
+                title: videoItem.snippet.title,
+                description: videoItem.snippet.description,
+                thumbnails: videoItem.snippet.thumbnails,
+                channelTitle: videoItem.snippet.channelTitle,
+                liveBroadcastContent: videoItem.snippet.liveBroadcastContent,
+                publishTime: videoItem.snippet.publishTime,
+              },
+            };
+          }
 
           // data
           let data = JSON.parse(localStorage.getItem("data"));
@@ -197,6 +199,7 @@ export default function RandomShortsPage() {
       setCurrentIndex(nextIndex);
       // URL update
       const nextVideoId = items[nextIndex]?.id?.videoId;
+      console.clear();
       if (nextVideoId) navigate(`/shorts/${nextVideoId}`);
     }
   }
@@ -207,6 +210,7 @@ export default function RandomShortsPage() {
       setCurrentIndex(prevIndex);
       // URL update
       const prevVideoId = items[prevIndex]?.id?.videoId;
+      console.clear();
       if (prevVideoId) navigate(`/shorts/${prevVideoId}`);
     }
   }
@@ -216,21 +220,29 @@ export default function RandomShortsPage() {
   // ----------------------------
 
   useEffect(() => {
-
     // Wheel Event
     const handleWheel = (e) => {
       if (e.deltaY > 40) nextVid();
       else if (e.deltaY < -40) prevVid();
     };
 
+    function ChangePrevVid(e) {
+      console.log(e);
+      if (e.key === "ArrowDown") nextVid();
+      else if (e.key === "ArrowUp") prevVid();
+    }
 
     // Add listeners
     window.addEventListener("wheel", handleWheel);
+    window.addEventListener("keydown", ChangePrevVid);
 
     // Cleanup
     return () => {
       window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", ChangePrevVid);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, items]); // dependency add korলাম
 
   // ----------------------------
@@ -285,7 +297,7 @@ export default function RandomShortsPage() {
           Height: `${HomePageHeight}px`,
           minHeight: `${HomePageHeight}px`,
         }}
-        className="hidden lg:flex w-auto fixed bottom-0 right-2 h-full gap-3 flex-col items-center justify-center rounded-xl pointer-events-none"
+        className="hidden md:flex w-auto fixed bottom-0 right-2 h-full gap-3 flex-col items-center justify-center rounded-xl pointer-events-none"
       >
         <button
           onClick={prevVid}
