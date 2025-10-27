@@ -31,7 +31,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData1);
+  const [apiKey, setApiKey] = useState(apiKeys[apiIndex]);
 
   // refs
   const containerRef = useRef(null);
@@ -258,7 +258,7 @@ export default function RandomVideosPage() {
 
     const unsubscribe = scrollYProgress.on("change", (value) => {
       if (
-        value > 0.9 &&
+        value > 0.98 &&
         !pageLoading &&
         nextPageTokens.length > 0 &&
         !scrollTriggeredRef.current &&

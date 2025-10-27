@@ -6,7 +6,14 @@ export default function UiContextProvider({ children }) {
   const searchBtnRef = useRef(null);
   const [isNotificationShow, setNotificationShow] = useState(false);
   const notificationBtnRef = useRef(null);
-  const [isReSideBarShow, setIsReSideBarShow] = useState(true);
+  const [isReSideBarShow, setIsReSideBarShow] = useState(() => {
+    const saved = localStorage.getItem("isReSideBarShow");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("isReSideBarShow", JSON.stringify(isReSideBarShow));
+  }, [isReSideBarShow]);
 
   // some
   const [HomePageWidth, setHomePageWidth] = useState(`${window.innerWidth}px`);
@@ -35,7 +42,7 @@ export default function UiContextProvider({ children }) {
     };
 
     handleResize();
-    
+
     // add listener
     window.addEventListener("resize", handleResize);
 
