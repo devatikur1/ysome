@@ -113,7 +113,7 @@ export default function RandomShortsPart({
             {/* ✅ Bottom overlay - Play/Pause */}
             <div
               onClick={togglePlayPause}
-              className="absolute inset-0 z-20 cursor-pointer"
+              className="absolute inset-0 z-30 cursor-pointer"
             >
               <AnimatePresence>
                 {showPlayIcon && (
@@ -192,7 +192,7 @@ export default function RandomShortsPart({
       {/* ✅ Right Side Navigation Buttons */}
       <section
         style={{ height: `${HomePageHeight}px` }}
-        className="fixed right-10 flex flex-col justify-center items-center md:hidden -translate-y-3 gap-6 z-10"
+        className="fixed right-10 flex flex-col justify-center items-center md:hidden -translate-y-3 gap-6 z-20"
       >
         <button
           onClick={prevVid}
