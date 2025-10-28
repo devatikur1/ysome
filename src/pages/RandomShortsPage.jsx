@@ -37,7 +37,7 @@ export default function RandomShortsPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData2);
+  const [apiKey, setApiKey] = useState(VideoData1);
 
   // State management
   const [VideoID, setVideoID] = useState(Object.values(params)[0] || "");
@@ -65,11 +65,7 @@ export default function RandomShortsPage() {
   });
   const [nextPageTokens, setNextPageTokens] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [queries] = useState([
-    "Islamic Gojol Urdu",
-    "Islamic Gojol Bangla",
-    "Bangladesh history documentary",
-  ]);
+  const [queries] = useState(JSON.parse(localStorage.getItem("queries")));
 
   // Refs to track pending channel fetches
   const isInitialMount = useRef(true);
