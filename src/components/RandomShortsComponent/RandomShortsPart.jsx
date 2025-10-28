@@ -192,7 +192,7 @@ export default function RandomShortsPart({
       {/* ✅ Right Side Navigation Buttons */}
       <section
         style={{ height: `${HomePageHeight}px` }}
-        className="fixed right-10 flex flex-col justify-center items-center md:hidden -translate-y-3 gap-6 z-20"
+        className="fixed right-10 flex flex-col justify-center items-center md:hidden -translate-y-3 gap-6 z-10"
       >
         <button
           onClick={prevVid}
