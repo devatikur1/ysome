@@ -13,6 +13,8 @@ import {
   apiKey5,
   apiKey6,
   VideoData1,
+  VideoData2,
+  VideoData3,
 } from "../utils/data";
 import { useScroll } from "motion/react";
 import { GetDataWithSearch } from "../utils/GetDataWithSearch";
@@ -31,7 +33,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData1);
+  const [apiKey, setApiKey] = useState(VideoData3);
 
   // refs
   const containerRef = useRef(null);
@@ -56,7 +58,9 @@ export default function RandomVideosPage() {
   const [resultsCount, setResultsCount] = useState(0);
 
   // Queries
-  const [queries, setQueries] = useState(localStorage.getItem("queries"));
+  let [queries, setQueries] = useState(
+    JSON.parse(localStorage.getItem("queries"))
+  );
 
   // -------------------------
   // Update grid columns
