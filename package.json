@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "clsx": "^2.1.1",
+    "firebase": "^12.4.0",
     "lucide-react": "^0.546.0",
     "millify": "^6.1.0",
     "moment": "^2.30.1",

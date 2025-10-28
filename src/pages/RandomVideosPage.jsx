@@ -31,7 +31,7 @@ export default function RandomVideosPage() {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(apiKeys[apiIndex]);
+  const [apiKey, setApiKey] = useState(VideoData1);
 
   // refs
   const containerRef = useRef(null);
