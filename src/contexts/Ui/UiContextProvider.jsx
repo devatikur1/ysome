@@ -33,9 +33,9 @@ export default function UiContextProvider({ children }) {
     localStorage.setItem(
       "queries",
       JSON.stringify([
-        "Islamic Gojol Urdu",
-        "Islamic Gojol Bangla",
-        "Bangladesh history documentary",
+        "pokemon unova region theme song in hindi",
+        "pokemon bw adventures in unova theme song in hindi",
+        "pokemon theme songs",
       ])
     );
   }, [])
