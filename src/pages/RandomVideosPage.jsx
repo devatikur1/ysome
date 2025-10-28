@@ -94,7 +94,6 @@ export default function RandomVideosPage() {
         )
       );
       // Handle test er loge result
-      // const results = JSON.parse(localStorage.getItem("data"));
 
       const newNextTokens = [];
       const newChannelIds = new Set();
@@ -107,9 +106,11 @@ export default function RandomVideosPage() {
 
           setItems((prev) => {
             const existingIds = new Set(prev.map((i) => i?.id?.videoId));
+            
             const filtered = data.items.filter(
               (i) => !existingIds.has(i?.id?.videoId)
             );
+            console.log(filtered);
             return [...prev, ...filtered];
           });
 

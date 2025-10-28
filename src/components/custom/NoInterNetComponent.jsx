@@ -12,7 +12,7 @@ export default function NoInterNetComponent({ style, fetchData }) {
           Something went wrong
         </p>
         <span className="text-sm text-subtext">
-          We couldn't load videos. Try again or check your API limits.
+          We couldn't load videos. Try again
         </span>
         <div className="mt-1">
           <button
