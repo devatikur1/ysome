@@ -155,7 +155,7 @@ export default function RandomShortsPart({
                   >
                     <img
                       className="w-[28px] rounded-full"
-                      src={channelData?.snippet.thumbnails.high.url}
+                      src={channelData?.snippet?.thumbnails?.high?.url}
                       alt={channelData?.snippet?.customUrl}
                     />
                     <p className="text-[0.9rem] font-medium text-subtext">

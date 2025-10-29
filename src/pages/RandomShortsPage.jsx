@@ -53,9 +53,6 @@ export default function RandomShortsPage() {
   const params = useParams();
   const navigate = useNavigate();
 
-  // State management
-  const [VideoID, setVideoID] = useState(Object.values(params)[0] || "");
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Refs to track pending channel fetches
@@ -83,7 +80,6 @@ export default function RandomShortsPage() {
           // No specific video ID, use first item
           if (existingItems.length > 0) {
             const mountVideoId = existingItems[0]?.id?.videoId;
-            setVideoID(mountVideoId);
             navigate(`/shorts/${mountVideoId}`);
             setCurrentIndex(0);
           }
@@ -120,7 +116,6 @@ export default function RandomShortsPage() {
 
           const mainItems = [obj, ...existingItems];
           setItems(mainItems);
-          setVideoID(id);
           setCurrentIndex(0);
         }
       } catch (err) {
@@ -142,7 +137,7 @@ export default function RandomShortsPage() {
       setCurrentIndex(nextIndex);
       const nextVideoId = items[nextIndex]?.id?.videoId;
       if (nextVideoId) {
-        setVideoID(nextVideoId);
+
         navigate(`/shorts/${nextVideoId}`, { replace: true });
       }
     }
@@ -153,8 +148,7 @@ export default function RandomShortsPage() {
       const prevIndex = currentIndex - 1;
       setCurrentIndex(prevIndex);
       const prevVideoId = items[prevIndex]?.id?.videoId;
-      if (prevVideoId) {
-        setVideoID(prevVideoId);
+      if (prevVideoId) {;
         navigate(`/shorts/${prevVideoId}`, { replace: true });
       }
     }
@@ -225,10 +219,10 @@ export default function RandomShortsPage() {
                   maxWidth: `${HomePageOutletWidth}px`,
                 }}
                 HomePageHeight={HomePageHeight}
-                VideoID={VideoID}
-                item={items[currentIndex]?.snippet ? items[currentIndex] : {}}
+                VideoID={items?.[currentIndex]?.id?.videoId}
+                item={items[currentIndex] || {}}
                 channelData={
-                  channelsData[items[currentIndex]?.snippet?.channelId] ?? {}
+                  channelsData[items[currentIndex]?.snippet?.channelId] || {}
                 }
                 isPrevDisabled={currentIndex === 0}
                 isNextDisabled={currentIndex === items.length - 1}
