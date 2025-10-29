@@ -45,24 +45,9 @@ export default function RandomShortsPage() {
   const [pageError, setPageError] = useState(false);
   const [items, setItems] = useState([]);
 
-  // exitsChannel Data & IDs management
-  const [exitsChannelIds, setExitsChannelIds] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("ExitsChannelIds")) || [];
-    } catch {
-      return [];
-    }
-  });
-
   // Channel
   const [itemsChannelIds, setItemsChannelIds] = useState([]);
-  const [channelsData, setChannelsData] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("ExitsChannelData")) || {};
-    } catch {
-      return {};
-    }
-  });
+  const [channelsData, setChannelsData] = useState(() => {});
   const [nextPageTokens, setNextPageTokens] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [queries] = useState(JSON.parse(localStorage.getItem("queries")));
@@ -130,14 +115,11 @@ export default function RandomShortsPage() {
     });
 
     // ✅ filter by the ExitsChannel Id
-    setExitsChannelIds((p) => {
-      const fillterChannelID = new Set(p);
+    setItemsChannelIds(() => {
+      const fillterChannelID = new Set();
       Array.from(newChannelIds).forEach((fcid) => fillterChannelID.add(fcid));
 
       const arr = Array.from(fillterChannelID);
-      setItemsChannelIds(arr);
-      localStorage.setItem("ExitsChannelIds", JSON.stringify(arr));
-
       return arr;
     });
   }, [items]);
@@ -180,7 +162,7 @@ export default function RandomShortsPage() {
   // Initial fetch
   // -------------------------
 
-  useEffect(() => {
+  function loadMoreData() {
     if (!isInitialMount.current) return;
     isInitialMount.current = false;
 
@@ -224,13 +206,15 @@ export default function RandomShortsPage() {
           // Fetch specific video data
           const videoItem = await GetVideoData(id, apiKey);
 
+          let obj;
+
           if (!videoItem) {
             console.error("Video not found");
             setPageError(true);
             return;
           }
 
-          const obj = {
+          obj = {
             kind: videoItem.kind,
             etag: videoItem.etag,
             id: {
@@ -261,11 +245,19 @@ export default function RandomShortsPage() {
     }
 
     fetchVideoData();
-  }, []);
+  }
+
+useEffect(() => {
+  if (currentIndex >= items.length - 2 && !pageLoading) {
+    loadMoreData();
+  }
+}, [currentIndex, items]);
+
 
   // ----------------------------
   // Navigation Functions
   // ----------------------------
+
   const nextVid = useCallback(() => {
     if (currentIndex < items.length - 1) {
       const nextIndex = currentIndex + 1;
@@ -293,6 +285,7 @@ export default function RandomShortsPage() {
   // ----------------------------
   // Wheel & Keyboard Events
   // ----------------------------
+
   useEffect(() => {
     let wheelTimeout;
 
@@ -341,6 +334,7 @@ export default function RandomShortsPage() {
   // ----------------------------
   // Render
   // ----------------------------
+
   return (
     <main
       style={{
@@ -353,7 +347,7 @@ export default function RandomShortsPage() {
       }}
       className="relative flex flex-col overflow-x-hidden overflow-y-auto snap-y snap-mandatory scroll-smooth scroll-none *:select-none"
     >
-      {!pageError && items.length > 0 && (
+      {!pageError && (
         <>
           <section
             style={{
@@ -382,6 +376,12 @@ export default function RandomShortsPage() {
               prevVid={prevVid}
             />
           </section>
+
+          {pageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+              <div className="text-white">Loading...</div>
+            </div>
+          )}
 
           {/* Navigation Buttons */}
           <section
@@ -430,12 +430,6 @@ export default function RandomShortsPage() {
             });
           }}
         />
-      )}
-
-      {pageLoading && !pageError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-          <div className="text-white">Loading...</div>
-        </div>
       )}
     </main>
   );

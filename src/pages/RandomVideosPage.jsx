@@ -242,7 +242,7 @@ export default function RandomVideosPage() {
         setPageLoading(true);
         fetchData({
           maxResults: Math.floor(100 / queries.length),
-          nxtPgTokens: null,
+          nxtPgTokens: nextPageTokens,
         });
       }
     }
