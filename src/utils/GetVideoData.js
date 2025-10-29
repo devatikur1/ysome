@@ -8,6 +8,8 @@ export async function GetVideoData(videoId, key) {
     }
 
     const data = await res.json();
+    console.log(data);
+    
     return data?.items[0];
   } catch (err) {
     // console.error("Failed to fetch channel data:", err);

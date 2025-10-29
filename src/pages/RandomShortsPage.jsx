@@ -27,179 +27,64 @@ import { GetDataWithSearch } from "../utils/GetDataWithSearch";
 import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 
 export default function RandomShortsPage() {
-  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
+  const {
+    HomePageOutletWidth,
+    HomePageHeight,
+    // Items & Next Page Tokens & Maxmimam result
+    items,
+    setItems,
+
+    channelsData,
+    setChannelsData,
+
+    nextPageTokens,
+
+    pageLoading,
+
+    pageError,
+    setPageError,
+
+    fetchData,
+
+    apiKey,
+
+    queries,
+  } = useContext(UiContext);
   const params = useParams();
   const navigate = useNavigate();
-  // apikeys
-  const apiKeys = [apiKey1, apiKey2, apiKey3, apiKey4, apiKey5, apiKey6];
-
-  // api key index
-  const [apiIndex, setApiIndex] = useState(0);
-
-  // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData1);
 
   // State management
   const [VideoID, setVideoID] = useState(Object.values(params)[0] || "");
-  const [pageLoading, setPageLoading] = useState(false);
-  const [pageError, setPageError] = useState(false);
-  const [items, setItems] = useState([]);
 
-  // Channel
-  const [itemsChannelIds, setItemsChannelIds] = useState([]);
-  const [channelsData, setChannelsData] = useState(() => {});
-  const [nextPageTokens, setNextPageTokens] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [queries] = useState(JSON.parse(localStorage.getItem("queries")));
 
   // Refs to track pending channel fetches
   const isInitialMount = useRef(true);
 
   // -------------------------
-  // Fetch data function
-  // -------------------------
-
-  async function fetchData({ maxResults, nxtPgTokens }) {
-    if (!queries || queries.length === 0) {
-      setPageError(true);
-      setPageLoading(false);
-      return null;
-    }
-
-    try {
-      setPageError(false);
-      setPageLoading(true);
-
-      const results = await Promise.all(
-        queries.map((q, idx) =>
-          GetDataWithSearch({
-            maxResults,
-            query: q,
-            nxtPgToken: nxtPgTokens?.[idx]?.token || "",
-            key: apiKey,
-          })
-        )
-      );
-
-      const hasValidResults = results.some((r) => r !== null);
-
-      if (hasValidResults) {
-        setPageLoading(false);
-        return results;
-      } else {
-        setPageError(true);
-        setPageLoading(false);
-        return null;
-      }
-    } catch (err) {
-      console.error("Fetch Data Error:", err);
-      setPageError(true);
-      setPageLoading(false);
-      return null;
-    }
-  }
-
-  // -----------------------------------------------------------------------
-  // Extract Channel IDs 😒 alada kore ante hobe tai eke barti kore ante hoy
-  // -----------------------------------------------------------------------
-
-  useEffect(() => {
-    if (items.length === 0) return;
-    const newChannelIds = new Set();
-
-    // ✅ add Channel Id
-    items.forEach((i) => {
-      if (i?.snippet?.channelId) {
-        newChannelIds.add(i.snippet.channelId);
-      }
-    });
-
-    // ✅ filter by the ExitsChannel Id
-    setItemsChannelIds(() => {
-      const fillterChannelID = new Set();
-      Array.from(newChannelIds).forEach((fcid) => fillterChannelID.add(fcid));
-
-      const arr = Array.from(fillterChannelID);
-      return arr;
-    });
-  }, [items]);
-
-  // -------------------------
-  // Fetch Channel Data
-  // -------------------------
-
-  useEffect(() => {
-    // 📺 Channel Data
-    async function fetchChanaleData(ChanaleId) {
-      try {
-        const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
-        setChannelsData((prev) => ({
-          ...prev,
-          [ChanaleId]: ChanaleItem,
-        }));
-      } catch (err) {
-        console.error("Fetch Data Error:" + err);
-      }
-    }
-
-    // main funtion
-    async function callData() {
-      if (itemsChannelIds.length === 0) return;
-
-      // 📺 Get Channel Data
-      itemsChannelIds.forEach(async (cid) => {
-        await fetchChanaleData(cid);
-      });
-
-      setItemsChannelIds([]);
-    }
-
-    // call funtion
-    callData();
-  }, [itemsChannelIds, apiKey]);
-
-  // -------------------------
   // Initial fetch
   // -------------------------
 
-  function loadMoreData() {
+  useEffect(() => {
     if (!isInitialMount.current) return;
     isInitialMount.current = false;
 
     const id = Object.values(params)[0];
+    
     console.log("Video ID from params:", id);
 
     async function fetchVideoData() {
       try {
-        const results = await fetchData({
-          maxResults: Math.floor(100 / queries.length),
-          nxtPgTokens: [],
-        });
+        const existingItems = items;
 
-        if (results === null) {
-          setPageError(true);
-          return;
-        }
-
-        const newNextTokens = [];
-        const existingItems = results.flatMap((d) => d?.items || []);
-
-        results.forEach((data, idx) => {
-          newNextTokens.push({
-            query: queries[idx],
-            token: data?.nextPageToken || null,
-          });
-        });
-
-        setNextPageTokens(newNextTokens);
-
-        if (!id || id === "") {
+        if (id === "") {
+          console.log(existingItems);
+          
           // No specific video ID, use first item
           if (existingItems.length > 0) {
-            setItems(existingItems);
             const mountVideoId = existingItems[0]?.id?.videoId;
             setVideoID(mountVideoId);
-            navigate(`/shorts/${mountVideoId}`, { replace: true });
+            navigate(`/shorts/${mountVideoId}`);
             setCurrentIndex(0);
           }
         } else {
@@ -208,28 +93,28 @@ export default function RandomShortsPage() {
 
           let obj;
 
-          if (!videoItem) {
+          if (videoItem == null) {
             console.error("Video not found");
             setPageError(true);
             return;
           }
 
           obj = {
-            kind: videoItem.kind,
-            etag: videoItem.etag,
+            kind: videoItem?.kind,
+            etag: videoItem?.etag,
             id: {
               kind: "youtube#video",
-              videoId: videoItem.id,
+              videoId: videoItem?.id,
             },
             snippet: {
-              publishedAt: videoItem.snippet.publishedAt,
-              channelId: videoItem.snippet.channelId,
-              title: videoItem.snippet.title,
-              description: videoItem.snippet.description,
-              thumbnails: videoItem.snippet.thumbnails,
-              channelTitle: videoItem.snippet.channelTitle,
-              liveBroadcastContent: videoItem.snippet.liveBroadcastContent,
-              publishTime: videoItem.snippet.publishTime,
+              publishedAt: videoItem?.snippet?.publishedAt,
+              channelId: videoItem?.snippet?.channelId,
+              title: videoItem?.snippet?.title,
+              description: videoItem?.snippet?.description,
+              thumbnails: videoItem?.snippet?.thumbnails,
+              channelTitle: videoItem?.snippet?.channelTitle,
+              liveBroadcastContent: videoItem?.snippet?.liveBroadcastContent,
+              publishTime: videoItem?.snippet?.publishTime,
             },
           };
 
@@ -245,14 +130,7 @@ export default function RandomShortsPage() {
     }
 
     fetchVideoData();
-  }
-
-useEffect(() => {
-  if (currentIndex >= items.length - 2 && !pageLoading) {
-    loadMoreData();
-  }
-}, [currentIndex, items]);
-
+  }, []);
 
   // ----------------------------
   // Navigation Functions
@@ -312,25 +190,6 @@ useEffect(() => {
     };
   }, [nextVid, prevVid]);
 
-  // -------------------------
-  // ApiKey chnager
-  // -------------------------
-
-  useEffect(() => {
-    if (pageError) {
-      if (apiIndex < apiKeys.length - 1) {
-        const newKey = apiKeys[apiIndex + 1];
-        setApiIndex((p) => p + 1);
-        setApiKey(newKey);
-        setPageLoading(true);
-        fetchData({
-          maxResults: Math.floor(100 / queries.length),
-          nxtPgTokens: null,
-        });
-      }
-    }
-  }, [pageError]);
-
   // ----------------------------
   // Render
   // ----------------------------
@@ -360,16 +219,16 @@ useEffect(() => {
             }}
             className="w-[100%] h-[100%] px-5 py-5 flex justify-center items-center snap-start snap-always relative"
           >
-            {items.length > 0 && items[currentIndex] && (
+            {items.length > 0 && items?.[currentIndex] && (
               <RandomShortsPart
                 style={{
                   maxWidth: `${HomePageOutletWidth}px`,
                 }}
                 HomePageHeight={HomePageHeight}
                 VideoID={VideoID}
-                item={items[currentIndex]}
+                item={items[currentIndex]?.snippet ? items[currentIndex] : {}}
                 channelData={
-                  channelsData[items[currentIndex]?.snippet?.channelId]
+                  channelsData[items[currentIndex]?.snippet?.channelId] ?? {}
                 }
                 isPrevDisabled={currentIndex === 0}
                 isNextDisabled={currentIndex === items.length - 1}
