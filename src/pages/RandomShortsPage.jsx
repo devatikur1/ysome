@@ -360,21 +360,23 @@ useEffect(() => {
             }}
             className="w-[100%] h-[100%] px-5 py-5 flex justify-center items-center snap-start snap-always relative"
           >
-            <RandomShortsPart
-              style={{
-                maxWidth: `${HomePageOutletWidth}px`,
-              }}
-              HomePageHeight={HomePageHeight}
-              VideoID={VideoID}
-              item={items[currentIndex]}
-              channelData={
-                channelsData[items[currentIndex]?.snippet?.channelId]
-              }
-              isPrevDisabled={currentIndex === 0}
-              isNextDisabled={currentIndex === items.length - 1}
-              nextVid={nextVid}
-              prevVid={prevVid}
-            />
+            {items.length > 0 && items[currentIndex] && (
+              <RandomShortsPart
+                style={{
+                  maxWidth: `${HomePageOutletWidth}px`,
+                }}
+                HomePageHeight={HomePageHeight}
+                VideoID={VideoID}
+                item={items[currentIndex]}
+                channelData={
+                  channelsData[items[currentIndex]?.snippet?.channelId]
+                }
+                isPrevDisabled={currentIndex === 0}
+                isNextDisabled={currentIndex === items.length - 1}
+                nextVid={nextVid}
+                prevVid={prevVid}
+              />
+            )}
           </section>
 
           {pageLoading && (
