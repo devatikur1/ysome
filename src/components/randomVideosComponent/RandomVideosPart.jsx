@@ -24,14 +24,14 @@ export default function RandomVideosPart({
     } else {
       setTime(date);
     }
-    const videoId = item?.id?.videoId;
-    const channelId = item?.snippet?.channelId;
 
-    const viewCount = videosData?.[videoId]?.viewCount || 0;
+    const viewCount = videosData?.statistics?.viewCount || 0;
 
-    const channelCustomUrl = channelsData?.[channelId]?.customUrl || "";
+    const channelCustomUrl = channelsData?.snippet?.customUrl || "";
     const channelThumbnail =
-      channelsData?.[channelId]?.thumbnails?.default?.url || "";
+      channelsData?.snippet?.thumbnails?.default?.url ||
+      channelsData?.snippet?.thumbnails?.high?.url ||
+      "";
     setViewCount(viewCount);
     setUserName(channelCustomUrl);
     setChannelAvatar(channelThumbnail);

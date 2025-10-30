@@ -10,36 +10,25 @@ import React, {
 import { useNavigate, useParams } from "react-router-dom";
 import { UiContext } from "../contexts/Ui/UiContext";
 import RandomShortsPart from "../components/RandomShortsComponent/RandomShortsPart";
-import {
-  apiKey1,
-  apiKey2,
-  apiKey3,
-  apiKey4,
-  apiKey5,
-  apiKey6,
-  VideoData1,
-  VideoData2,
-  VideoData3,
-} from "../utils/data";
-import { GetChannelData } from "../utils/GetChannelData";
 import { GetVideoData } from "../utils/GetVideoData";
-import { GetDataWithSearch } from "../utils/GetDataWithSearch";
 import NoInterNetComponent from "../components/custom/NoInterNetComponent";
+import { AppContext } from "../contexts/App/AppContext";
+import { GetChannelData } from "../utils/GetChannelData";
 
 export default function RandomShortsPage() {
+  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
   const {
-    HomePageOutletWidth,
-    HomePageHeight,
+    queries,
+
     // Items & Next Page Tokens & Maxmimam result
     items,
-    setItems,
 
     channelsData,
-    setChannelsData,
 
     nextPageTokens,
 
     pageLoading,
+    setPageLoading,
 
     pageError,
     setPageError,
@@ -47,47 +36,60 @@ export default function RandomShortsPage() {
     fetchData,
 
     apiKey,
+  } = useContext(AppContext);
 
-    queries,
-  } = useContext(UiContext);
   const params = useParams();
   const navigate = useNavigate();
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [sitems, setSitems] = useState([]);
+  const [CurrentID, setCurrentID] = useState("");
+  const [sChannelsData, setSChannelsData] = useState({});
 
   // Refs to track pending channel fetches
   const isInitialMount = useRef(true);
+  const lastFetchIndexRef = useRef(true);
+
+  // -------------------------
+  // Sync items from context
+  // -------------------------
+
+  useEffect(() => {
+    if (items && items.length > 0) {
+      setSitems(items);
+    }
+  }, [items]);
+
+  // Sync channelsData from context
+  useEffect(() => {
+    if (channelsData && Object.keys(channelsData).length > 0) {
+      setSChannelsData(channelsData);
+    }
+  }, [channelsData]);
 
   // -------------------------
   // Initial fetch
   // -------------------------
-
   useEffect(() => {
     if (!isInitialMount.current) return;
     isInitialMount.current = false;
 
     const id = Object.values(params)[0];
-    
-    console.log("Video ID from params:", id);
 
     async function fetchVideoData() {
       try {
-        const existingItems = items;
+        setPageLoading(true);
 
-        if (id === "") {
-          console.log(existingItems);
-          
+        if (!id || id === "") {
           // No specific video ID, use first item
-          if (existingItems.length > 0) {
-            const mountVideoId = existingItems[0]?.id?.videoId;
-            navigate(`/shorts/${mountVideoId}`);
+          if (items?.length > 0) {
+            const mountVideoId = items[0]?.id?.videoId;
+            navigate(`/shorts/${mountVideoId}`, { replace: true });
             setCurrentIndex(0);
           }
         } else {
           // Fetch specific video data
           const videoItem = await GetVideoData(id, apiKey);
-
-          let obj;
 
           if (videoItem == null) {
             console.error("Video not found");
@@ -95,7 +97,12 @@ export default function RandomShortsPage() {
             return;
           }
 
-          obj = {
+          // Fetch channel data for this video
+          if (videoItem?.snippet?.channelId) {
+            fetchChannelData(videoItem.snippet.channelId);
+          }
+
+          const obj = {
             kind: videoItem?.kind,
             etag: videoItem?.etag,
             id: {
@@ -114,45 +121,145 @@ export default function RandomShortsPage() {
             },
           };
 
-          const mainItems = [obj, ...existingItems];
-          setItems(mainItems);
+          const mainItems = [obj, ...items];
+          setSitems(mainItems);
+          const mountVideoId = mainItems[0]?.id?.videoId;
+          navigate(`/shorts/${mountVideoId}`, { replace: true });
           setCurrentIndex(0);
         }
       } catch (err) {
         console.error("Fetch Data Error:", err);
         setPageError(true);
+      } finally {
+        setPageLoading(false);
       }
     }
 
     fetchVideoData();
   }, []);
 
+
+  // ----------------------------
+  // Fetch channel data helper
+  // ----------------------------
+  const fetchChannelData = useCallback(
+    async (channelId) => {
+      if (!channelId) return;
+
+      // Check if we already have this channel data
+      if (sChannelsData[channelId]) return;
+
+      try {
+        const channelItem = await GetChannelData(channelId, apiKey);
+        setSChannelsData((prev) => ({
+          ...prev,
+          [channelId]: channelItem,
+        }));
+      } catch (err) {
+        console.error("Fetch Channel Data Error:", err);
+      }
+    },
+    [apiKey, sChannelsData]
+  );
+
+
+  // ----------------------------
+  // Auto check channel data
+  // ----------------------------
+  useEffect(() => {
+    if (sitems[sitems[currentIndex]?.snippet?.channelId]) return;
+
+    const currentChannelId = sitems[currentIndex]?.snippet?.channelId;
+    if (currentChannelId) {
+      fetchChannelData(currentChannelId);
+    }
+  }, [currentIndex, sitems, fetchChannelData]);
+
+
+  // ----------------------------
+  // get data channelId
+  // ----------------------------
+
+  useEffect(() => {
+    if (CurrentID !== "" && Object.values(channelsData).length !== 0) {
+      let mDta = Object.values(channelsData).some((cid) =>
+        cid === CurrentID ? true : false
+      );
+      if (mDta === true) {
+        setSChannelsData(channelsData);
+        setCurrentID("");
+      } else {
+        async function fetchChanaleData(ChanaleId) {
+          try {
+            const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
+            setSChannelsData((prev) => ({
+              ...prev,
+              [ChanaleId]: ChanaleItem,
+            }));
+          } catch (err) {
+            console.error("Fetch Data Error:" + err);
+            setPageError(true);
+          } finally {
+            setCurrentID("");
+          }
+        }
+        fetchChanaleData(CurrentID);
+      }
+    }
+  }, [CurrentID, channelsData, apiKey]);
+
+
+  // ------------------------------
+  // update base get videos data
+  // ------------------------------
+
+  useEffect(() => {
+    console.log(sitems.length - 5);
+
+    const shouldFetch =
+      currentIndex >= sitems.length - 5 &&
+      nextPageTokens.length > 0 &&
+      lastFetchIndexRef.current === false;
+
+    if (shouldFetch) {
+      lastFetchIndexRef.current = true;
+
+      fetchData({
+        maxResults: Math.floor(100 / queries.length),
+        nxtPgTokens: nextPageTokens,
+      }).catch((err) => {
+          console.error("Auto-fetch error:", err);
+      }).finally(() => {
+          lastFetchIndexRef.current = false;
+        });
+    }
+  }, [currentIndex, sitems.length, nextPageTokens, queries.length, fetchData]);
+
   // ----------------------------
   // Navigation Functions
   // ----------------------------
 
-  const nextVid = useCallback(() => {
+  const nextVid = () => {
     if (currentIndex < items.length - 1) {
       const nextIndex = currentIndex + 1;
       setCurrentIndex(nextIndex);
       const nextVideoId = items[nextIndex]?.id?.videoId;
       if (nextVideoId) {
-
         navigate(`/shorts/${nextVideoId}`, { replace: true });
       }
     }
-  }, [currentIndex, items, navigate]);
+  };
 
-  const prevVid = useCallback(() => {
+  const prevVid = () => {
     if (currentIndex > 0) {
       const prevIndex = currentIndex - 1;
       setCurrentIndex(prevIndex);
       const prevVideoId = items[prevIndex]?.id?.videoId;
-      if (prevVideoId) {;
+      if (prevVideoId) {
         navigate(`/shorts/${prevVideoId}`, { replace: true });
       }
     }
-  }, [currentIndex, items, navigate]);
+  };
 
   // ----------------------------
   // Wheel & Keyboard Events
@@ -213,19 +320,20 @@ export default function RandomShortsPage() {
             }}
             className="w-[100%] h-[100%] px-5 py-5 flex justify-center items-center snap-start snap-always relative"
           >
-            {items.length > 0 && items?.[currentIndex] && (
+            {sitems?.length > 0 && sitems?.[currentIndex] && (
               <RandomShortsPart
                 style={{
                   maxWidth: `${HomePageOutletWidth}px`,
                 }}
                 HomePageHeight={HomePageHeight}
-                VideoID={items?.[currentIndex]?.id?.videoId}
-                item={items[currentIndex] || {}}
+                VideoID={sitems?.[currentIndex]?.id?.videoId}
+                item={sitems?.[currentIndex] || {}}
                 channelData={
-                  channelsData[items[currentIndex]?.snippet?.channelId] || {}
+                  sChannelsData?.[sitems[currentIndex]?.snippet?.channelId] ||
+                  {}
                 }
                 isPrevDisabled={currentIndex === 0}
-                isNextDisabled={currentIndex === items.length - 1}
+                isNextDisabled={currentIndex === sitems?.length - 1}
                 nextVid={nextVid}
                 prevVid={prevVid}
               />
@@ -258,7 +366,7 @@ export default function RandomShortsPage() {
 
             <button
               onClick={nextVid}
-              disabled={currentIndex === items.length - 1}
+              disabled={currentIndex === items?.length - 1}
               className="pointer-events-auto w-[60px] h-[60px] bg-black/50 hover:bg-black/70 hover:scale-[0.95] transition-all duration-300 rounded-full flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm"
               aria-label="Next video"
             >

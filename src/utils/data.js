@@ -7,5 +7,3 @@ export const apiKey6 = process.env.REACT_APP_KEY6;
 
 export const VideoData1 = process.env.REACT_APP_VIDEO_DATA_1;
 export const VideoData2 = process.env.REACT_APP_VIDEO_DATA_2;
-export const VideoData3 = process.env.REACT_APP_VIDEO_DATA_3;
-export const VideoData4 = process.env.REACT_APP_VIDEO_DATA_4;

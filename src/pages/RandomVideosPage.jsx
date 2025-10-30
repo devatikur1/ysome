@@ -6,15 +6,14 @@ import RandomVideosPart from "../components/randomVideosComponent/RandomVideosPa
 import YouTubeLoading from "../components/randomVideosComponent/YouTubeLoading";
 import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 import { useScroll } from "motion/react";
+import { AppContext } from "../contexts/App/AppContext";
 
 export default function RandomVideosPage() {
-
+  
   // Context
+  const { isReSideBarShow, HomePageOutletWidth, HomePageHeight } =
+    useContext(UiContext);
   const {
-    isReSideBarShow,
-    HomePageOutletWidth,
-    HomePageHeight,
-
     queries,
 
     // Items & Next Page Tokens & Maxmimam result
@@ -26,16 +25,13 @@ export default function RandomVideosPage() {
 
     nextPageTokens,
 
-    resultsCount,
-    setResultsCount,
-
     pageLoading,
     setPageLoading,
 
     pageError,
 
     fetchData,
-  } = useContext(UiContext);
+  } = useContext(AppContext);
 
   // refs
   const containerRef = useRef(null);
@@ -43,6 +39,10 @@ export default function RandomVideosPage() {
 
   // Grid Columns
   const [gridCols, setGridCols] = useState("grid-cols-1");
+
+  // resultsCount
+  const [resultsCount, setResultsCount] = useState(0);
+
 
   // -------------------------
   // Update grid columns
@@ -53,8 +53,6 @@ export default function RandomVideosPage() {
     else if (HomePageOutletWidth >= 1024) setGridCols("grid-cols-3");
     else if (HomePageOutletWidth >= 768) setGridCols("grid-cols-2");
     else setGridCols("grid-cols-1");
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReSideBarShow, HomePageOutletWidth]);
 
 
@@ -89,14 +87,15 @@ export default function RandomVideosPage() {
     return () => unsubscribe();
   }, [scrollYProgress, pageLoading, nextPageTokens.length, resultsCount]);
 
+  
   // -------------------------
-  // Temp
+  // set ResultsCount
   // -------------------------
 
   useEffect(() => {
     setResultsCount(items.length);
-    console.log(resultsCount);
-  }, [items, videosData, resultsCount]);
+  }, [items]);
+
 
   // -------------------------
   // Render
@@ -107,9 +106,12 @@ export default function RandomVideosPage() {
         <main
           ref={containerRef}
           style={{
+            // width
             maxWidth: `${HomePageOutletWidth}px`,
             minWidth: `${HomePageOutletWidth}px`,
             width: `${HomePageOutletWidth}px`,
+
+            // height
             maxHeight: `${HomePageHeight}px`,
             minHeight: `${HomePageHeight}px`,
             height: `${HomePageHeight}px`,
@@ -123,21 +125,24 @@ export default function RandomVideosPage() {
             <RandomVideosPart
               key={idx}
               item={item}
-              videosData={videosData}
-              channelsData={channelsData}
+              videosData={videosData?.[item?.id?.videoId]}
+              channelsData={channelsData?.[item?.snippet?.channelId]}
             />
           ))}
 
           {pageLoading === true &&
-            [...Array(13)].map((_, i) => <YouTubeLoading key={i} />)}
+            [...Array(23)].map((_, i) => <YouTubeLoading key={i} />)}
         </main>
       )}
       {pageError && items?.length === 0 && (
         <NoInterNetComponent
           style={{
+            // width
             maxWidth: `${HomePageOutletWidth}px`,
             minWidth: `${HomePageOutletWidth}px`,
             width: `${HomePageOutletWidth}px`,
+
+            // height
             maxHeight: `${HomePageHeight}px`,
             minHeight: `${HomePageHeight}px`,
             height: `${HomePageHeight}px`,
