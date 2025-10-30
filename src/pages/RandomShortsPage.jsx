@@ -218,10 +218,6 @@ export default function RandomShortsPage() {
   // ------------------------------
 
   useEffect(() => {
-    console.log(currentIndex);
-    console.log(sitems.length);
-    console.log(sitems.length - 6 < currentIndex );
-
     const shouldFetch =
       sitems.length - 6 < currentIndex &&
       nextPageTokens.length > 0 &&
