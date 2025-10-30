@@ -151,84 +151,6 @@ export default function AppContextProvider({ children }) {
     async function fetchVideoData(videoId) {
       try {
         const videoItem = await GetVideoData(videoId, apiKey);
-
-        // {
-        //     "kind": "youtube#video",
-        //     "etag": "6LJtsR0ShVuWvbQEr_Su8FOIg7A",
-        //     "id": "GyQjVtIGQg8",
-        //     "snippet": {
-        //         "publishedAt": "2018-02-07T22:04:04Z",
-        //         "channelId": "UC40gs0opj389ohjLnJIAJzA",
-        //         "title": "THE POKÉMON THEME - (METAL COVER) Jonathan Young & Jason Paige (the original singer)",
-        //         "description": "THE POKÉMON THEME - (METAL COVER) Jonathan Young & Jason Paige (the original singer)\n►Listen on Spotify or Apple: https://ffm.to/jyocanime\n\n►Follow Jonathan: \nTiktok: https://www.tiktok.com/@jonathanymusic\nTwitch: https://www.twitch.tv/jonathanymusic\nTwitter: http://twitter.com/jonathanymusic\nInstagram: http://instagram.com/jonathanymusic\nFacebook: http://facebook.com/jonathanyoungmusic\nContact: jonathanyoungmusic@gmail.com\n\n►Merch: http://jonathanyoungmusic.com\n\n►Music Credits:\n    JASON PAIGE \n(singer of the original Pokémon theme)\n►Jason's website: https://jasonpaige.com/\n►Jason's YouTube: http://bit.ly/2sbUtxS\n\nVideo & music production by Villainous Media \nhttps://www.youtube.com/channel/UCRSwcIeyWSxjEr5qJpuMeWw\n\nBuy Jason's OFFICIAL FLYING TIE:\nhttps://jasonpaige.com/product/jason-paige-official-flying-tie/\n\n\nGetting the opportunity to reimagine the Pokémon theme and sing it alongside Jason Paige was super cool. We recorded this all independently in our own studios and shot it with the help of my independent production company, Villainous Media in San Diego CA. Power to the artists & fans who make it possible for people to create stuff like this.\n\nVideo & music production by Villainous Media \nhttps://www.youtube.com/channel/UCRSwcIeyWSxjEr5qJpuMeWw",
-        //         "thumbnails": {
-        //             "default": {
-        //                 "url": "https://i.ytimg.com/vi/GyQjVtIGQg8/default.jpg",
-        //                 "width": 120,
-        //                 "height": 90
-        //             },
-        //             "medium": {
-        //                 "url": "https://i.ytimg.com/vi/GyQjVtIGQg8/mqdefault.jpg",
-        //                 "width": 320,
-        //                 "height": 180
-        //             },
-        //             "high": {
-        //                 "url": "https://i.ytimg.com/vi/GyQjVtIGQg8/hqdefault.jpg",
-        //                 "width": 480,
-        //                 "height": 360
-        //             },
-        //             "standard": {
-        //                 "url": "https://i.ytimg.com/vi/GyQjVtIGQg8/sddefault.jpg",
-        //                 "width": 640,
-        //                 "height": 480
-        //             },
-        //             "maxres": {
-        //                 "url": "https://i.ytimg.com/vi/GyQjVtIGQg8/maxresdefault.jpg",
-        //                 "width": 1280,
-        //                 "height": 720
-        //             }
-        //         },
-        //         "channelTitle": "Jonathan Young",
-        //         "tags": [
-        //             "pokémon theme",
-        //             "pokémon song",
-        //             "pokemon theme",
-        //             "pokemon song",
-        //             "pokemon jason paige",
-        //             "pokemon jonathan young",
-        //             "pokemon theme jonathan young",
-        //             "pokemon opening",
-        //             "pokemon metal",
-        //             "pokemon theme metal",
-        //             "pokemon punk goes",
-        //             "pokemon power metal",
-        //             "pokemon cover",
-        //             "pokemon version",
-        //             "pokemon singer",
-        //             "pokejon",
-        //             "pokemon music",
-        //             "pokemon theme remix",
-        //             "pokemon theme cover",
-        //             "pokemon theme new",
-        //             "pokemon new song"
-        //         ],
-        //         "categoryId": "10",
-        //         "liveBroadcastContent": "none",
-        //         "defaultLanguage": "en",
-        //         "localized": {
-        //             "title": "THE POKÉMON THEME - (METAL COVER) Jonathan Young & Jason Paige (the original singer)",
-        //             "description": "THE POKÉMON THEME - (METAL COVER) Jonathan Young & Jason Paige (the original singer)\n►Listen on Spotify or Apple: https://ffm.to/jyocanime\n\n►Follow Jonathan: \nTiktok: https://www.tiktok.com/@jonathanymusic\nTwitch: https://www.twitch.tv/jonathanymusic\nTwitter: http://twitter.com/jonathanymusic\nInstagram: http://instagram.com/jonathanymusic\nFacebook: http://facebook.com/jonathanyoungmusic\nContact: jonathanyoungmusic@gmail.com\n\n►Merch: http://jonathanyoungmusic.com\n\n►Music Credits:\n    JASON PAIGE \n(singer of the original Pokémon theme)\n►Jason's website: https://jasonpaige.com/\n►Jason's YouTube: http://bit.ly/2sbUtxS\n\nVideo & music production by Villainous Media \nhttps://www.youtube.com/channel/UCRSwcIeyWSxjEr5qJpuMeWw\n\nBuy Jason's OFFICIAL FLYING TIE:\nhttps://jasonpaige.com/product/jason-paige-official-flying-tie/\n\n\nGetting the opportunity to reimagine the Pokémon theme and sing it alongside Jason Paige was super cool. We recorded this all independently in our own studios and shot it with the help of my independent production company, Villainous Media in San Diego CA. Power to the artists & fans who make it possible for people to create stuff like this.\n\nVideo & music production by Villainous Media \nhttps://www.youtube.com/channel/UCRSwcIeyWSxjEr5qJpuMeWw"
-        //         },
-        //         "defaultAudioLanguage": "en"
-        //     },
-        //     "statistics": {
-        //         "viewCount": "15538594",
-        //         "likeCount": "206723",
-        //         "favoriteCount": "0",
-        //         "commentCount": "10047"
-        //     }
-        // }
-
         setVideosData((prev) => ({
           ...prev,
           [videoId]: videoItem,
@@ -243,39 +165,6 @@ export default function AppContextProvider({ children }) {
     async function fetchChanaleData(ChanaleId) {
       try {
         const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
-
-        // {
-        //     "kind": "youtube#channel",
-        //     "etag": "rgUyYYe1X9wroaZMaSgJEDRdZvw",
-        //     "id": "UCrrExa4aiTD4Udpf0aojMUA",
-        //     "snippet": {
-        //         "title": "BlazikenBlast257",
-        //         "description": "I make simple gameplay videos, while also uploading anything else I find interesting\n",
-        //         "customUrl": "@blazikenblast",
-        //         "publishedAt": "2013-09-21T23:48:00Z",
-        //         "thumbnails": {
-        //             "default": {
-        //                 "url": "https://yt3.ggpht.com/j2tr1sprpPFBEcsGaCbZROvx1rGJ2F2cLZ4B0qbYpJZcXnytrQwfaYDmojq5kbEqc6W5nBNz=s88-c-k-c0x00ffffff-no-rj",
-        //                 "width": 88,
-        //                 "height": 88
-        //             },
-        //             "medium": {
-        //                 "url": "https://yt3.ggpht.com/j2tr1sprpPFBEcsGaCbZROvx1rGJ2F2cLZ4B0qbYpJZcXnytrQwfaYDmojq5kbEqc6W5nBNz=s240-c-k-c0x00ffffff-no-rj",
-        //                 "width": 240,
-        //                 "height": 240
-        //             },
-        //             "high": {
-        //                 "url": "https://yt3.ggpht.com/j2tr1sprpPFBEcsGaCbZROvx1rGJ2F2cLZ4B0qbYpJZcXnytrQwfaYDmojq5kbEqc6W5nBNz=s800-c-k-c0x00ffffff-no-rj",
-        //                 "width": 800,
-        //                 "height": 800
-        //             }
-        //         },
-        //         "localized": {
-        //             "title": "BlazikenBlast257",
-        //             "description": "I make simple gameplay videos, while also uploading anything else I find interesting\n"
-        //         }
-        //     }
-        // }
 
         setChannelsData((prev) => ({
           ...prev,

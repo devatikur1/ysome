@@ -50,6 +50,7 @@ export default function RandomShortsPage() {
   const isInitialMount = useRef(true);
   const lastFetchIndexRef = useRef(true);
 
+
   // -------------------------
   // Sync items from context
   // -------------------------
@@ -66,6 +67,7 @@ export default function RandomShortsPage() {
       setSChannelsData(channelsData);
     }
   }, [channelsData]);
+
 
   // -------------------------
   // Initial fetch
@@ -142,6 +144,7 @@ export default function RandomShortsPage() {
   // ----------------------------
   // Fetch channel data helper
   // ----------------------------
+
   const fetchChannelData = useCallback(
     async (channelId) => {
       if (!channelId) return;
@@ -166,6 +169,7 @@ export default function RandomShortsPage() {
   // ----------------------------
   // Auto check channel data
   // ----------------------------
+
   useEffect(() => {
     if (sitems[sitems[currentIndex]?.snippet?.channelId]) return;
 
@@ -214,7 +218,9 @@ export default function RandomShortsPage() {
   // ------------------------------
 
   useEffect(() => {
-    console.log(sitems.length - 5);
+    console.log(currentIndex);
+    console.log(sitems.length);
+    console.log(currentIndex >= sitems.length - 5);
 
     const shouldFetch =
       currentIndex >= sitems.length - 5 &&
