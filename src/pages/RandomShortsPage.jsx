@@ -47,8 +47,7 @@ export default function RandomShortsPage() {
   const [sChannelsData, setSChannelsData] = useState({});
 
   // Refs to track pending channel fetches
-  const isInitialMount = useRef(true);
-  const lastFetchIndexRef = useRef(true);
+  const isInitialMount = useRef(false);
 
 
   // -------------------------
@@ -73,8 +72,8 @@ export default function RandomShortsPage() {
   // Initial fetch
   // -------------------------
   useEffect(() => {
-    if (!isInitialMount.current) return;
-    isInitialMount.current = false;
+    if (isInitialMount.current === false) return;
+    isInitialMount.current = true;
 
     const id = Object.values(params)[0];
 
@@ -134,6 +133,7 @@ export default function RandomShortsPage() {
         setPageError(true);
       } finally {
         setPageLoading(false);
+        isInitialMount.current = false;
       }
     }
 
@@ -220,15 +220,15 @@ export default function RandomShortsPage() {
   useEffect(() => {
     console.log(currentIndex);
     console.log(sitems.length);
-    console.log(currentIndex >= sitems.length - 5);
+    console.log(sitems.length - 6 < currentIndex );
 
     const shouldFetch =
-      currentIndex >= sitems.length - 5 &&
+      sitems.length - 6 < currentIndex &&
       nextPageTokens.length > 0 &&
-      lastFetchIndexRef.current === false;
+      isInitialMount.current === false
 
     if (shouldFetch) {
-      lastFetchIndexRef.current = true;
+      isInitialMount.current = true;
 
       fetchData({
         maxResults: Math.floor(100 / queries.length),
@@ -236,7 +236,7 @@ export default function RandomShortsPage() {
       }).catch((err) => {
           console.error("Auto-fetch error:", err);
       }).finally(() => {
-          lastFetchIndexRef.current = false;
+          isInitialMount.current = false;
         });
     }
   }, [currentIndex, sitems.length, nextPageTokens, queries.length, fetchData]);
