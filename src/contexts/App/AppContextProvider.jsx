@@ -120,14 +120,14 @@ export default function AppContextProvider({ children }) {
         // set ItemsChannelIds
         setItemsChannelIds((prevSet) => {
           const mergedChannelIds = new Set(prevSet);
-          newChannelIds.forEach((id) => mergedChannelIds.add(id));
+          Array.from(newChannelIds).forEach((id) => mergedChannelIds.add(id));
           return Array.from(mergedChannelIds);
         });
 
         // set ItemsVideoIds
         setItemsVideoIds((prevSet) => {
           const mergedVideoIds = new Set(prevSet);
-          newVideoIds.forEach((id) => mergedVideoIds.add(id));
+          Array.from(newVideoIds).forEach((id) => mergedVideoIds.add(id));
           return Array.from(mergedVideoIds);
         });
 

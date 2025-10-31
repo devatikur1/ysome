@@ -29,8 +29,8 @@ export default function RandomVideosPart({
 
     const channelCustomUrl = channelsData?.snippet?.customUrl || "";
     const channelThumbnail =
-      channelsData?.snippet?.thumbnails?.default?.url ||
-      channelsData?.snippet?.thumbnails?.high?.url ||
+    channelsData?.snippet?.thumbnails?.high?.url ||
+    channelsData?.snippet?.thumbnails?.default?.url ||
       "";
     setViewCount(viewCount);
     setUserName(channelCustomUrl);
