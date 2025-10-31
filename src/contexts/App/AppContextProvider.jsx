@@ -178,9 +178,6 @@ export default function AppContextProvider({ children }) {
 
     // 🚀⏳...🔔 Main async function
     async function callData() {
-      console.log(itemsChannelIds);
-      console.log(itemsVideoIds);
-
       if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
 
       try {
@@ -233,11 +230,6 @@ export default function AppContextProvider({ children }) {
       }
     }
   }, [pageError]);
-
-  useEffect(() => {
-    console.log(channelsData);
-    console.log(videosData);
-  }, [channelsData, videosData]);
 
   // context value
   const value = {
