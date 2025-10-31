@@ -162,7 +162,7 @@ export default function AppContextProvider({ children }) {
     }
 
     // 📺 Channel Data
-    async function fetchChanaleData(ChanaleId) {
+    async function fetchChannelData(ChanaleId) {
       try {
         const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
 
@@ -176,21 +176,27 @@ export default function AppContextProvider({ children }) {
       }
     }
 
-    // main funtion
+    // 🚀⏳...🔔 Main async function
     async function callData() {
+      console.log(itemsChannelIds);
+      console.log(itemsVideoIds);
+
       if (itemsChannelIds.length === 0 || itemsVideoIds.length === 0) return;
-      // 📺 Get all Video Data
-      itemsVideoIds.map(async (vid) => {
-        await fetchVideoData(vid);
-      });
 
-      // 📺 Get all Channel Data
-      itemsChannelIds.map(async (cid) => {
-        await fetchChanaleData(cid);
-      });
-
-      setItemsChannelIds([]);
-      setItemsVideoIds([]);
+      try {
+        await Promise.all([
+          Promise.all(itemsVideoIds.map((vid) => fetchVideoData(vid))),
+          Promise.all(itemsChannelIds.map((cid) => fetchChannelData(cid))),
+        ]);
+        console.log("✅ All data fetch!");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setTimeout(() => {
+          setItemsChannelIds([]);
+          setItemsVideoIds([]);
+        }, 100);
+      }
     }
 
     // call funtion
