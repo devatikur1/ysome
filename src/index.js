@@ -4,14 +4,17 @@ import "./index.css";
 import App from "./App";
 import UiContextProvider from "./contexts/Ui/UiContextProvider";
 import AppContextProvider from "./contexts/App/AppContextProvider";
+import FirebaseContextProvider from "./contexts/Firebase/FirebaseContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AppContextProvider>
-      <UiContextProvider>
-        <App />
-      </UiContextProvider>
-    </AppContextProvider>
+    <FirebaseContextProvider>
+      <AppContextProvider>
+        <UiContextProvider>
+          <App />
+        </UiContextProvider>
+      </AppContextProvider>
+    </FirebaseContextProvider>
   </React.StrictMode>
 );

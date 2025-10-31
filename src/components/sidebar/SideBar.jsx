@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { ChevronRight, History, Home, ThumbsUp, Youtube } from "lucide-react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ShortsIcon from "../../others/ShortsIcon";
 import SubscriptionsIcon from "../../others/SubscriptionsIcon";
 import { Link } from "react-router-dom";
 import { UiContext } from "../../contexts/Ui/UiContext";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import MenuItem from "./part/MenuItem";
 import SubscribeItem from "./part/SubscribeItem";
+import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
+import { GoogleAuth } from "../../contexts/Firebase/Auth/GoogleAuth";
+import googleLogo from "../../assets/google.png";
+import clsx from "clsx";
 
 // ✅ move outside → prevent re-creation on each rerender
 const menuItems = [
@@ -16,7 +20,7 @@ const menuItems = [
     items: [
       { icon: <Home />, label: "Home", to: "/" },
       { icon: <ShortsIcon />, label: "Shorts", to: "/shorts" },
-      { icon: <SubscriptionsIcon />, label: "Subscriptions", to: "/channels" },
+      { icon: <SubscriptionsIcon />, label: "Subscriptions", to: "/channel" },
     ],
   },
   {
@@ -53,6 +57,25 @@ const subscriptions = {
 
 export default function SideBar({ type = "", Height }) {
   const { isReSideBarShow } = useContext(UiContext);
+  // Firebase Context
+  const { isLogged, setUpdateLoggedStatus } = useContext(FirebaseContext);
+
+  // google Is Disable
+  const [googleIsDis, setGoogleIsDis] = useState(false);
+
+  // handle Google Sign-In
+  const handleGoogleSignIn = async () => {
+    if (googleIsDis) return;
+    setGoogleIsDis(true);
+    try {
+      await GoogleAuth();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setGoogleIsDis(false);
+      setUpdateLoggedStatus((p) => p + 1);
+    }
+  };
 
   return (
     <motion.aside
@@ -61,7 +84,7 @@ export default function SideBar({ type = "", Height }) {
         width: isReSideBarShow ? 260 : 60,
         minWidth: isReSideBarShow ? 260 : 60,
         opacity: 1,
-        height: Height, 
+        height: Height,
         minHeight: Height,
       }}
       exit={{ width: 0, opacity: 0, minHeight: Height }}
@@ -76,7 +99,13 @@ export default function SideBar({ type = "", Height }) {
         {menuItems.map((menuItem, mid) => (
           <section
             key={mid}
-            className="w-full flex flex-col justify-center gap-0.5 items-start border-b border-border py-2"
+            className={clsx(
+              menuItem.section === "you" &&
+                !isLogged &&
+                !isReSideBarShow &&
+                "hidden",
+              "w-full flex flex-col justify-center gap-0.5 items-start border-b border-border py-2"
+            )}
           >
             {menuItem.section !== null && isReSideBarShow && (
               <Link
@@ -92,19 +121,63 @@ export default function SideBar({ type = "", Height }) {
               </Link>
             )}
 
-            {menuItem.items.map((item, id) => (
-              <MenuItem
-                key={id}
-                icon={item.icon}
-                label={item.label}
-                to={item.to}
-                isReSideBarShow={isReSideBarShow}
-              />
-            ))}
+            {menuItem.items.map((item, id) => {
+              if (menuItem.section === "you" && !isLogged) return null;
+              return (
+                <MenuItem
+                  key={id}
+                  icon={item.icon}
+                  label={item.label}
+                  to={item.to}
+                  isReSideBarShow={isReSideBarShow}
+                />
+              );
+            })}
+            <AnimatePresence>
+              {menuItem.section === "you" && !isLogged && (
+                <motion.div
+                  initial={{
+                    width: 0,
+                    maxHeight: 200,
+                    minHeight: 200,
+                    height: 200,
+                  }}
+                  animate={{
+                    width: isReSideBarShow ? 260 : 60,
+                    minWidth: isReSideBarShow ? 260 : 60,
+                    maxHeight: 200,
+                    minHeight: 200,
+                    height: 200,
+                  }}
+                  exit={{
+                    width: 0,
+                    maxHeight: 200,
+                    minHeight: 200,
+                    height: 200,
+                  }}
+                  transition={{ duration: 0.5}}
+                  className="w-full max-h-[200px] flex justify-center items-center"
+                >
+                  <article onClick={handleGoogleSignIn}>
+                    <button
+                      disabled={googleIsDis}
+                      className="bg-surface hover:bg-hover border border-border transition-all duration-300 
+               px-4 py-1.5 w-full h-full rounded-full flex items-center justify-center gap-2 
+               text-xs font-medium text-textColor focus:outline-none focus:ring-2 
+               focus:ring-accent/40 disabled:opacity-85 disabled:pointer-events-none"
+                      aria-label="Sign in"
+                    >
+                      <img src={googleLogo} alt="" />
+                      <span>Sign in</span>
+                    </button>
+                  </article>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </section>
         ))}
 
-        {isReSideBarShow && subscriptions && (
+        {isLogged && isReSideBarShow && subscriptions && (
           <section className="w-full flex flex-col justify-center gap-0.5 items-start py-2">
             <Link
               to={subscriptions.sectionPath}

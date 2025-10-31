@@ -1,11 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Logo from "../../others/Logo";
 import googleLogo from "../../assets/google.png";
-import { Bell, BellDot, Menu, Plus, Search } from "lucide-react";
+import { Bell, Menu, Plus, Search } from "lucide-react";
 import { UiContext } from "../../contexts/Ui/UiContext";
 import clsx from "clsx";
+import { GoogleAuth } from "../../contexts/Firebase/Auth/GoogleAuth";
+import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
 
 export default function Header() {
+  // Ui Context
   const {
     // Search
     isSearchShow,
@@ -19,7 +22,27 @@ export default function Header() {
     // relative sidebar
     setIsReSideBarShow,
   } = useContext(UiContext);
-  let isLogged = true;
+
+  // Firebase Context
+  const { isLogged, setUpdateLoggedStatus, userData } =
+    useContext(FirebaseContext);
+
+  // google Is Disable
+  const [googleIsDis, setGoogleIsDis] = useState(false);
+
+  // handle Google Sign-In
+  const handleGoogleSignIn = async () => {
+    if (googleIsDis) return;
+    setGoogleIsDis(true);
+    try {
+      await GoogleAuth();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setGoogleIsDis(false);
+      setUpdateLoggedStatus((p) => p + 1);
+    }
+  };
 
   return (
     <header className="w-full h-full max-h-[60px] flex justify-between items-center px-5 py-2 border-border border-b *:select-none">
@@ -91,18 +114,22 @@ export default function Header() {
             <article>
               <img
                 className="w-[35px] h-[35px] rounded-full"
-                src="https://yt3.ggpht.com/jnU5U8ZCLlSFC1-7jj__Lse--DfFEwJhHXQIHJJGHUoAAG4hy3vP2BnaS32VVniDT0iM9EXncx8=s88-c-k-c0x00ffffff-no-rj"
+                src={
+                  userData?.photo ||
+                  "https://instagram.fdac177-1.fna.fbcdn.net/v/t51.2885-19/567178286_17863888932499906_7273792819368666453_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fdac177-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFa0veppL6rpQ22GH3WwhocF8FoTiBn6z_VmiQi9gTndS9lWFT3aBe_HDhAmW1wMSM&_nc_ohc=9emgl_a8EXYQ7kNvwGFjbGf&_nc_gid=YwiaDbob3m5j6vdW4y_RtQ&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Affq7pwletZin-6SbxzCchrXKZexaI46qQLsLuZE4tyuuA&oe=690AC6BB&_nc_sid=7a9f4b"
+                }
                 alt=""
               />
             </article>
           </>
         ) : (
-          <article>
+          <article onClick={handleGoogleSignIn}>
             <button
+              disabled={googleIsDis}
               className="bg-surface hover:bg-hover border border-border transition-all duration-300 
                px-4 py-1.5 w-full h-full rounded-full flex items-center justify-center gap-2 
                text-xs font-medium text-textColor focus:outline-none focus:ring-2 
-               focus:ring-accent/40"
+               focus:ring-accent/40 disabled:opacity-85 disabled:pointer-events-none"
               aria-label="Sign in"
             >
               <img src={googleLogo} alt="" />

@@ -4,11 +4,11 @@
   "icons": [
     {
       "src": "logo192.svg",
-      "type": "image/svg",
+      "type": "image/svg+xml",
       "sizes": "192x192"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#0f0f0f",
   "background_color": "#0f0f0f"
