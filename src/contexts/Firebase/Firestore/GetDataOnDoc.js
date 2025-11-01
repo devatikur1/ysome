@@ -1,7 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 
-export async function GetDataOnAuthId({ collection, documentID }) {
+export async function GetDataOnDoc({ collection, documentID }) {
   try {
     const docSnap = await getDoc(doc(db, collection, documentID));
     if (docSnap.exists()) {

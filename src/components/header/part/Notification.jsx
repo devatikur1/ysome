@@ -159,16 +159,13 @@ export default function Notification({
     <aside className="fixed top-0 md:top-[62px] w-full flex justify-end items-center z-50 md:-translate-x-[50px]">
       <motion.section
         ref={NotificationFeedRef}
-        initial={{ opacity: 0, scale: 0.95, height: 0 }}
+        initial={{ height: 0 }}
         animate={{
-          opacity: 1,
-          scale: 1,
           height: Height,
         }}
-        exit={{ opacity: 0, scale: 0.95, height: 0 }}
+        exit={{ height: 0 }}
         transition={{
           duration: 0.4,
-          ease: [0.25, 0.1, 0.25, 1],
         }}
         className={`flex flex-col gap-5 max-h-[100vh] min-h-[100vh] md:max-h-[${Height}] md:min-h-[0px] w-screen md:w-[400px] bg-bg-pecondary p-5 border border-border md:rounded-2xl shadow-lg overflow-hidden`}
       >

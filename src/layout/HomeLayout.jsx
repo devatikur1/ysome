@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { UiContext } from "../contexts/Ui/UiContext";
 import { AnimatePresence, motion } from "motion/react";
 
-export default function HomePage() {
+export default function HomeLayout() {
   // UiContext
   const { HomePageWidth, HomePageHeight, HomePageOutletWidth } =
     useContext(UiContext);
@@ -27,9 +27,7 @@ export default function HomePage() {
       }}
     >
       <AnimatePresence>
-        {Height > 768 && (
-          <SideBar Height={HomePageHeight} type="relative" />
-        )}
+        {Height > 768 && <SideBar Height={HomePageHeight} type="relative" />}
       </AnimatePresence>
       <div
         style={{

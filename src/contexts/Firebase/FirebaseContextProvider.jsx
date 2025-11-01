@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FirebaseContext } from "./FirebaseContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
-import { GetDataOnAuthId } from "./Firestore/GetDataOnAuthId";
+import { GetDataOnDoc } from "./Firestore/GetDataOnDoc";
 
 export default function FirebaseContextProvider({ children }) {
   // 🔹 Logged state
@@ -14,6 +14,9 @@ export default function FirebaseContextProvider({ children }) {
   // 🔹 User Data
   const [userData, setUserData] = useState({});
 
+  // 🔹 subscriptions
+  const [subscriptions, setSubscriptions] = useState([]);
+
   // ✅ Sync logged status with localStorage
   useEffect(() => {
     setIsLogged(localStorage.getItem("logged") === "true");
@@ -22,11 +25,11 @@ export default function FirebaseContextProvider({ children }) {
   // ✅ Listen for auth changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    const isLocalLogged = localStorage.getItem("logged") === "true";
+      const isLocalLogged = localStorage.getItem("logged") === "true";
 
       if (user && isLocalLogged) {
         try {
-          const data = await GetDataOnAuthId({
+          const data = await GetDataOnDoc({
             collection: "loggedUserData",
             documentID: user.uid,
           });
@@ -37,6 +40,24 @@ export default function FirebaseContextProvider({ children }) {
           } else {
             setIsLogged(true);
             setUserData(data);
+          }
+        } catch (error) {
+          console.error("🔥 Error fetching user data:", error);
+          setUserData({});
+          setIsLogged(false);
+        }
+
+        try {
+          const data = await GetDataOnDoc({
+            collection: "subscriptions",
+            documentID: user.uid,
+          });
+          console.log(data);
+
+          if (!data) {
+            setSubscriptions([]);
+          } else {
+            setSubscriptions(data);
           }
         } catch (error) {
           console.error("🔥 Error fetching user data:", error);
@@ -57,6 +78,7 @@ export default function FirebaseContextProvider({ children }) {
     isLogged,
     setUpdateLoggedStatus,
     userData,
+    subscriptions,
   };
 
   return (

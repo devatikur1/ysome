@@ -6,22 +6,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
-import HomePage from "./layout/HomePage";
+import HomeLayout from "./layout/HomeLayout";
 import RandomVideosPage from "./pages/RandomVideosPage";
 import RandomShortsPage from "./pages/RandomShortsPage";
-import SubscriptionsLayout from "./layout/SubscriptionsLayout";
+import SubscriptionsPage from "./pages/SubscriptionsPage";
 
 export default function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" element={<HomePage />}>
+        <Route path="/" element={<HomeLayout />}>
           <Route index element={<RandomVideosPage />} />
           <Route path="shorts/*" element={<RandomShortsPage />} />
-          <Route path="/channel" element={<SubscriptionsLayout />}>
-            <Route index element={<RandomShortsPage />} />
-            <Route path=":channelPart" element={<RandomShortsPage />} />
-          </Route>
+          <Route path="/channel" element={<SubscriptionsPage />} />
         </Route>
         {/* <Route path="watch?v=:id" /> */}
         <Route path="*" element={<h1>404 | Page Not Found</h1>} />

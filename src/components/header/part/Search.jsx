@@ -85,16 +85,13 @@ export default function Search({ SearchFeedRef, setIsSearchShow }) {
     <aside className="fixed top-0 md:top-[62px] w-full flex justify-center items-center z-50">
       <motion.section
         ref={SearchFeedRef}
-        initial={{ opacity: 0, scale: 0.95, height: 0 }}
+        initial={{ height: 0 }}
         animate={{
-          opacity: 1,
-          scale: 1,
           height: searchFeedHeight,
         }}
-        exit={{ opacity: 0, scale: 0.95, height: 0 }}
+        exit={{ height: 0 }}
         transition={{
           duration: 0.4,
-          ease: [0.25, 0.1, 0.25, 1],
         }}
         className={`flex flex-col gap-5 max-h-[${searchFeedHeight}] min-h-[0px] w-screen md:w-[600px] lg:w-[700px] xl:w-[45%] bg-bg-pecondary p-5 border border-border md:rounded-2xl shadow-lg overflow-hidden`}
       >
