@@ -10,6 +10,7 @@ import HomeLayout from "./layout/HomeLayout";
 import RandomVideosPage from "./pages/RandomVideosPage";
 import RandomShortsPage from "./pages/RandomShortsPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
+import PlayVideoInterFacePage from "./pages/PlayVideoInterFacePage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="shorts/*" element={<RandomShortsPage />} />
           <Route path="/channel" element={<SubscriptionsPage />} />
         </Route>
+        <Route path="/watch" element={<PlayVideoInterFacePage />} />
         {/* <Route path="watch?v=:id" /> */}
         <Route path="*" element={<h1>404 | Page Not Found</h1>} />
       </Route>

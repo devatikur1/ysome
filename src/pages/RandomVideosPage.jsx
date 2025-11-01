@@ -9,7 +9,6 @@ import { useScroll } from "motion/react";
 import { AppContext } from "../contexts/App/AppContext";
 
 export default function RandomVideosPage() {
-  
   // Context
   const { isReSideBarShow, HomePageOutletWidth, HomePageHeight } =
     useContext(UiContext);
@@ -43,6 +42,18 @@ export default function RandomVideosPage() {
   // resultsCount
   const [resultsCount, setResultsCount] = useState(0);
 
+  // -------------------------
+  // Initial fetch
+  // -------------------------
+
+  useEffect(() => {
+    if (items.length > 0) return;
+    setPageLoading(true);
+    fetchData({
+      maxResults: Math.floor(100 / queries.length),
+      nxtPgTokens: nextPageTokens,
+    });
+  }, []);
 
   // -------------------------
   // Update grid columns
@@ -54,7 +65,6 @@ export default function RandomVideosPage() {
     else if (HomePageOutletWidth >= 768) setGridCols("grid-cols-2");
     else setGridCols("grid-cols-1");
   }, [isReSideBarShow, HomePageOutletWidth]);
-
 
   // ------------------------------
   // Scroll base get videos data
@@ -87,7 +97,6 @@ export default function RandomVideosPage() {
     return () => unsubscribe();
   }, [scrollYProgress, pageLoading, nextPageTokens.length, resultsCount]);
 
-  
   // -------------------------
   // set ResultsCount
   // -------------------------
@@ -95,7 +104,6 @@ export default function RandomVideosPage() {
   useEffect(() => {
     setResultsCount(items.length);
   }, [items]);
-
 
   // -------------------------
   // Render

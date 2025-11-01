@@ -49,6 +49,18 @@ export default function RandomShortsPage() {
   // Refs to track pending channel fetches
   const isInitialMount = useRef(false);
 
+  // -------------------------
+  // Initial fetch
+  // -------------------------
+
+  useEffect(() => {
+    if (items.length > 0) return;
+    setPageLoading(true);
+    fetchData({
+      maxResults: Math.floor(100 / queries.length),
+      nxtPgTokens: nextPageTokens,
+    });
+  }, []);
 
   // -------------------------
   // Sync items from context
@@ -66,7 +78,6 @@ export default function RandomShortsPage() {
       setSChannelsData(channelsData);
     }
   }, [channelsData]);
-
 
   // -------------------------
   // Initial fetch
@@ -140,7 +151,6 @@ export default function RandomShortsPage() {
     fetchVideoData();
   }, []);
 
-
   // ----------------------------
   // Fetch channel data helper
   // ----------------------------
@@ -165,7 +175,6 @@ export default function RandomShortsPage() {
     [apiKey, sChannelsData]
   );
 
-
   // ----------------------------
   // Auto check channel data
   // ----------------------------
@@ -178,7 +187,6 @@ export default function RandomShortsPage() {
       fetchChannelData(currentChannelId);
     }
   }, [currentIndex, sitems, fetchChannelData]);
-
 
   // ----------------------------
   // get data channelId
@@ -212,7 +220,6 @@ export default function RandomShortsPage() {
     }
   }, [CurrentID, channelsData, apiKey]);
 
-
   // ------------------------------
   // update base get videos data
   // ------------------------------
@@ -221,7 +228,7 @@ export default function RandomShortsPage() {
     const shouldFetch =
       sitems.length - 6 < currentIndex &&
       nextPageTokens.length > 0 &&
-      isInitialMount.current === false
+      isInitialMount.current === false;
 
     if (shouldFetch) {
       isInitialMount.current = true;
@@ -229,9 +236,11 @@ export default function RandomShortsPage() {
       fetchData({
         maxResults: Math.floor(100 / queries.length),
         nxtPgTokens: nextPageTokens,
-      }).catch((err) => {
+      })
+        .catch((err) => {
           console.error("Auto-fetch error:", err);
-      }).finally(() => {
+        })
+        .finally(() => {
           isInitialMount.current = false;
         });
     }

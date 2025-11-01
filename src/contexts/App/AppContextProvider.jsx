@@ -201,18 +201,6 @@ export default function AppContextProvider({ children }) {
   }, [itemsChannelIds, itemsVideoIds, apiKey]);
 
   // -------------------------
-  // Initial fetch
-  // -------------------------
-
-  useEffect(() => {
-    setPageLoading(true);
-    fetchData({
-      maxResults: Math.floor(100 / queries.length),
-      nxtPgTokens: nextPageTokens,
-    });
-  }, []);
-
-  // -------------------------
   // ApiKey chnager
   // -------------------------
 
