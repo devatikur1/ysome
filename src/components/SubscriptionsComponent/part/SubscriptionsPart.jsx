@@ -3,8 +3,6 @@ import millify from "millify";
 import { NavLink } from "react-router-dom";
 
 export default function ChannelCard({ channel }) {
-  console.log(channel);
-
   return (
     <article className="flex items-center justify-between w-full gap-5 p-3 py-5 hover:bg-neutral-900/40 rounded-2xl transition-all duration-200 cursor-pointer">
       {/* Left: Photo */}
@@ -52,7 +50,7 @@ export default function ChannelCard({ channel }) {
       </NavLink>
 
       {/* Right: Subscribe Button */}
-      <section>
+      <section className="hidden md:flex">
         <button className="bg-surface text-text px-4 py-1.5 rounded-full text-sm font-medium border border-border transition">
           Subscribed
         </button>

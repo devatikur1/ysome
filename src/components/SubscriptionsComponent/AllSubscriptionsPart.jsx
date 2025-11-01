@@ -1,7 +1,7 @@
 import React from "react";
 import SubscriptionsPart from "./part/SubscriptionsPart";
 
-export default function AllSubscriptionsPart() {
+export default function AllSubscriptionsPart({ activeOptionName }) {
   const channel = [
     {
       kind: "youtube#channel",
