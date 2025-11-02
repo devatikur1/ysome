@@ -1,5 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export default function SecendPartAndReccomendPart() {
-  return <section className='relative'>SecendPartAndReccomendPart</section>;
+export default function SecendPartAndReccomendPart({ reccomendVideoItem }) {
+  return (
+    <section className="relative w-[100%] md:w-[31%] md:h-full">
+      <article></article>
+    </section>
+  );
 }

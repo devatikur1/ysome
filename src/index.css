@@ -55,3 +55,7 @@
 .FirstPartAndVideoPart {
   overflow-y: auto !important;
 }
+
+img {
+  user-select: none;
+}
