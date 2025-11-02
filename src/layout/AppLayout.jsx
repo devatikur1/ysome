@@ -54,7 +54,7 @@ export default function AppLayout() {
 
   return (
     <>
-      <aside className="w-full h-full flex flex-col overflow-hidden">
+      <aside className="w-full h-full flex flex-col overflow-y-auto">
         <Header />
         <Outlet />
         <SpeedInsights

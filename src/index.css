@@ -51,3 +51,7 @@
 .inputFocus {
   outline: 1.5px solid #00adb5;
 }
+
+.FirstPartAndVideoPart {
+  overflow-y: auto !important;
+}

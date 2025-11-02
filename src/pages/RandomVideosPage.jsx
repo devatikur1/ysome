@@ -125,7 +125,7 @@ export default function RandomVideosPage() {
             height: `${HomePageHeight}px`,
           }}
           className={clsx(
-            "h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden overflow-y-auto custom-scroll",
+            "h-full grid gap-4 px-5 pt-8 pb-11",
             gridCols
           )}
         >

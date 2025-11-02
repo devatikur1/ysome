@@ -18,7 +18,7 @@ export default function HomeLayout() {
 
   return (
     <section
-      className="w-full flex md:items-start md:justify-start items-center justify-center overflow-hidden"
+      className="w-full flex md:items-start md:justify-start items-center justify-center"
       style={{
         maxHeight: `${HomePageHeight}px`,
         maxWidth: `${HomePageWidth}px`,

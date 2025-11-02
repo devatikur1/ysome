@@ -2,29 +2,33 @@ import React, { useEffect, useRef } from "react";
 
 export default function PlayVideoPart({ VideoID, title }) {
   const playVideoRef = useRef(null);
-  useEffect(() => {
-    if (playVideoRef.current) {
-      const timer = setTimeout(() => {
-        playVideoRef.current.contentWindow.postMessage(
-          '{"event":"command","func":"unMute","args":""}',
-          "*"
-        );
-      }, 500);
 
-      return () => clearTimeout(timer);
-    }
-  }, [VideoID, playVideoRef]);
+  useEffect(() => {
+    const iframe = playVideoRef.current;
+    if (!iframe) return;
+
+    const handleLoad = () => {
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"unMute","args":""}',
+        "*"
+      );
+    };
+
+    iframe.addEventListener("load", handleLoad);
+    return () => iframe.removeEventListener("load", handleLoad);
+  }, [VideoID]);
+
   return (
-    <iframe
-      ref={playVideoRef}
-      width="100%"
-      height="100%"
-      src={`https://www.youtube.com/embed/${VideoID}?autoplay=1&mute=1&rel=0`}
-      title={title || "YouTube Shorts"}
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerPolicy="strict-origin-when-cross-origin"
-      className="rounded-2xl"
-    ></iframe>
+    <div className="relative w-full h-full rounded-2xl overflow-hidden select-none *:select-none">
+      <iframe
+        ref={playVideoRef}
+        className="absolute top-0 left-0 w-full h-full"
+        src={`https://www.youtube.com/embed/${VideoID}?autoplay=1&mute=1&rel=0`}
+        title={title || "YouTube Shorts"}
+        frameBorder="0"
+        allow="autoplay; encrypted-media; fullscreen; picture-in-picture; Save video as"
+        referrerPolicy="strict-origin-when-cross-origin"
+      ></iframe>
+    </div>
   );
 }
