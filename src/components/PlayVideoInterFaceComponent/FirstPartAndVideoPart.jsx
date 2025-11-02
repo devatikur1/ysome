@@ -9,7 +9,7 @@ export default function FirstPartAndVideoPart({
   title = "POKÉMON-All Theme Songs In Hindi With Lyrics I Creatorz 007",
 }) {
   return (
-    <section className=" w-[100%] md:w-[69%] h-full flex flex-col gap-6">
+    <section className="relative w-[100%] md:w-[69%] h-full flex flex-col gap-6">
       {/* Top: Video Part */}
       <article className="min-h-[375px] lg:min-h-[700px]">
         <PlayVideoPart VideoID={VideoID || "j7YVj5z5vzk"} title={title} />

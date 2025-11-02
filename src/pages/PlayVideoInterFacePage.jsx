@@ -9,7 +9,7 @@ import { UiContext } from "../contexts/Ui/UiContext";
 export default function PlayVideoInterFacePage() {
   const { apiKey } = useContext(AppContext);
   // Context
-  const { HomePageOutletWidth, HomePageHeight } =
+  const { HomePageWidth, HomePageHeight } =
     useContext(UiContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -29,8 +29,8 @@ export default function PlayVideoInterFacePage() {
     <div
       style={{
         // width
-        minWidth: `${HomePageOutletWidth}px`,
-        width: `${HomePageOutletWidth}px`,
+        minWidth: `${HomePageWidth}px`,
+        width: `${HomePageWidth}px`,
 
         // height
         minHeight: `${HomePageHeight}px`,
