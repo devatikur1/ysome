@@ -1,13 +1,19 @@
-export async function GetCommentThreads({ videoId, key, pageToken }) {
+export default async function GetCommentThreads({ videoId, key, pageToken }) {
   try {
-    let url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&videoId=${videoId}&key=${key}`;
-
-    // Add pageToken if exists
-    if (pageToken) {
-      url += `&pageToken=${pageToken}`;
+    if (!videoId || !key) {
+      console.error("videoId and key are required");
+      return {};
     }
 
-    const res = await fetch(url);
+    let url = new URL(
+      "https://youtube.googleapis.com/youtube/v3/commentThreads"
+    );
+    url.searchParams.append("part", "snippet,replies");
+    url.searchParams.append("videoId", videoId);
+    url.searchParams.append("key", key);
+    if (pageToken) url.searchParams.append("pageToken", pageToken);
+
+    const res = await fetch(url.toString());
 
     if (!res.ok) {
       console.error(`Failed to fetch comments: ${res.status}`);
@@ -15,7 +21,7 @@ export async function GetCommentThreads({ videoId, key, pageToken }) {
     }
 
     const data = await res.json();
-
+    console.log("Fetched comments:", data);
     return data;
   } catch (err) {
     console.error("Error fetching comment threads:", err);

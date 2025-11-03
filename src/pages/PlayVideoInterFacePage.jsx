@@ -7,11 +7,11 @@ import SecendPartAndReccomendPart from "../components/PlayVideoInterFaceComponen
 import { UiContext } from "../contexts/Ui/UiContext";
 import { GetVideoData } from "../utils/GetVideoData";
 import { GetChannelData } from "../utils/GetChannelData";
-import { GetCommentThreads } from "../utils/GetCommentThreads";
 import { GetVideoDetails } from "../utils/GetVideoDetails";
 import { ParseMillified } from "../utils/ParseMillified";
 import { GetDataWithSearch } from "../utils/GetDataWithSearch";
 import NoInterNetComponent from "../components/custom/NoInterNetComponent";
+import GetCommentThreads from "../utils/GetCommentThreads";
 
 export default function PlayVideoInterFacePage() {
   const { apiKey } = useContext(AppContext);
@@ -59,12 +59,12 @@ export default function PlayVideoInterFacePage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // const vdDetails = await GetVideoDetails({
-        //   videoID: videoId,
-        //   key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
-        // });
+        const vdDetails = await GetVideoDetails({
+          videoID: videoId,
+          key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+        });
 
-        const vdDetails = JSON.parse(localStorage.getItem("VdD"));
+        // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
         // const vdDetails = undefined;
 
         if (!vdDetails) {
@@ -72,6 +72,7 @@ export default function PlayVideoInterFacePage() {
           setVideoDetails({});
           setIsVdDetails(false);
           setIsVdDetailsFetch(true);
+          setError(true);
           return;
         }
 
@@ -186,11 +187,11 @@ export default function PlayVideoInterFacePage() {
         key: apiKey,
         pageToken: null,
       });
+      console.log(commentThreads);
       setCommentData(commentThreads?.items || []);
       setCommentNextToken(commentThreads?.nextPageToken || "");
       setTotalResults(commentThreads?.pageInfo?.totalResults || 0);
       setCurrentResultsPageNum(1);
-      console.log(commentThreads);
       setCommentDataLoading(false);
       setIsVdDetailsFetch(false);
     }
@@ -255,7 +256,6 @@ export default function PlayVideoInterFacePage() {
             IsVdDetails={IsVdDetails}
             videoDetails={videoDetails}
           />
-          {/* <CommentInterface VideoID={VideoID} /> */}
           <SecendPartAndReccomendPart reccomendVideoItem={reccomendVideoItem} />
         </>
       ) : (
