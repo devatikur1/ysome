@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PlayVideoPart from "./part/PlayVideoPart";
 import { Link } from "react-router-dom";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
@@ -13,9 +13,23 @@ export default function FirstPartAndVideoPart({
   moreCommentThreads,
   CommentDataLoading,
   loading,
+  IsVdDetails,
+  videoDetails,
 }) {
+  const videoPartRef = useRef(null);
+  const [VideoPart, setVideoPart] = useState()
+
+  useEffect(() => {
+    console.log(videoPartRef);
+    
+    setVideoPart(videoPartRef.current.offsetWidth);
+  }, [videoPartRef]);
+  
   return (
-    <section className="relative w-[100%] md:w-[69%] md:h-full flex flex-col gap-6">
+    <section
+      ref={videoPartRef}
+      className="relative w-[100%] md:w-[69%] md:h-full flex flex-col gap-6"
+    >
       {loading ? (
         <>
           <div className="space-y-5 p-5">
@@ -58,10 +72,17 @@ export default function FirstPartAndVideoPart({
       ) : (
         <>
           {/* Top: Video Part */}
-          <article className="min-h-[250px] sm:min-h-[375px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
+          <article
+            style={{
+              minWidth: `${VideoPart}px`,
+            }}
+            className="min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]"
+          >
             <PlayVideoPart
               VideoID={VideoID}
               title={VideoData?.snippet?.title}
+              IsVdDetails={IsVdDetails}
+              videoDetails={videoDetails}
             />
           </article>
           {/* Middele : title and  Channel data && Like comment data */}

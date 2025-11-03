@@ -64,8 +64,8 @@ export default function PlayVideoInterFacePage() {
         //   key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
         // });
 
-        // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
-        const vdDetails = undefined;
+        const vdDetails = JSON.parse(localStorage.getItem("VdD"));
+        // const vdDetails = undefined;
 
         if (!vdDetails) {
           console.error("Video details not found!");
@@ -121,24 +121,6 @@ export default function PlayVideoInterFacePage() {
         };
         setVideoData(VdData);
 
-        // Channel Data
-        // const CHData = {
-        //   kind: "youtube#channel",
-        //   id: vdDetails.channel?.id,
-        //   snippet: {
-        //     title: vdDetails.channel?.name,
-        //     thumbnails: vdDetails.channel?.avatar,
-        //     localized: {
-        //       title: vdDetails.channel?.name,
-        //     },
-        //   },
-        //   statistics: {
-        //     subscriberCount: ParseMillified(
-        //       vdDetails.channel?.subscriberCountText?.split(" ")[0]
-        //     ),
-        //     hiddenSubscriberCount: false,
-        //   },
-        // };
         const CHData = {
           kind: "youtube#channel",
           etag: "zxZCko45_3OqYcrY1M5b3GySfrk",
@@ -270,6 +252,8 @@ export default function PlayVideoInterFacePage() {
             moreCommentThreads={moreCommentThreads}
             CommentDataLoading={CommentDataLoading}
             loading={loading}
+            IsVdDetails={IsVdDetails}
+            videoDetails={videoDetails}
           />
           {/* <CommentInterface VideoID={VideoID} /> */}
           <SecendPartAndReccomendPart reccomendVideoItem={reccomendVideoItem} />

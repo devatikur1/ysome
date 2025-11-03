@@ -77,7 +77,7 @@ export default function RandomVideosPage() {
 
     const unsubscribe = scrollYProgress.on("change", (value) => {
       if (
-        value > 0.98 &&
+        value > 0.9 &&
         !pageLoading &&
         nextPageTokens.length > 0 &&
         !scrollTriggeredRef.current &&
@@ -125,7 +125,7 @@ export default function RandomVideosPage() {
             height: `${HomePageHeight}px`,
           }}
           className={clsx(
-            "h-full grid gap-4 px-5 pt-8 pb-11",
+            "h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden",
             gridCols
           )}
         >
