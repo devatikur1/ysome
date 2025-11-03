@@ -162,16 +162,16 @@ export default function PlayVideoInterFacePage() {
       setCommentDataLoading(true);
 
       // Comments
-      // const commentThreads = await GetCommentThreads({
-      //   videoId,
-      //   key: apiKey,
-      //   pageToken: null,
-      // });
-      // setCommentData(commentThreads?.items || []);
-      // setCommentNextToken(commentThreads?.nextPageToken || "");
-      // setTotalResults(commentThreads?.pageInfo?.totalResults || 0);
-      // setCurrentResultsPageNum(1);
-      // console.log(commentThreads);
+      const commentThreads = await GetCommentThreads({
+        videoId,
+        key: apiKey,
+        pageToken: null,
+      });
+      setCommentData(commentThreads?.items || []);
+      setCommentNextToken(commentThreads?.nextPageToken || "");
+      setTotalResults(commentThreads?.pageInfo?.totalResults || 0);
+      setCurrentResultsPageNum(1);
+      console.log(commentThreads);
       setCommentDataLoading(false);
       setIsVdDetailsFetch(false);
     }
