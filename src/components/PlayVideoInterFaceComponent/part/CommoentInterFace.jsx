@@ -2,7 +2,7 @@ import React from "react";
 import CommoentPart from "./part/CommoentPart";
 import millify from "millify";
 
-export default function CommentInterface({
+export default function CommoentInterFace({
   commentCount,
   CommentData,
   moreCommentThreads,
