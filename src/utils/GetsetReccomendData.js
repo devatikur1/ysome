@@ -1,15 +1,19 @@
 import moment from "moment";
 import { GetDataWithSearch } from "./GetDataWithSearch";
 
-export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
+export async function GetsetReccomendData({
+  queries,
+  nxtPgTokens = [],
+  apiKey,
+}) {
   try {
-    //  search query 
+    // 🔹 search query result
     const results = await Promise.all(
       queries.map((query, index) =>
         GetDataWithSearch({
-          maxResults: 150 / queries.length,
+          maxResults: Math.floor(150 / queries.length),
           query,
-          nxtPgToken: nxtPgTokens?.[index]?.token || "",
+          nxtPgToken: nxtPgTokens[index]?.token || "",
           key: apiKey,
         })
       )
@@ -17,51 +21,50 @@ export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
 
     const recVideoItem = [];
     const newNextTokens = [];
-    console.log(results);
-    
 
-    // valid result 
-    if (results.some((r) => r && r.items)) {
-      results.forEach((data, idx) => {
-        if (!data?.items?.length) return;
-
-        // Every Item forEach korbe
-        data.items.forEach((rc) => {
-          const publishTime = rc?.snippet?.publishTime;
-          const timeText = moment(publishTime).fromNow();
-          const publishedTimeText = timeText.replace(/^a /, "1 "); // "a minute ago" → "1 minute ago"
-
-          recVideoItem.push({
-            type: "video",
-            id: rc?.id?.videoId,
-            title: rc?.snippet?.title,
-            name: rc?.snippet?.channelTitle,
-            channel: {
-              id: rc?.snippet?.channelId,
-            },
-            publishedTimeText,
-            thumbnails: [
-              { url: rc?.snippet?.thumbnails?.default?.url },
-              { url: rc?.snippet?.thumbnails?.medium?.url },
-              { url: rc?.snippet?.thumbnails?.high?.url },
-            ],
-          });
-        });
-
-        // page token
-        newNextTokens.push({
-          query: queries[idx],
-          token: data?.nextPageToken || null,
-        });
-      });
-
-      return { newNextTokens, recVideoItem };
+    // 🔹 valid result
+    const validResults = results.filter((r) => r && Array.isArray(r.items));
+    if (!validResults.length) {
+      return { newNextTokens: [], recVideoItem: [] };
     }
 
-    // Failed Callback empty data
-    return { newNextTokens: [], recVideoItem: [] };
+    // 🔹  query result process
+    validResults.forEach((data, idx) => {
+      // next page token
+      newNextTokens.push({
+        query: queries[idx],
+        token: data?.nextPageToken || null,
+      });
+
+      // 🔹  item process
+      data.items.forEach((rc) => {
+        const snippet = rc?.snippet || {};
+        const thumbnails = snippet.thumbnails || {};
+        const publishTime = snippet.publishTime;
+
+        // moment
+        const timeText = moment(publishTime).fromNow();
+        const publishedTimeText = timeText.replace(/^a /, "1 "); // "a minute ago" → "1 minute ago"
+
+        recVideoItem.push({
+          type: "video",
+          id: rc?.id?.videoId || null,
+          title: snippet.title || "Untitled Video",
+          name: snippet.channelTitle || "Unknown Channel",
+          channel: { id: snippet.channelId || null },
+          publishedTimeText,
+          thumbnails: [
+            { url: thumbnails?.default?.url || "" },
+            { url: thumbnails?.medium?.url || "" },
+            { url: thumbnails?.high?.url || "" },
+          ],
+        });
+      });
+    });
+
+    return { newNextTokens, recVideoItem };
   } catch (err) {
-    console.error("Fetch Data Error:", err);
+    console.error("❌ Fetch Data Error:", err);
     return { newNextTokens: [], recVideoItem: [] };
   }
 }

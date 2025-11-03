@@ -156,8 +156,14 @@ export default function PlayVideoInterFacePage() {
         setReccomendYt_1NextToken(vd.related?.nextToken || "");
       } else {
         // if videoDetails not available
-        vdData = await GetVideoData(VideoID, apiKey);
-        chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
+        vdData = await GetVideoData(
+          VideoID,
+          "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
+        );
+        chData = await GetChannelData(
+          vdData?.snippet?.channelId,
+          "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
+        );
         setVideoData(vdData);
         setChannelData(chData);
         console.log(vdData);
@@ -166,7 +172,7 @@ export default function PlayVideoInterFacePage() {
         const { newNextTokens, recVideoItem } = await GetsetReccomendData({
           queries: vdData?.snippet?.tags,
           nxtPgTokens: ReccomendYt_2NextToken,
-          apiKey: apiKey, // "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
+          apiKey: "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8", // "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
         });
         console.log(newNextTokens);
         console.log("recVideoItem");
