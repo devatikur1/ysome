@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../contexts/App/AppContext";
 import FirstPartAndVideoPart from "../components/PlayVideoInterFaceComponent/FirstPartAndVideoPart";
@@ -9,9 +9,9 @@ import { GetVideoData } from "../utils/GetVideoData";
 import { GetChannelData } from "../utils/GetChannelData";
 import { GetVideoDetails } from "../utils/GetVideoDetails";
 import { ParseMillified } from "../utils/ParseMillified";
-import { GetDataWithSearch } from "../utils/GetDataWithSearch";
-import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 import GetCommentThreads from "../utils/GetCommentThreads";
+import { useScroll } from "motion/react";
+import { GetsetReccomendData } from "../utils/GetsetReccomendData";
 
 export default function PlayVideoInterFacePage() {
   const { apiKey } = useContext(AppContext);
@@ -35,15 +35,17 @@ export default function PlayVideoInterFacePage() {
 
   // Reccomend Video Item state
   const [reccomendVideoItem, setReccomendVideoItem] = useState([]);
-  const [ReccomendNextToken, setReccomendNextToken] = useState("");
+  const [ReccomendNextToken, setReccomendNextToken] = useState([]);
 
   // IsVdDetails
   const [IsVdDetails, setIsVdDetails] = useState(false);
+  const [ReccomendLoading, setReccomendLoading] = useState(false);
   const [IsVdDetailsFetch, setIsVdDetailsFetch] = useState(false);
   const [videoDetails, setVideoDetails] = useState({});
 
-  // error
-  const [error, setError] = useState(false);
+  // containerRef
+  const containerRef = useRef(null);
+  const scrollTriggeredRef = useRef(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -72,7 +74,6 @@ export default function PlayVideoInterFacePage() {
           setVideoDetails({});
           setIsVdDetails(false);
           setIsVdDetailsFetch(true);
-          setError(true);
           return;
         }
 
@@ -86,7 +87,7 @@ export default function PlayVideoInterFacePage() {
     };
 
     fetchData();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (IsVdDetailsFetch === false) return;
@@ -95,6 +96,7 @@ export default function PlayVideoInterFacePage() {
       if (IsVdDetails) {
         console.log(IsVdDetails);
         let vdDetails = videoDetails;
+        setReccomendLoading(true);
         // Video Data
         const VdData = {
           kind: "youtube#video",
@@ -158,26 +160,41 @@ export default function PlayVideoInterFacePage() {
         };
         setChannelData(CHData);
         setReccomendVideoItem(vdDetails?.related?.items);
-        setReccomendNextToken(vdDetails?.related?.nextToken);
+        setReccomendNextToken({
+          query: null,
+          token: vdDetails?.related?.nextToken || null,
+        });
       } else {
         console.log(false);
 
         // Fallback if vdDetails not found
-        const VdData = await GetVideoData(videoId, apiKey);
+        const VdData = await GetVideoData(
+          videoId,
+          apiKey
+        );
         setVideoData(VdData);
-        const CHData = await GetChannelData(VdData?.snippet?.channelId, apiKey);
+        const CHData = await GetChannelData(
+          VdData?.snippet?.channelId,
+          apiKey
+        );
         setChannelData(CHData);
+        console.log(VdData);
+
+        setReccomendLoading(true);
 
         // Recommended Videos
-        const recVideoItem = await GetDataWithSearch({
-          maxResults: 30,
-          query: VdData?.snippet?.title,
-          nxtPgToken: null,
-          key: apiKey,
+        let { newNextTokens, recVideoItem } = GetsetReccomendData({
+          queries: VdData?.snippet?.tags,
+          nxtPgTokens: ReccomendNextToken,
+          apiKey: apiKey,
         });
-        setReccomendVideoItem(recVideoItem?.items);
-        setReccomendNextToken(recVideoItem?.nextPageToken);
+        console.log( recVideoItem);
+
+        setReccomendVideoItem(recVideoItem);
+        setReccomendNextToken(newNextTokens);
       }
+
+      setReccomendLoading(false);
       setLoading(false);
       setCommentDataLoading(true);
 
@@ -230,8 +247,61 @@ export default function PlayVideoInterFacePage() {
     console.log(VideoData?.statistics?.commentCount);
   }, [ChannelData]);
 
+  // ------------------------------
+  // Scroll base get videos data
+  // ------------------------------
+
+  const { scrollYProgress } = useScroll({ container: containerRef });
+
+  useEffect(() => {
+    if (!scrollYProgress) return;
+
+    const unsubscribe = scrollYProgress.on("change", (value) => {
+      if (
+        value > 0.9 &&
+        !ReccomendLoading &&
+        ReccomendNextToken &&
+        !scrollTriggeredRef.current &&
+        VideoData?.snippet?.title
+      ) {
+        scrollTriggeredRef.current = true;
+        setReccomendLoading(true);
+        async function fetchReccomendData({ nxtPgTokens }) {
+          if (IsVdDetails === true) {
+          } else {
+            // Recommended Videos
+            let { newNextTokens, recVideoItem } = GetsetReccomendData({
+              queries: VideoData?.snippet?.tags,
+              nxtPgTokens: ReccomendNextToken,
+              apiKey: apiKey,
+            });
+            console.log({ newNextTokens, recVideoItem });
+
+            setReccomendVideoItem((p) => [...p, ...recVideoItem]);
+            setReccomendNextToken(newNextTokens);
+          }
+        }
+        fetchReccomendData({
+          nxtPgTokens: ReccomendNextToken,
+        }).finally(() => {
+          scrollTriggeredRef.current = false;
+          setReccomendLoading(false);
+        });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [
+    scrollYProgress,
+    ReccomendLoading,
+    ReccomendNextToken,
+    IsVdDetails,
+    VideoData,
+  ]);
+
   return (
     <div
+      ref={containerRef}
       style={{
         // width
         minWidth: `${HomePageWidth}px`,
@@ -243,34 +313,23 @@ export default function PlayVideoInterFacePage() {
       }}
       className="flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-x-hidden overflow-y-auto"
     >
-      {!error ? (
-        <>
-          <FirstPartAndVideoPart
-            VideoID={VideoID}
-            VideoData={VideoData}
-            ChannelData={ChannelData}
-            CommentData={CommentData}
-            moreCommentThreads={moreCommentThreads}
-            CommentDataLoading={CommentDataLoading}
-            loading={loading}
-            IsVdDetails={IsVdDetails}
-            videoDetails={videoDetails}
-          />
-          <SecendPartAndReccomendPart reccomendVideoItem={reccomendVideoItem} />
-        </>
-      ) : (
-        <NoInterNetComponent
-          style={{
-            // width
-            minWidth: `${HomePageWidth}px`,
-            width: `${HomePageWidth}px`,
-
-            // height
-            minHeight: `${HomePageHeight}px`,
-            height: `${HomePageHeight}px`,
-          }}
+      <>
+        <FirstPartAndVideoPart
+          VideoID={VideoID}
+          VideoData={VideoData}
+          ChannelData={ChannelData}
+          CommentData={CommentData}
+          moreCommentThreads={moreCommentThreads}
+          CommentDataLoading={CommentDataLoading}
+          loading={loading}
+          IsVdDetails={IsVdDetails}
+          videoDetails={videoDetails}
         />
-      )}
+        <SecendPartAndReccomendPart
+          reccomendVideoItem={reccomendVideoItem}
+          ReccomendLoading={ReccomendLoading}
+        />
+      </>
     </div>
   );
 }
