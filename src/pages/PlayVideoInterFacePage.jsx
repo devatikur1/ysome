@@ -12,7 +12,7 @@ import { GetVideoDetails } from "../utils/GetVideoDetails";
 import { ParseMillified } from "../utils/ParseMillified";
 import GetCommentThreads from "../utils/GetCommentThreads";
 import { useScroll } from "motion/react";
-import { GetsetReccomendData } from "../utils/GetsetReccomendData";
+import { GetRelateVideos } from "../utils/GetRelateVideos";
 
 export default function PlayVideoInterFacePage() {
   const { apiKey } = useContext(AppContext);
@@ -37,7 +37,6 @@ export default function PlayVideoInterFacePage() {
   // Reccomend Video Item state
   const [reccomendVideoItem, setReccomendVideoItem] = useState([]);
   const [ReccomendYt_1NextToken, setReccomendYt_1NextToken] = useState("");
-  const [ReccomendYt_2NextToken, setReccomendYt_2NextToken] = useState([]);
 
   // IsVdDetails
   const [IsVdDetails, setIsVdDetails] = useState(false);
@@ -71,7 +70,6 @@ export default function PlayVideoInterFacePage() {
           videoID: videoId,
           key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
         });
-        console.log(vdDetails);
 
         // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
         // const vdDetails = undefined;
@@ -128,7 +126,7 @@ export default function PlayVideoInterFacePage() {
             commentCount: ParseMillified(vd.commentCountText),
           },
         };
-
+        document.title = vd?.title;
         // chData modify
         chData = {
           kind: "youtube#channel",
@@ -159,21 +157,21 @@ export default function PlayVideoInterFacePage() {
         vdData = await GetVideoData(VideoID, apiKey);
         chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
         setVideoData(vdData);
+        document.title = vdData?.snippet?.title;
         setChannelData(chData);
-        console.log(vdData);
-        console.log(chData);
 
-        const { newNextTokens, recVideoItem } = await GetsetReccomendData({
-          queries: vdData?.snippet?.tags,
-          nxtPgTokens: ReccomendYt_2NextToken,
-          apiKey: apiKey, // "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
+        setReccomendLoading(true);
+
+        // Fetch related Video
+        const relatedVideo = await GetRelateVideos({
+          videoID: VideoID,
+          nextPageNoken: null,
+          key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
         });
-        console.log(newNextTokens);
-        console.log("recVideoItem");
-        console.log(recVideoItem);
 
-        setReccomendVideoItem(recVideoItem);
-        setReccomendYt_2NextToken(newNextTokens);
+        setCommentData(relatedVideo?.items || []);
+        setReccomendYt_1NextToken(relatedVideo?.nextToken || "");
+
       }
 
       setReccomendLoading(false);
@@ -235,24 +233,27 @@ export default function PlayVideoInterFacePage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", async (value) => {
+
+      
       if (
         value > 0.9 &&
         !ReccomendLoading &&
-        (ReccomendYt_2NextToken || ReccomendYt_1NextToken) &&
+        ReccomendYt_1NextToken &&
         !scrollTriggeredRef.current
       ) {
         scrollTriggeredRef.current = true;
         setReccomendLoading(true);
 
         try {
-          const { newNextTokens, recVideoItem } = await GetsetReccomendData({
-            queries: VideoData?.snippet?.tags,
-            nxtPgTokens: ReccomendYt_2NextToken,
-            apiKey,
+          // Fetch related Video
+          const relatedVideo = await GetRelateVideos({
+            videoID: VideoID,
+            nextPageNoken: ReccomendYt_1NextToken,
+            key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
           });
-
-          setReccomendVideoItem((prev) => [...prev, ...recVideoItem]);
-          setReccomendYt_2NextToken(newNextTokens);
+          
+          setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
+          setReccomendYt_1NextToken(relatedVideo?.nextToken);
         } catch (err) {
           console.error("Scroll Load Error:", err);
         } finally {
@@ -265,7 +266,6 @@ export default function PlayVideoInterFacePage() {
     return () => unsubscribe();
   }, [
     scrollYProgress,
-    ReccomendYt_2NextToken,
     ReccomendYt_1NextToken,
     ReccomendLoading,
     VideoData,
