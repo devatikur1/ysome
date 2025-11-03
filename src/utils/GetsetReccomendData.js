@@ -3,31 +3,32 @@ import { GetDataWithSearch } from "./GetDataWithSearch";
 
 export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
   try {
-    // Handle using api result
+    // একসাথে সব search query রেজাল্ট আনা
     const results = await Promise.all(
-      queries.map((q, idx) =>
+      queries.map((query, index) =>
         GetDataWithSearch({
           maxResults: 120 / queries.length,
-          query: q,
-          nxtPgToken: nxtPgTokens?.[idx]?.token || "",
+          query,
+          nxtPgToken: nxtPgTokens?.[index]?.token || "",
           key: apiKey,
         })
       )
     );
 
-    // const results = JSON.parse(localStorage.getItem("c"));
-    console.log(results);
-
-    // Handle test er loge result
+    const recVideoItem = [];
     const newNextTokens = [];
-    let recVideoItem = [];
 
-    if (results.some((r) => (!r ? false : true))) {
+    // অন্তত একটি valid result আছে কিনা চেক
+    if (results.some((r) => r && r.items)) {
       results.forEach((data, idx) => {
-        if (!data?.items) return;
+        if (!data?.items?.length) return;
 
-        // map daat
-        data?.items?.forEach((rc) => {
+        // Every Item forEach korbe
+        data.items.forEach((rc) => {
+          const publishTime = rc?.snippet?.publishTime;
+          const timeText = moment(publishTime).fromNow();
+          const publishedTimeText = timeText.replace(/^a /, "1 "); // "a minute ago" → "1 minute ago"
+
           recVideoItem.push({
             type: "video",
             id: rc?.id?.videoId,
@@ -36,40 +37,29 @@ export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
             channel: {
               id: rc?.snippet?.channelId,
             },
-            publishedTimeText:
-              moment(rc?.snippet?.publishTime)
-                .fromNow()
-                .split(" ")[0]
-                .replace("a", "1") +
-              moment(rc?.snippet?.publishTime).fromNow().slice(1),
-
+            publishedTimeText,
             thumbnails: [
-              {
-                url: rc?.snippet?.thumbnails?.default?.url,
-              },
-              {
-                url: rc?.snippet?.thumbnails?.high?.url,
-              },
-              {
-                url: rc?.snippet?.thumbnails?.medium?.url,
-              },
+              { url: rc?.snippet?.thumbnails?.default?.url },
+              { url: rc?.snippet?.thumbnails?.medium?.url },
+              { url: rc?.snippet?.thumbnails?.high?.url },
             ],
           });
         });
 
+        // page token
         newNextTokens.push({
           query: queries[idx],
           token: data?.nextPageToken || null,
         });
       });
 
-      // set newNextTokens
-      return { newNextTokens: newNextTokens, recVideoItem: recVideoItem };
-    } else {
-      return { newNextTokens: [], recVideoItem: [] };
+      return { newNextTokens, recVideoItem };
     }
+
+    // Failed Callback empty data
+    return { newNextTokens: [], recVideoItem: [] };
   } catch (err) {
-    console.error("Fetch Data Error:" + err);
+    console.error("Fetch Data Error:", err);
     return { newNextTokens: [], recVideoItem: [] };
   }
 }
