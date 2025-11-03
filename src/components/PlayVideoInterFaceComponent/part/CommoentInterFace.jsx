@@ -10,20 +10,21 @@ export default function CommentInterface({
 }) {
   return (
     <div className="flex flex-col gap-4 mt-2">
-      <article className="w-full py-5 pl-5 select-none cursor-pointer my-5">
+      <article className="w-full py-5 pl-5 select-none cursor-pointer">
         <h1 className="text-xl font-semibold">
           {millify(commentCount)} Comments
         </h1>
       </article>
-      {CommentData.length > 0 ? (
+      {
         <>
-          {CommentData.map((item) => (
-          <CommoentPart
-            key={item.id}
-            comment={item.snippet.topLevelComment.snippet}
-            replies={item.replies?.comments || []}
-          />
-          ))}
+          {CommentData?.length > 0 &&
+            CommentData.map((item) => (
+              <CommoentPart
+                key={item.id}
+                comment={item?.snippet?.topLevelComment.snippet}
+                replies={item?.replies?.comments || []}
+              />
+            ))}
           {CommentDataLoading === true &&
             [...Array(10)].map((_, i) => (
               <article
@@ -51,18 +52,21 @@ export default function CommentInterface({
               </article>
             ))}
         </>
-      ) : (
+      }
+      {CommentData?.length <= 0 && (
         <p className="text-subtext text-center py-32">No comments found...</p>
       )}
 
-      <article className="w-full px-10 select-none cursor-pointer py-12">
-        <div
-          onClick={moreCommentThreads}
-          className="w-full border rounded-full py-1.5 border-border hover:bg-accent/20 transition-all duration-300 flex justify-center items-center"
-        >
-          <span className="text-accent">Show more</span>
-        </div>
-      </article>
+      {CommentData?.length > 0 && (
+        <article className="w-full px-10 select-none cursor-pointer py-12">
+          <div
+            onClick={moreCommentThreads}
+            className="w-full border rounded-full py-1.5 border-border hover:bg-accent/20 transition-all duration-300 flex justify-center items-center"
+          >
+            <span className="text-accent">Show more</span>
+          </div>
+        </article>
+      )}
     </div>
   );
 }

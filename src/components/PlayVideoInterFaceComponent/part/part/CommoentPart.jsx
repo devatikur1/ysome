@@ -57,12 +57,12 @@ export default function CommoentPart({ comment, replies }) {
             </article>
             <button
               onClick={() => setShowReplies(!showReplies)}
-              disabled={replies.length === 0}
+              disabled={replies?.length === 0}
               className="px-2 ml-5 py-0.5 text-sm hover:bg-accent/20 transition-all duration-300 disabled:opacity-60 rounded-full flex justify-center items-center"
             >
               <ChevronDown color={"#00adb5"} size={18} />
               <span className="ml-1 text-[#00adb5]">
-                {replies.length} replies
+                {replies?.length} replies
               </span>
             </button>
           </article>
@@ -70,7 +70,7 @@ export default function CommoentPart({ comment, replies }) {
       </article>
       {/* replies */}
       <AnimatePresence>
-        {replies.length > 0 &&
+        {replies?.length > 0 &&
           showReplies &&
           replies.map((rp) => (
             <motion.article

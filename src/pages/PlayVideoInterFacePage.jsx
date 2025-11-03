@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../contexts/App/AppContext";
 import FirstPartAndVideoPart from "../components/PlayVideoInterFaceComponent/FirstPartAndVideoPart";
@@ -8,7 +8,10 @@ import { UiContext } from "../contexts/Ui/UiContext";
 import { GetVideoData } from "../utils/GetVideoData";
 import { GetChannelData } from "../utils/GetChannelData";
 import { GetCommentThreads } from "../utils/GetCommentThreads";
-import { GetRecommendWithVID } from "../utils/GetReccomendWithVID";
+import { GetVideoDetails } from "../utils/GetVideoDetails";
+import { ParseMillified } from "../utils/ParseMillified";
+import { GetDataWithSearch } from "../utils/GetDataWithSearch";
+import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 
 export default function PlayVideoInterFacePage() {
   const { apiKey } = useContext(AppContext);
@@ -17,63 +20,196 @@ export default function PlayVideoInterFacePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [VideoID, setVideoID] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // ChannelData && Video Data && commentThreads
   const [VideoData, setVideoData] = useState({});
   const [ChannelData, setChannelData] = useState({});
   const [CommentData, setCommentData] = useState([]);
+
+  // commentThreads state
   const [CommentDataLoading, setCommentDataLoading] = useState(false);
-  const [CommentNextToken, setCommentNextToken] = useState("");
+  const [CurrentResultsPageNum, setCurrentResultsPageNum] = useState(0);
   const [totalResults, setTotalResults] = useState(0);
+  const [CommentNextToken, setCommentNextToken] = useState("");
+
+  // Reccomend Video Item state
   const [reccomendVideoItem, setReccomendVideoItem] = useState([]);
+  const [ReccomendNextToken, setReccomendNextToken] = useState("");
+
+  // IsVdDetails
+  const [IsVdDetails, setIsVdDetails] = useState(false);
+  const [IsVdDetailsFetch, setIsVdDetailsFetch] = useState(false);
+  const [videoDetails, setVideoDetails] = useState({});
+
+  // error
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const videoId = params.get("v");
-    if (videoId === null) {
+
+    if (!videoId) {
       navigate("/");
-    } else {
-      setVideoID(videoId);
-      async function fetchData() {
-        try {
-          // VideoData
-          let VdData = await GetVideoData(videoId, apiKey);
-          setVideoData(VdData);
-
-          // ChannelData;
-          let CHData = await GetChannelData(VdData?.snippet?.channelId, apiKey);
-          setChannelData(CHData);
-
-          // commentThreads
-          let commentThreads = await GetCommentThreads(VdData?.id, apiKey);
-          setCommentData(commentThreads?.items);
-          setCommentNextToken(commentThreads?.nextPageToken);
-          setTotalResults(commentThreads?.pageInfo?.totalResults);
-
-          // reccomendVideoItem
-          let recVideoItem = await GetRecommendWithVID(videoId, apiKey);
-          console.log(recVideoItem);
-        } catch (err) {
-          console.error("Fetch Data Error:" + err);
-        }
-      }
-      fetchData();
+      return;
     }
+
+    setVideoID(videoId);
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // const vdDetails = await GetVideoDetails({
+        //   videoID: videoId,
+        //   key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+        // });
+
+        const vdDetails = undefined;
+
+        if (!vdDetails) {
+          console.error("Video details not found!");
+          setVideoDetails({});
+          setIsVdDetails(false);
+          setIsVdDetailsFetch(true);
+          return;
+        }
+
+        console.log("Video Details:", vdDetails); // Debug purpose
+        setVideoDetails(vdDetails);
+        setIsVdDetails(true);
+        setIsVdDetailsFetch(true);
+      } catch (err) {
+        console.error("Fetch Data Error:", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
+  useEffect(() => {
+    if (IsVdDetailsFetch === false) return;
+    async function ShereData() {
+      let videoId = VideoID;
+      if (IsVdDetails) {
+        console.log(IsVdDetails);
+        let vdDetails = videoDetails;
+        // Video Data
+        const VdData = {
+          kind: "youtube#video",
+          id: vdDetails.id,
+          snippet: {
+            publishedAt: vdDetails.publishedTime || vdDetails.publishedTimeText,
+            channelId: vdDetails.channel?.id,
+            title: vdDetails.title,
+            description: vdDetails.description,
+            thumbnails: vdDetails.thumbnails,
+            channelTitle: vdDetails.channel?.name,
+            categoryId: "22",
+            liveBroadcastContent: vdDetails.isLiveStream ? "live" : "none",
+            localized: {
+              title: vdDetails.title,
+              description: vdDetails.description,
+            },
+          },
+          statistics: {
+            viewCount: vdDetails.viewCount,
+            likeCount: vdDetails.likeCount,
+            favoriteCount: "0",
+            commentCount: ParseMillified(vdDetails.commentCountText),
+          },
+        };
+        setVideoData(VdData);
+
+        // Channel Data
+        const CHData = {
+          kind: "youtube#channel",
+          id: vdDetails.channel?.id,
+          snippet: {
+            title: vdDetails.channel?.name,
+            thumbnails: vdDetails.channel?.avatar,
+            localized: {
+              title: vdDetails.channel?.name,
+            },
+          },
+          statistics: {
+            subscriberCount: ParseMillified(
+              vdDetails.channel?.subscriberCountText?.split(" ")[0]
+            ),
+            hiddenSubscriberCount: false,
+          },
+        };
+        setChannelData(CHData);
+      } else {
+        console.log(false);
+
+        // Fallback if vdDetails not found
+        const VdData = await GetVideoData(videoId, apiKey);
+        setVideoData(VdData);
+        const CHData = await GetChannelData(VdData?.snippet?.channelId, apiKey);
+        setChannelData(CHData);
+
+        // Recommended Videos
+        const recVideoItem = await GetDataWithSearch({
+          maxResults: 30,
+          query: VdData?.snippet?.title,
+          nxtPgToken: null,
+          key: apiKey,
+        });
+        setReccomendVideoItem(recVideoItem?.items);
+        setReccomendNextToken(recVideoItem?.nextPageToken);
+      }
+      setLoading(false);
+      setCommentDataLoading(true);
+
+      // Comments
+      // const commentThreads = await GetCommentThreads({
+      //   videoId,
+      //   key: apiKey,
+      //   pageToken: null,
+      // });
+      // setCommentData(commentThreads?.items || []);
+      // setCommentNextToken(commentThreads?.nextPageToken || "");
+      // setTotalResults(commentThreads?.pageInfo?.totalResults || 0);
+      // setCurrentResultsPageNum(1);
+      // console.log(commentThreads);
+      setCommentDataLoading(false);
+      setIsVdDetailsFetch(false);
+    }
+
+    // call ShereData funtion
+    ShereData();
+  }, [videoDetails, IsVdDetailsFetch, apiKey]);
+
+  // more Comment Threads
   async function moreCommentThreads() {
     try {
-      // if (totalResults === CommentData.length) return;
+      if (totalResults <= CurrentResultsPageNum && !CommentNextToken) return;
       setCommentDataLoading(true);
+
       // commentThreads
-      let commentThreads = await GetCommentThreads(VideoID, apiKey);
+      let commentThreads = await GetCommentThreads({
+        videoId: VideoID,
+        key: apiKey,
+        pageToken: CommentNextToken,
+      });
       setTimeout(() => {
-        setCommentData((p) => [...p, ...commentThreads?.items]);
-        setCommentNextToken(commentThreads?.nextPageToken);
-        setCommentDataLoading(false);
+        if (commentThreads) {
+          setCommentData((p) => [...p, ...commentThreads?.items]);
+          setCommentNextToken(commentThreads?.nextPageToken);
+          setCommentDataLoading(false);
+          setCurrentResultsPageNum((p) => p + 1);
+        }
       }, 1000);
     } catch (err) {
       console.error("Fetch Data Error:" + err);
     }
   }
+
+  useEffect(() => {
+    console.log(ChannelData);
+    console.log(VideoData?.statistics?.commentCount);
+  }, [ChannelData]);
+  
 
   return (
     <div
@@ -88,16 +224,33 @@ export default function PlayVideoInterFacePage() {
       }}
       className="flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-y-auto"
     >
-      <FirstPartAndVideoPart
-        VideoID={VideoID}
-        VideoData={VideoData}
-        ChannelData={ChannelData}
-        CommentData={CommentData}
-        moreCommentThreads={moreCommentThreads}
-        CommentDataLoading={CommentDataLoading}
-      />
-      {/* <CommentInterface VideoID={VideoID} /> */}
-      <SecendPartAndReccomendPart reccomendVideoItem={reccomendVideoItem} />
+      {!error ? (
+        <>
+          <FirstPartAndVideoPart
+            VideoID={VideoID}
+            VideoData={VideoData}
+            ChannelData={ChannelData}
+            CommentData={CommentData}
+            moreCommentThreads={moreCommentThreads}
+            CommentDataLoading={CommentDataLoading}
+            loading={loading}
+          />
+          {/* <CommentInterface VideoID={VideoID} /> */}
+          <SecendPartAndReccomendPart reccomendVideoItem={reccomendVideoItem} />
+        </>
+      ) : (
+        <NoInterNetComponent
+          style={{
+            // width
+            minWidth: `${HomePageWidth}px`,
+            width: `${HomePageWidth}px`,
+
+            // height
+            minHeight: `${HomePageHeight}px`,
+            height: `${HomePageHeight}px`,
+          }}
+        />
+      )}
     </div>
   );
 }
