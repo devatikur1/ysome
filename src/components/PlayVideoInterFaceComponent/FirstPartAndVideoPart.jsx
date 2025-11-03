@@ -17,14 +17,17 @@ export default function FirstPartAndVideoPart({
   videoDetails,
 }) {
   const videoPartRef = useRef(null);
-  const [VideoPart, setVideoPart] = useState()
+  const [VideoPart, setVideoPart] = useState();
 
   useEffect(() => {
     console.log(videoPartRef);
-    
+
     setVideoPart(videoPartRef.current.offsetWidth);
   }, [videoPartRef]);
+
+  console.log(ChannelData);
   
+
   return (
     <section
       ref={videoPartRef}
@@ -111,7 +114,7 @@ export default function FirstPartAndVideoPart({
                     {/* Title and Meta */}
                     <div className="flex flex-col justify-start overflow-hidden">
                       <p className="text-sm md:text-[1.03rem] line-clamp-1 text-text/90 font-semibold">
-                        {ChannelData?.snippet?.localized?.title}
+                        {ChannelData?.snippet?.title}
                       </p>
                       <span className="text-[0.68rem] md:text-xs truncate text-subtext font-medium">
                         {millify(ChannelData?.statistics?.subscriberCount)}{" "}

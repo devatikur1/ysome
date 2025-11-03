@@ -3,11 +3,11 @@ import { GetDataWithSearch } from "./GetDataWithSearch";
 
 export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
   try {
-    // একসাথে সব search query রেজাল্ট আনা
+    //  search query 
     const results = await Promise.all(
       queries.map((query, index) =>
         GetDataWithSearch({
-          maxResults: 120 / queries.length,
+          maxResults: 150 / queries.length,
           query,
           nxtPgToken: nxtPgTokens?.[index]?.token || "",
           key: apiKey,
@@ -17,8 +17,10 @@ export async function GetsetReccomendData({ queries, nxtPgTokens, apiKey }) {
 
     const recVideoItem = [];
     const newNextTokens = [];
+    console.log(results);
+    
 
-    // অন্তত একটি valid result আছে কিনা চেক
+    // valid result 
     if (results.some((r) => r && r.items)) {
       results.forEach((data, idx) => {
         if (!data?.items?.length) return;

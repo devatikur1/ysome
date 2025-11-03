@@ -67,13 +67,14 @@ export default function PlayVideoInterFacePage() {
       setLoading(true);
       setReccomendLoading(true);
       try {
-        const vdDetails = await GetVideoDetails({
-          videoID: videoId,
-          key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
-        });
+        // const vdDetails = await GetVideoDetails({
+        //   videoID: videoId,
+        //   key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+        // });
+        // console.log(vdDetails);
 
         // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
-        // const vdDetails = undefined;
+        const vdDetails = undefined;
         if (!vdDetails) {
           console.error("Video details not found!");
           setVideoDetails({});
@@ -159,12 +160,17 @@ export default function PlayVideoInterFacePage() {
         chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
         setVideoData(vdData);
         setChannelData(chData);
+        console.log(vdData);
+        console.log(chData);
 
         const { newNextTokens, recVideoItem } = await GetsetReccomendData({
           queries: vdData?.snippet?.tags,
           nxtPgTokens: ReccomendYt_2NextToken,
-          apiKey,
+          apiKey: apiKey, // "AIzaSyBiTEOBIXZrKisPp01BMzAo9acbX0JpYt8"
         });
+        console.log(newNextTokens);
+        console.log("recVideoItem");
+        console.log(recVideoItem);
 
         setReccomendVideoItem(recVideoItem);
         setReccomendYt_2NextToken(newNextTokens);

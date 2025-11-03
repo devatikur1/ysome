@@ -7,6 +7,50 @@ export default function SecendPartAndReccomendPart({
 }) {
   return (
     <section className="relative w-full md:w-1/3 md:h-full grid sm:grid-cols-2 gap-4">
+      {reccomendVideoItem?.map((item) => {
+        console.log(item);
+        console.log(item?.thumbnails);
+
+        return (
+          <Link
+            key={item?.id}
+            to={`/watch?v=${item?.id}`}
+            className="hover:scale-[1.01] transition-transform duration-300"
+          >
+            <article className="flex flex-col gap-3 w-full">
+              {/* Thumbnail */}
+              <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
+                <img
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                  src={item?.thumbnails[1]?.url}
+                  alt={item?.title || "Video Thumbnail"}
+                />
+              </div>
+
+              {/* Video Info */}
+              <div className="flex flex-col justify-start overflow-hidden">
+                {/* Title */}
+                <h3 className="line-clamp-2 text-[0.85rem] lg:text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
+                  {item?.title}
+                </h3>
+
+                {/* Channel Name */}
+                <p className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90">
+                  {item?.name}
+                </p>
+
+                {/* Published Time */}
+                <div className="flex items-center gap-1 text-xs lg:text-sm text-neutral-400 mt-1">
+                  <time dateTime={item?.publishedTimeText}>
+                    {item?.publishedTimeText}
+                  </time>
+                </div>
+              </div>
+            </article>
+          </Link>
+        );
+      })}
       {ReccomendLoading &&
         [...Array(23)].map((_, i) => (
           <aside
@@ -53,52 +97,6 @@ export default function SecendPartAndReccomendPart({
       `}</style>
           </aside>
         ))}
-      {
-        !ReccomendLoading && reccomendVideoItem?.map((item) => {
-          console.log(item);
-          console.log(item?.thumbnails);
-
-          return (
-            <Link
-              key={item?.id}
-              to={`/watch?v=${item?.id}`}
-              className="hover:scale-[1.01] transition-transform duration-300"
-            >
-              <article className="flex flex-col gap-3 w-full">
-                {/* Thumbnail */}
-                <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
-                  <img
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                    src={item?.thumbnails[1]?.url}
-                    alt={item?.title || "Video Thumbnail"}
-                  />
-                </div>
-
-                {/* Video Info */}
-                <div className="flex flex-col justify-start overflow-hidden">
-                  {/* Title */}
-                  <h3 className="line-clamp-2 text-[0.85rem] lg:text-[0.95rem] font-medium text-text/95 leading-snug mb-0.5">
-                    {item?.title}
-                  </h3>
-
-                  {/* Channel Name */}
-                  <p className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90">
-                    {item?.name}
-                  </p>
-
-                  {/* Published Time */}
-                  <div className="flex items-center gap-1 text-xs lg:text-sm text-neutral-400 mt-1">
-                    <time dateTime={item?.publishedTimeText}>
-                      {item?.publishedTimeText}
-                    </time>
-                  </div>
-                </div>
-              </article>
-            </Link>
-          );
-        })
-      }
     </section>
   );
 }
