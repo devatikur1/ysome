@@ -64,6 +64,7 @@ export default function PlayVideoInterFacePage() {
         //   key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
         // });
 
+        // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
         const vdDetails = undefined;
 
         if (!vdDetails) {
@@ -121,12 +122,47 @@ export default function PlayVideoInterFacePage() {
         setVideoData(VdData);
 
         // Channel Data
+        // const CHData = {
+        //   kind: "youtube#channel",
+        //   id: vdDetails.channel?.id,
+        //   snippet: {
+        //     title: vdDetails.channel?.name,
+        //     thumbnails: vdDetails.channel?.avatar,
+        //     localized: {
+        //       title: vdDetails.channel?.name,
+        //     },
+        //   },
+        //   statistics: {
+        //     subscriberCount: ParseMillified(
+        //       vdDetails.channel?.subscriberCountText?.split(" ")[0]
+        //     ),
+        //     hiddenSubscriberCount: false,
+        //   },
+        // };
         const CHData = {
           kind: "youtube#channel",
+          etag: "zxZCko45_3OqYcrY1M5b3GySfrk",
           id: vdDetails.channel?.id,
           snippet: {
             title: vdDetails.channel?.name,
-            thumbnails: vdDetails.channel?.avatar,
+            customUrl: vdDetails.channel?.handle,
+            thumbnails: {
+              default: {
+                url: vdDetails?.channel?.avatar[0].url,
+                width: 88,
+                height: 88,
+              },
+              medium: {
+                url: vdDetails?.channel?.avatar[1].url,
+                width: 240,
+                height: 240,
+              },
+              high: {
+                url: vdDetails?.channel?.avatar[2].url,
+                width: 800,
+                height: 800,
+              },
+            },
             localized: {
               title: vdDetails.channel?.name,
             },
@@ -135,10 +171,11 @@ export default function PlayVideoInterFacePage() {
             subscriberCount: ParseMillified(
               vdDetails.channel?.subscriberCountText?.split(" ")[0]
             ),
-            hiddenSubscriberCount: false,
           },
         };
         setChannelData(CHData);
+        setReccomendVideoItem(vdDetails?.related?.items);
+        setReccomendNextToken(vdDetails?.related?.nextToken);
       } else {
         console.log(false);
 
@@ -209,7 +246,6 @@ export default function PlayVideoInterFacePage() {
     console.log(ChannelData);
     console.log(VideoData?.statistics?.commentCount);
   }, [ChannelData]);
-  
 
   return (
     <div
@@ -222,7 +258,7 @@ export default function PlayVideoInterFacePage() {
         minHeight: `${HomePageHeight}px`,
         height: `${HomePageHeight}px`,
       }}
-      className="flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-y-auto"
+      className="flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-x-hidden overflow-y-auto"
     >
       {!error ? (
         <>
