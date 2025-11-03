@@ -116,7 +116,7 @@ export default function Header() {
                 className="w-[35px] h-[35px] rounded-full"
                 src={
                   userData?.photo ||
-                  "https://instagram.fdac177-1.fna.fbcdn.net/v/t51.2885-19/567178286_17863888932499906_7273792819368666453_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fdac177-1.fna.fbcdn.net&_nc_cat=110&_nc_oc=Q6cZ2QFa0veppL6rpQ22GH3WwhocF8FoTiBn6z_VmiQi9gTndS9lWFT3aBe_HDhAmW1wMSM&_nc_ohc=9emgl_a8EXYQ7kNvwGFjbGf&_nc_gid=YwiaDbob3m5j6vdW4y_RtQ&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Affq7pwletZin-6SbxzCchrXKZexaI46qQLsLuZE4tyuuA&oe=690AC6BB&_nc_sid=7a9f4b"
+                  "https://i.ibb.co/BHdCYn44/empty-Profile-Pic.jpghttps://i.ibb.co/vxQ0d6BZ/567178286-17863888932499906-7273792819368666453-n.jpg"
                 }
                 alt=""
               />
