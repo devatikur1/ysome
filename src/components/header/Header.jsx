@@ -4,7 +4,6 @@ import googleLogo from "../../assets/google.png";
 import { Bell, Menu, Plus, Search } from "lucide-react";
 import { UiContext } from "../../contexts/Ui/UiContext";
 import clsx from "clsx";
-import { GoogleAuth } from "../../contexts/Firebase/Auth/GoogleAuth";
 import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
 
 export default function Header() {
@@ -24,25 +23,15 @@ export default function Header() {
   } = useContext(UiContext);
 
   // Firebase Context
-  const { isLogged, setUpdateLoggedStatus, userData } =
-    useContext(FirebaseContext);
+  const {
+    isLogged,
+    userData,
+    handleGoogleSignIn,
+  } = useContext(FirebaseContext);
 
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);
 
-  // handle Google Sign-In
-  const handleGoogleSignIn = async () => {
-    if (googleIsDis) return;
-    setGoogleIsDis(true);
-    try {
-      await GoogleAuth();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setGoogleIsDis(false);
-      setUpdateLoggedStatus((p) => p + 1);
-    }
-  };
 
   return (
     <header className="w-full h-full max-h-[60px] flex justify-between items-center px-5 py-2 border-border border-b *:select-none">
@@ -114,16 +103,13 @@ export default function Header() {
             <article>
               <img
                 className="w-[35px] h-[35px] rounded-full"
-                src={
-                  userData?.photo ||
-                  "https://i.ibb.co/BHdCYn44/empty-Profile-Pic.jpghttps://i.ibb.co/vxQ0d6BZ/567178286-17863888932499906-7273792819368666453-n.jpg"
-                }
+                src={userData?.photo}
                 alt=""
               />
             </article>
           </>
         ) : (
-          <article onClick={handleGoogleSignIn}>
+          <article onClick={() => handleGoogleSignIn({ setGoogleIsDis: setGoogleIsDis, googleIsDis: googleIsDis })}>
             <button
               disabled={googleIsDis}
               className="bg-surface hover:bg-hover border border-border transition-all duration-300 

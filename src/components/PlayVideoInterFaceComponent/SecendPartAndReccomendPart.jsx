@@ -7,8 +7,9 @@ export default function SecendPartAndReccomendPart({
 }) {
   return (
     <section className="relative w-full md:w-1/3 md:h-full grid sm:grid-cols-2 gap-4">
+      
+      {/* When reccomendVideoItem Video Loading */}
       {reccomendVideoItem?.map((item) => {
-
         return (
           <Link
             key={item?.id}
@@ -51,6 +52,8 @@ export default function SecendPartAndReccomendPart({
           </Link>
         );
       })}
+
+      {/* When Reccomend Video Loading */}
       {ReccomendLoading &&
         [...Array(23)].map((_, i) => (
           <aside

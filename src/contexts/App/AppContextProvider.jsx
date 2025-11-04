@@ -220,10 +220,10 @@ export default function AppContextProvider({ children }) {
   }, [pageError]);
 
   // temp
-  useEffect(() => {
-    console.log(videosData);
-    console.log(channelsData);
-  }, [channelsData, videosData]);
+  // useEffect(() => {
+  //   console.log(videosData);
+  //   console.log(channelsData);
+  // }, [channelsData, videosData]);
   
 
   // context value

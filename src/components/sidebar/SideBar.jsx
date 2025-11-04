@@ -9,7 +9,6 @@ import { AnimatePresence, motion } from "motion/react";
 import MenuItem from "./part/MenuItem";
 import SubscribeItem from "./part/SubscribeItem";
 import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
-import { GoogleAuth } from "../../contexts/Firebase/Auth/GoogleAuth";
 import googleLogo from "../../assets/google.png";
 import clsx from "clsx";
 
@@ -57,25 +56,12 @@ const subscriptions = {
 
 export default function SideBar({ type = "", Height }) {
   const { isReSideBarShow } = useContext(UiContext);
+
   // Firebase Context
-  const { isLogged, setUpdateLoggedStatus } = useContext(FirebaseContext);
+  const { isLogged, handleGoogleSignIn } = useContext(FirebaseContext);
 
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);
-
-  // handle Google Sign-In
-  const handleGoogleSignIn = async () => {
-    if (googleIsDis) return;
-    setGoogleIsDis(true);
-    try {
-      await GoogleAuth();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setGoogleIsDis(false);
-      setUpdateLoggedStatus((p) => p + 1);
-    }
-  };
 
   return (
     <motion.aside
@@ -155,10 +141,17 @@ export default function SideBar({ type = "", Height }) {
                     minHeight: 200,
                     height: 200,
                   }}
-                  transition={{ duration: 0.5}}
+                  transition={{ duration: 0.5 }}
                   className="w-full max-h-[200px] flex justify-center items-center"
                 >
-                  <article onClick={handleGoogleSignIn}>
+                  <article
+                    onClick={() =>
+                      handleGoogleSignIn({
+                        setGoogleIsDis: setGoogleIsDis,
+                        googleIsDis: googleIsDis,
+                      })
+                    }
+                  >
                     <button
                       disabled={googleIsDis}
                       className="bg-surface hover:bg-hover border border-border transition-all duration-300 

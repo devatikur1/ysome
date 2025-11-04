@@ -44,6 +44,9 @@ export default function PlayVideoInterFacePage() {
   const [IsVdDetailsFetch, setIsVdDetailsFetch] = useState(false);
   const [videoDetails, setVideoDetails] = useState({});
 
+  // Like and sub object
+  const [likeObject, setlikeObject] = useState({});
+
   // Ref
   const containerRef = useRef(null);
   const scrollTriggeredRef = useRef(false);
@@ -51,6 +54,7 @@ export default function PlayVideoInterFacePage() {
   // ------------------------
   // Fetch Video Details
   // ------------------------
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const videoId = params.get("v");
@@ -126,6 +130,7 @@ export default function PlayVideoInterFacePage() {
             commentCount: ParseMillified(vd.commentCountText),
           },
         };
+
         document.title = vd?.title;
         // chData modify
         chData = {
@@ -171,7 +176,6 @@ export default function PlayVideoInterFacePage() {
 
         setCommentData(relatedVideo?.items || []);
         setReccomendYt_1NextToken(relatedVideo?.nextToken || "");
-
       }
 
       setReccomendLoading(false);
@@ -197,6 +201,25 @@ export default function PlayVideoInterFacePage() {
 
     fetchAllData();
   }, [videoDetails, IsVdDetailsFetch, apiKey]);
+
+  
+  // ------------------------
+  // Create  a LikeObj
+  // ------------------------
+
+  useEffect(() => {
+    if (!ChannelData && !VideoData) return;
+    let lkObj = {
+      video: {
+        ...VideoData,
+      },
+      channel: {
+        ...ChannelData,
+      },
+      publishedAt: new Date().toString(),
+    };
+    setlikeObject(lkObj);
+  }, [ChannelData, VideoData]);
 
   // ------------------------
   // Load More Comments
@@ -233,8 +256,6 @@ export default function PlayVideoInterFacePage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", async (value) => {
-
-      
       if (
         value > 0.9 &&
         !ReccomendLoading &&
@@ -251,7 +272,7 @@ export default function PlayVideoInterFacePage() {
             nextPageNoken: ReccomendYt_1NextToken,
             key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
           });
-          
+
           setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
           setReccomendYt_1NextToken(relatedVideo?.nextToken);
         } catch (err) {
@@ -264,12 +285,7 @@ export default function PlayVideoInterFacePage() {
     });
 
     return () => unsubscribe();
-  }, [
-    scrollYProgress,
-    ReccomendYt_1NextToken,
-    ReccomendLoading,
-    VideoData,
-  ]);
+  }, [scrollYProgress, ReccomendYt_1NextToken, ReccomendLoading, VideoData]);
 
   // ------------------------
   // JSX Render
@@ -295,6 +311,7 @@ export default function PlayVideoInterFacePage() {
         loading={loading}
         IsVdDetails={IsVdDetails}
         videoDetails={videoDetails}
+        likeObject={likeObject}
       />
       <SecendPartAndReccomendPart
         reccomendVideoItem={reccomendVideoItem}

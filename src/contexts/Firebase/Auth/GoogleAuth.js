@@ -18,14 +18,11 @@ export const GoogleAuth = async () => {
     };
 
     const ISSet = await SetAuthData({
-      collectionName: "loggedUserData",
       documentID: user.email,
       data: userObj,
     });
 
     if (!ISSet) throw new Error("Failed to save user data to Firestore");
-
-    console.log("✅ Google Login Success:", userObj);
 
     return { success: true, user: userObj };
   } catch (error) {
