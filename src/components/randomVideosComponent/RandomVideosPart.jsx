@@ -86,7 +86,7 @@ export default function RandomVideosPart({
               className="flex items-center gap-1 text-xs lg:text-sm text-neutral-400 mt-1"
             >
               <span className="text-white/80 font-medium">
-                {millify(viewCount)}
+                {millify(Number(viewCount))}
               </span>
               <span aria-hidden="true" className="text-neutral-500">
                 •
