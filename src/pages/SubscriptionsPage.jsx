@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AllSubscriptionsPart from "../components/SubscriptionsComponent/AllSubscriptionsPart";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import clsx from "clsx";
+import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 
 export default function SubscriptionsPage() {
   const [showActivity, setShowActivity] = useState(false);
@@ -10,6 +11,7 @@ export default function SubscriptionsPage() {
   const seceltionRef = useRef(null);
   const optionRef = useRef(null);
   // const [showActivity, setShowActivity] = useState(false);
+  const { subscriptions, UnSubscribe } = useContext(FirebaseContext);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -25,6 +27,12 @@ export default function SubscriptionsPage() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    document.title = "All subscriptions";
+  }, [])
+  
+
   return (
     <section className="px-5 py-12 flex flex-col justify-start items-center select-none *:select-none">
       <article className="md:w-[80%] lg:w-[90%] xl:w-[60%] h-full flex flex-col gap-20 relative">
@@ -43,7 +51,11 @@ export default function SubscriptionsPage() {
             </div>
           </div>
         </section>
-        <AllSubscriptionsPart activeOptionName={activeOptionName} />
+        <AllSubscriptionsPart
+          subscriptions={subscriptions}
+          activeOptionName={activeOptionName}
+          UnSubscribe={UnSubscribe}
+        />
         <AnimatePresence>
           {showActivity === true && (
             <motion.div

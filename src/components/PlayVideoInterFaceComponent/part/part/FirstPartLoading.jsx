@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function FirstPartLoading() {
   return (
-    <div className="space-y-5 p-5 relative w-full h-[80%]">
+    <div className="space-y-5 p-5 relative w-full h-[90%] pb-14">
       {/* 🔹 Custom shimmer animation */}
       <style>{`
         @keyframes shimmer {

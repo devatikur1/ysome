@@ -11,6 +11,7 @@ import RandomVideosPage from "./pages/RandomVideosPage";
 import RandomShortsPage from "./pages/RandomShortsPage";
 import SubscriptionsPage from "./pages/SubscriptionsPage";
 import PlayVideoInterFacePage from "./pages/PlayVideoInterFacePage";
+import LikedVideoPage from "./pages/LikedVideoPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -20,6 +21,7 @@ export default function App() {
           <Route index element={<RandomVideosPage />} />
           <Route path="shorts/*" element={<RandomShortsPage />} />
           <Route path="/channel" element={<SubscriptionsPage />} />
+          <Route path="/liked" element={<LikedVideoPage />} />
         </Route>
         <Route path="/watch" element={<PlayVideoInterFacePage />} />
         {/* <Route path="watch?v=:id" /> */}

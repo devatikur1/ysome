@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FirebaseContext } from "./FirebaseContext";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./Firebase";
 import { GoogleAuth } from "./Auth/GoogleAuth";
 import { GetUsd } from "./Firestore/GetUsd";
@@ -10,7 +10,9 @@ import { DeleteUsd } from "./Firestore/DeleteUsd";
 
 export default function FirebaseContextProvider({ children }) {
   // 🔹 Logged state
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(
+    localStorage.getItem("logged") || false
+  );
 
   // 🔹 User Data
   const [userData, setUserData] = useState({});
@@ -32,7 +34,10 @@ export default function FirebaseContextProvider({ children }) {
   // ---------------------------------------
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) return;
+      if (!user) {
+        setIsLogged(false);
+        return;
+      }
       setUserID(user.email);
 
       // 🔹 1️⃣ Get logged-user main data
@@ -93,6 +98,7 @@ export default function FirebaseContextProvider({ children }) {
   // ------------------------------------------------
   // ✅ When Update userAllLikedVdData then call this
   // ------------------------------------------------
+
   useEffect(() => {
     let ids = new Set();
     userAllLikedVdData.forEach((dt) => {
@@ -104,6 +110,7 @@ export default function FirebaseContextProvider({ children }) {
   // ------------------------------------------------
   // ✅ When Update userAllLikedVdData then call this
   // ------------------------------------------------
+
   useEffect(() => {
     let ids = new Set();
     subscriptions.forEach((dt) => {
@@ -159,11 +166,14 @@ export default function FirebaseContextProvider({ children }) {
   // ✅ Subscribe funtion
   // ------------------------
 
-  async function Subscribe({ cdId }) {
+  async function Subscribe({ cdId, ChannelData }) {
     if (!cdId && !userID) return;
 
     let data = {
       publishedAt: new Date().toString(),
+      data: {
+        ...ChannelData,
+      },
     };
 
     let IsLike = await SetUsd({
@@ -175,7 +185,7 @@ export default function FirebaseContextProvider({ children }) {
 
     if (!IsLike) return;
 
-    setUserAllLikedVdData((p) => [
+    setSubscriptions((p) => [
       {
         id: cdId,
         ...data,
@@ -198,8 +208,10 @@ export default function FirebaseContextProvider({ children }) {
     });
 
     if (!isDeleted) return;
+    console.log("ggg");
+    
 
-    setUserAllLikedVdData((prev) => prev.filter((item) => item.id !== cdId));
+    setSubscriptions((prev) => prev.filter((item) => item.id !== cdId));
   }
 
   // ------------------------
@@ -227,11 +239,12 @@ export default function FirebaseContextProvider({ children }) {
     isLogged,
     userData,
     handleGoogleSignIn,
-    
+
     AddLike,
     DeleteLike,
     userAllLikedVdID,
 
+    subscriptions,
     Subscribe,
     UnSubscribe,
     subscriptionsCID,

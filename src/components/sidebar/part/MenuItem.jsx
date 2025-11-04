@@ -2,10 +2,10 @@ import clsx from "clsx";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export default function MenuItem({ icon, label, to, isReSideBarShow }) {
+export default function MenuItem({ icon, label, to, isReSideBarShow, isLogged }) {
   return (
     <NavLink
-      to={to}
+      to={to === "/channel" && isLogged === false ? "/" : to}
       className={({ isActive }) =>
         clsx(
           "w-full",

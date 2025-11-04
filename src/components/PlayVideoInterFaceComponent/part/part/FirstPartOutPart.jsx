@@ -68,7 +68,7 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
       await UnSubscribe({ cdId: ChannelData?.id });
     } else {
       setisSubscribe(true);
-      await Subscribe({ cdId: ChannelData?.id });
+      await Subscribe({ cdId: ChannelData?.id, ChannelData: ChannelData });
     }
   }
 
@@ -118,10 +118,9 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
                   </p>
                   <span className="text-[0.68rem] md:text-xs truncate text-subtext font-medium">
                     {millify(
-                      (Number(ChannelData?.statistics?.subscriberCount) +
-                      isSubscribe
-                        ? 1
-                        : 0) || 0
+                      Number(
+                        ChannelData?.statistics?.subscriberCount + (isSubscribe ? 1 : 0)
+                      )
                     )}{" "}
                     subscribers
                   </span>

@@ -132,38 +132,16 @@ export default function PlayVideoInterFacePage() {
         };
 
         document.title = vd?.title;
-        // chData modify
-        chData = {
-          kind: "youtube#channel",
-          id: vd.channel?.id,
-          snippet: {
-            title: vd.channel?.name,
-            customUrl: vd.channel?.handle,
-            thumbnails: {
-              default: { url: vd.channel?.avatar[0]?.url },
-              medium: { url: vd.channel?.avatar[1]?.url },
-              high: { url: vd.channel?.avatar[2]?.url },
-            },
-          },
-          statistics: {
-            subscriberCount: ParseMillified(
-              vd.channel?.subscriberCountText?.split(" ")[0]
-            ),
-          },
-        };
 
         // set many Data
         setVideoData(vdData);
-        setChannelData(chData);
         setReccomendVideoItem(vd.related?.items || []);
         setReccomendYt_1NextToken(vd.related?.nextToken || "");
       } else {
         // if videoDetails not available
         vdData = await GetVideoData(VideoID, apiKey);
-        chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
-        setVideoData(vdData);
         document.title = vdData?.snippet?.title;
-        setChannelData(chData);
+        setVideoData(vdData);
 
         setReccomendLoading(true);
 
@@ -176,12 +154,14 @@ export default function PlayVideoInterFacePage() {
 
         setCommentData(relatedVideo?.items || []);
         setReccomendYt_1NextToken(relatedVideo?.nextToken || "");
+        setReccomendLoading(false);
       }
 
-      setReccomendLoading(false);
-      setCommentDataLoading(true);
+      chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
+      setChannelData(chData);
 
       // Fetch Comments
+      setCommentDataLoading(true);
       try {
         const commentThreads = await GetCommentThreads({
           videoId: VideoID,
@@ -201,7 +181,6 @@ export default function PlayVideoInterFacePage() {
 
     fetchAllData();
   }, [videoDetails, IsVdDetailsFetch, apiKey]);
-
 
   // ------------------------
   // Create  a LikeObj

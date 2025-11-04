@@ -26,39 +26,35 @@ const menuItems = [
     section: "you",
     title: "You",
     SectionIcon: <ChevronRight size={18} />,
-    sectionPath: "/feed",
+    sectionPath: "/liked",
     items: [
-      { icon: <History size={21} />, label: "History", to: "/feed/history" },
-      { icon: <Youtube />, label: "Your videos", to: "/feed/@atikur" },
+      { icon: <History size={21} />, label: "History", to: "/history" },
+      { icon: <Youtube />, label: "Your videos", to: "/@atikur" },
       {
         icon: <ThumbsUp size={21} />,
         label: "Liked videos",
-        to: "/feed/liked",
+        to: "/liked",
       },
     ],
   },
 ];
 
 // ✅ also moved outside + const not let
-const subscriptions = {
+const subscriptionsDt = {
   section: "subscriptions",
   title: "Subscriptions",
   SectionIcon: <ChevronRight size={18} />,
-  sectionPath: "/feed/channels",
-  items: Array(8).fill({
-    date: "Sat Oct 18 2025 22:02:30 GMT+0600 (Bangladesh Standard Time)",
-    authUserName: "@TEE_TTH",
-    profilePic:
-      "https://yt3.googleusercontent.com/q3anTfz3tvsBdY3Cr0m3S0dy0-tEu2E8QdHIxn0x0XUC9R2LvgFiIMIL8n_3h45Wq2B8MpBH=s72-c-k-c0x00ffffff-no-rj",
-    authName: "Technique Easy Education",
-  }),
+  sectionPath: "/channel",
 };
 
 export default function SideBar({ type = "", Height }) {
   const { isReSideBarShow } = useContext(UiContext);
 
   // Firebase Context
-  const { isLogged, handleGoogleSignIn } = useContext(FirebaseContext);
+  const { isLogged, handleGoogleSignIn, subscriptions } =
+    useContext(FirebaseContext);
+
+  console.log(subscriptions);
 
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);
@@ -116,6 +112,7 @@ export default function SideBar({ type = "", Height }) {
                   label={item.label}
                   to={item.to}
                   isReSideBarShow={isReSideBarShow}
+                  isLogged={isLogged}
                 />
               );
             })}
@@ -170,26 +167,26 @@ export default function SideBar({ type = "", Height }) {
           </section>
         ))}
 
-        {isLogged && isReSideBarShow && subscriptions && (
+        {isLogged && isReSideBarShow && subscriptionsDt && (
           <section className="w-full flex flex-col justify-center gap-0.5 items-start py-2">
             <Link
-              to={subscriptions.sectionPath}
+              to={subscriptionsDt.sectionPath}
               className="w-full bg-bg hover:bg-bg-pecondary border border-transparent hover:border-border transition-all duration-300 flex items-center justify-start gap-5 rounded-xl px-4 py-2 mb-2"
             >
               <span className="truncate text-[1.1rem] font-medium leading-none">
-                {subscriptions.title}
+                {subscriptionsDt.title}
               </span>
               <div className="w-[21px] h-[21px] flex justify-end items-end">
-                {subscriptions.SectionIcon}
+                {subscriptionsDt.SectionIcon}
               </div>
             </Link>
 
-            {subscriptions.items.map((item, id) => (
+            {subscriptions.map((item, id) => (
               <SubscribeItem
                 key={id}
-                to={`/${item.authUserName}`}
-                authName={item.authName}
-                profilePic={item.profilePic}
+                to={`/${item?.data?.snippet?.customUrl}`}
+                authName={item?.data?.snippet?.title}
+                profilePic={item?.data?.snippet?.thumbnails?.high?.url}
                 isReSideBarShow={isReSideBarShow}
               />
             ))}

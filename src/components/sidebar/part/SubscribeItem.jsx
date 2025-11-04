@@ -16,14 +16,14 @@ export default function SubscribeItem({
     >
       <div className="flex justify-center items-center">
         <img
-          className="w-[28px] h-[28px] rounded-full object-cover"
+          className="w-[30px] h-[30px] rounded-full object-cover"
           src={profilePic}
           alt=""
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <span className="text-[0.85rem] truncate text-text mb-0.5">
+        <span className="text-[1rem] font-medium truncate text-text mb-0.5">
           {authName}
         </span>
       </div>
