@@ -1,9 +1,9 @@
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 
-export async function SetAuthData({ collectionName, documentID, data }) {
+export async function SetAuthData({ documentID, data }) {
   try {
-    if (!collectionName || !documentID || !data) {
+    if ( !documentID || !data) {
       console.error("⚠️ Missing parameters in SetDataOnAuthId");
       return false;
     }
