@@ -21,8 +21,19 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
   } = prop;
 
   //🔹 FirebaseContext
-  const { AddLike, DeleteLike, userAllLikedVdID, Subscribe, UnSubscribe } =
-    useContext(FirebaseContext);
+  const {
+    // Like
+    AddLike,
+    DeleteLike,
+    userAllLikedVdID,
+
+    // Subscribe
+    Subscribe,
+    UnSubscribe,
+    subscriptionsCID,
+  } = useContext(FirebaseContext);
+
+  //🔹 context
   const [isLiked, setisLiked] = useState(false);
   const [isSubscribe, setisSubscribe] = useState(false);
 
@@ -31,6 +42,12 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
     let isLikes = userAllLikedVdID.find((uv) => uv === VideoID);
     setisLiked(isLikes);
   }, [userAllLikedVdID]);
+
+  //🔹 Update this when chnage subscriptionsCID
+  useEffect(() => {
+    let isLikes = subscriptionsCID.find((uv) => uv === VideoID);
+    setisSubscribe(isLikes);
+  }, [subscriptionsCID]);
 
   // handleLike
   async function handleLike() {
@@ -100,7 +117,12 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
                     {ChannelData?.snippet?.title || "Error"}
                   </p>
                   <span className="text-[0.68rem] md:text-xs truncate text-subtext font-medium">
-                    {millify(ChannelData?.statistics?.subscriberCount || 0)}{" "}
+                    {millify(
+                      (Number(ChannelData?.statistics?.subscriberCount) +
+                      isSubscribe
+                        ? 1
+                        : 0) || 0
+                    )}{" "}
                     subscribers
                   </span>
                 </div>
