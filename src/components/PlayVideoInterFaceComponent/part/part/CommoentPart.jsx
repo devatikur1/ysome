@@ -3,6 +3,7 @@ import millify from "millify";
 import moment from "moment";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function CommoentPart({ comment, replies }) {
   const [showReplies, setShowReplies] = useState(false);
@@ -11,7 +12,10 @@ export default function CommoentPart({ comment, replies }) {
   return (
     <aside className="border-b border-border overflow-auto scroll-none">
       {/* comment */}
-      <article className="flex justify-start gap-5 px-3 py-5">
+      <Link
+        to={`/${comment?.authorDisplayName}`}
+        className="flex justify-start gap-5 px-3 py-5"
+      >
         <section>
           <img
             className="rounded-full min-w-[45px] min-h-[45px] w-[45px] h-[45px] max-w-[45px] max-h-[45px]"
@@ -44,9 +48,9 @@ export default function CommoentPart({ comment, replies }) {
                   <ThumbsUp size={15} />
                 </span>
                 <span>
-                  {comment?.likeCount === 0
+                  {Number(comment?.likeCount) === 0
                     ? "Like"
-                    : millify(comment?.likeCount)}
+                    : millify(Number(comment?.likeCount))}
                 </span>
               </button>
 
@@ -67,7 +71,7 @@ export default function CommoentPart({ comment, replies }) {
             </button>
           </article>
         </section>
-      </article>
+      </Link>
       {/* replies */}
       <AnimatePresence>
         {replies?.length > 0 &&
