@@ -35,7 +35,8 @@ export default function ChannelCard({ channel }) {
             <>
               <span>•</span>
               <span className="text-subtext/80 text-xs">
-                {millify(channel?.statistics?.subscriberCount)} subscribers
+                {millify(Number(channel?.statistics?.subscriberCount))}{" "}
+                subscribers
               </span>
             </>
           )}
