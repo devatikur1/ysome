@@ -102,6 +102,17 @@ export default function FirebaseContextProvider({ children }) {
   }, [userAllLikedVdData]);
 
   // ------------------------------------------------
+  // ✅ When Update userAllLikedVdData then call this
+  // ------------------------------------------------
+  useEffect(() => {
+    let ids = new Set();
+    subscriptions.forEach((dt) => {
+      ids.add(dt.id);
+    });
+    setSubscriptionsCID(Array.from(ids));
+  }, [subscriptions]);
+
+  // ------------------------------------------------
   // ✅ AddLike funtion
   // ------------------------------------------------
 
@@ -215,14 +226,15 @@ export default function FirebaseContextProvider({ children }) {
   const value = {
     isLogged,
     userData,
-    subscriptions,
+    handleGoogleSignIn,
+    
     AddLike,
     DeleteLike,
     userAllLikedVdID,
-    userAllLikedVdData,
-    handleGoogleSignIn,
+
     Subscribe,
     UnSubscribe,
+    subscriptionsCID,
   };
 
   return (
