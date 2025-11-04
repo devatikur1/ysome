@@ -12,7 +12,7 @@ export default function CommoentInterFace({
     <div className="flex flex-col gap-4 mt-2">
       <article className="w-full py-5 pl-5 select-none cursor-pointer">
         <h1 className="text-xl font-semibold">
-          {millify(commentCount)} Comments
+          {millify(Number(commentCount))} Comments
         </h1>
       </article>
       {
