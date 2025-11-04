@@ -21,7 +21,6 @@ export default async function GetCommentThreads({ videoId, key, pageToken }) {
     }
 
     const data = await res.json();
-    console.log("Fetched comments:", data);
     return data;
   } catch (err) {
     console.error("Error fetching comment threads:", err);
