@@ -38,7 +38,9 @@ export default function AppContextProvider({ children }) {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(VideoData2);
+  const [apiKey, setApiKey] = useState(
+    "AIzaSyAFhOQVeWB1W6L6-WBVyq-ZJdwuJMiunho"
+  );
 
   // Items & Next Page Tokens & Maxmimam result
   const [items, setItems] = useState([]);
