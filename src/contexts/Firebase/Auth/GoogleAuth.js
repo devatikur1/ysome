@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../Firebase";
-import { SetDataOnAuthId } from "../Firestore/SetDataOnAuthId";
+import { SetAuthData } from "../Firestore/SetAuthData";
 
 export const GoogleAuth = async () => {
   const provider = new GoogleAuthProvider();
@@ -17,7 +17,7 @@ export const GoogleAuth = async () => {
       photo: user.photoURL || null,
     };
 
-    const ISSet = await SetDataOnAuthId({
+    const ISSet = await SetAuthData({
       collectionName: "loggedUserData",
       documentID: user.email,
       data: userObj,
