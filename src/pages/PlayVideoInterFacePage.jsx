@@ -72,7 +72,7 @@ export default function PlayVideoInterFacePage() {
       try {
         const vdDetails = await GetVideoDetails({
           videoID: videoId,
-          key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
         });
 
         // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
@@ -171,7 +171,7 @@ export default function PlayVideoInterFacePage() {
         const relatedVideo = await GetRelateVideos({
           videoID: VideoID,
           nextPageNoken: null,
-          key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
         });
 
         setCommentData(relatedVideo?.items || []);
@@ -202,7 +202,7 @@ export default function PlayVideoInterFacePage() {
     fetchAllData();
   }, [videoDetails, IsVdDetailsFetch, apiKey]);
 
-  
+
   // ------------------------
   // Create  a LikeObj
   // ------------------------
@@ -270,7 +270,7 @@ export default function PlayVideoInterFacePage() {
           const relatedVideo = await GetRelateVideos({
             videoID: VideoID,
             nextPageNoken: ReccomendYt_1NextToken,
-            key: "a75980a9fbmshfec67340042b102p10aefcjsn12c3ebc9e89c",
+            key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
           });
 
           setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
