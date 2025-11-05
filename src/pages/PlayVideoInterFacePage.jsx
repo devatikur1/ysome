@@ -72,7 +72,7 @@ export default function PlayVideoInterFacePage() {
       try {
         const vdDetails = await GetVideoDetails({
           videoID: videoId,
-          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
+          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811",
         });
 
         // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
@@ -143,17 +143,23 @@ export default function PlayVideoInterFacePage() {
         document.title = vdData?.snippet?.title;
         setVideoData(vdData);
 
-        setReccomendLoading(true);
+      }
 
-        // Fetch related Video
+      // Fetch related Video
+      setReccomendLoading(true);
+      try {
         const relatedVideo = await GetRelateVideos({
           videoID: VideoID,
-          nextPageNoken: null,
-          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
+          nextPageNoken: ReccomendYt_1NextToken,
+          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
         });
+        console.log(relatedVideo);
 
-        setCommentData(relatedVideo?.items || []);
-        setReccomendYt_1NextToken(relatedVideo?.nextToken || "");
+        setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
+        setReccomendYt_1NextToken(relatedVideo?.nextToken);
+      } catch (err) {
+        console.error("Comment Fetch Error:", err);
+      } finally {
         setReccomendLoading(false);
       }
 
@@ -235,6 +241,9 @@ export default function PlayVideoInterFacePage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", async (value) => {
+      console.log(value);
+      console.log(ReccomendYt_1NextToken);
+
       if (
         value > 0.9 &&
         !ReccomendLoading &&
@@ -249,8 +258,9 @@ export default function PlayVideoInterFacePage() {
           const relatedVideo = await GetRelateVideos({
             videoID: VideoID,
             nextPageNoken: ReccomendYt_1NextToken,
-            key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
+            key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
           });
+          console.log(relatedVideo);
 
           setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
           setReccomendYt_1NextToken(relatedVideo?.nextToken);
