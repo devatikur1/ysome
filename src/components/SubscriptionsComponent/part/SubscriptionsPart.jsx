@@ -17,8 +17,7 @@ export default function ChannelCard({ cid, channel, UnSubscribe }) {
       </NavLink>
 
       {/* Middle: Info */}
-      <NavLink
-        to={`/${channel?.snippet?.customUrl}`}
+      <div
         className="flex flex-col flex-1 min-w-0"
       >
         <div>
@@ -44,13 +43,13 @@ export default function ChannelCard({ cid, channel, UnSubscribe }) {
           )}
         </div>
 
-        <p
+        <pre
           className="text-sm text-text/80 mt-2 line-clamp-2"
           title={channel?.snippet?.description}
         >
           {channel?.snippet?.description}
-        </p>
-      </NavLink>
+        </pre>
+      </div>
 
       {/* Right: Subscribe Button */}
       <section

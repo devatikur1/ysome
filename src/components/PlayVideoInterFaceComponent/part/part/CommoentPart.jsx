@@ -7,24 +7,26 @@ import { Link } from "react-router-dom";
 
 export default function CommoentPart({ comment, replies }) {
   const [showReplies, setShowReplies] = useState(false);
+  console.log(replies);
+  
 
 
   return (
     <aside className="border-b border-border overflow-auto scroll-none">
       {/* comment */}
-      <Link
-        to={`/${comment?.authorDisplayName}`}
-        className="flex justify-start gap-5 px-3 py-5"
-      >
-        <section>
+      <div className="flex justify-start gap-5 px-3 py-5">
+        <Link to={`/${comment?.authorDisplayName}`}>
           <img
             className="rounded-full min-w-[45px] min-h-[45px] w-[45px] h-[45px] max-w-[45px] max-h-[45px]"
             src={comment?.authorProfileImageUrl}
             alt={comment?.textDisplay}
           />
-        </section>
+        </Link>
         <section>
-          <article className="flex items-center gap-1">
+          <Link
+            to={`/${comment?.authorDisplayName}`}
+            className="flex items-center gap-1"
+          >
             <p className="text-[0.83rem] text-text/90 font-medium">
               {comment?.authorDisplayName}
             </p>
@@ -34,7 +36,7 @@ export default function CommoentPart({ comment, replies }) {
             <time className="text-xs text-subtext">
               {moment(comment?.publishedAt).fromNow().replace("a ", "1 ")}
             </time>
-          </article>
+          </Link>
           <article>
             <p className="text-text/80 text-[0.9rem] text-wrap">
               {comment?.textOriginal}
@@ -71,7 +73,7 @@ export default function CommoentPart({ comment, replies }) {
             </button>
           </article>
         </section>
-      </Link>
+      </div>
       {/* replies */}
       <AnimatePresence>
         {replies?.length > 0 &&
@@ -93,15 +95,18 @@ export default function CommoentPart({ comment, replies }) {
               className="bg-bg-pecondary pl-28"
             >
               <article className="flex justify-start gap-5 px-3 py-5">
-                <section>
+                <Link to={`/${rp?.snippet?.authorDisplayName}`}>
                   <img
                     className="rounded-full min-w-[45px] min-h-[45px] w-[45px] h-[45px] max-w-[45px] max-h-[45px]"
                     src={rp?.snippet?.authorProfileImageUrl}
                     alt={rp?.snippet?.textDisplay}
                   />
-                </section>
+                </Link>
                 <section>
-                  <article className="flex items-center gap-1">
+                  <Link
+                    to={`/${rp?.snippet?.authorDisplayName}`}
+                    className="flex items-center gap-1"
+                  >
                     <p className="text-[0.83rem] text-text/90 font-medium">
                       {rp?.snippet?.authorDisplayName}
                     </p>
@@ -113,7 +118,7 @@ export default function CommoentPart({ comment, replies }) {
                         .fromNow()
                         .replace("a ", "1 ")}
                     </time>
-                  </article>
+                  </Link>
                   <article>
                     <p className="text-text/80 text-[0.9rem] text-wrap">
                       {rp?.snippet?.textOriginal}
