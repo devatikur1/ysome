@@ -153,7 +153,6 @@ export default function PlayVideoInterFacePage() {
           nextPageNoken: ReccomendYt_1NextToken,
           key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
         });
-        console.log(relatedVideo);
 
         setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
         setReccomendYt_1NextToken(relatedVideo?.nextToken);
@@ -241,8 +240,6 @@ export default function PlayVideoInterFacePage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", async (value) => {
-      console.log(value);
-      console.log(ReccomendYt_1NextToken);
 
       if (
         value > 0.9 &&
@@ -260,7 +257,6 @@ export default function PlayVideoInterFacePage() {
             nextPageNoken: ReccomendYt_1NextToken,
             key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
           });
-          console.log(relatedVideo);
 
           setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
           setReccomendYt_1NextToken(relatedVideo?.nextToken);

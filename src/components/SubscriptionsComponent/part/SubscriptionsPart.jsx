@@ -3,8 +3,6 @@ import millify from "millify";
 import { NavLink } from "react-router-dom";
 
 export default function ChannelCard({ cid, channel, UnSubscribe }) {
-  console.log(channel);
-
   return (
     <article className="flex items-center justify-between w-full gap-5 p-3 py-5 hover:bg-neutral-900/40 rounded-2xl transition-all duration-200 cursor-pointer">
       {/* Left: Photo */}

@@ -6,7 +6,6 @@ export default function AllSubscriptionsPart({
   subscriptions,
   UnSubscribe,
 }) {
-  console.log(subscriptions);
 
   return (
     <section className="w-full flex flex-col gap-6">

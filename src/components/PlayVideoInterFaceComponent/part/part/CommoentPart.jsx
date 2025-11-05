@@ -7,9 +7,6 @@ import { Link } from "react-router-dom";
 
 export default function CommoentPart({ comment, replies }) {
   const [showReplies, setShowReplies] = useState(false);
-  console.log(replies);
-  
-
 
   return (
     <aside className="border-b border-border overflow-auto scroll-none">

@@ -208,8 +208,6 @@ export default function FirebaseContextProvider({ children }) {
     });
 
     if (!isDeleted) return;
-    console.log("ggg");
-    
 
     setSubscriptions((prev) => prev.filter((item) => item.id !== cdId));
   }

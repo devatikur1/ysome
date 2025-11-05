@@ -54,8 +54,6 @@ export default function SideBar({ type = "", Height }) {
   const { isLogged, handleGoogleSignIn, subscriptions } =
     useContext(FirebaseContext);
 
-  console.log(subscriptions);
-
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);
 
