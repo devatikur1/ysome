@@ -190,6 +190,13 @@ export default function SideBar({ type = "", Height }) {
                 isReSideBarShow={isReSideBarShow}
               />
             ))}
+            {subscriptions?.length === 0 && (
+              <div className="flex justify-center items-center w-full h-auto">
+                <p className="text-subtext text-sm text-center py-32">
+                  No subscriptions found...
+                </p>
+              </div>
+            )}
           </section>
         )}
       </main>

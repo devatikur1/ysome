@@ -31,6 +31,9 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
     Subscribe,
     UnSubscribe,
     subscriptionsCID,
+
+    // isLogged
+    isLogged,
   } = useContext(FirebaseContext);
 
   //🔹 context
@@ -97,8 +100,9 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
         {/* Channel data && Like comment data */}
         <section className="w-full flex flex-col sm:flex-row gap-3 justify-between">
+
           {/* Channel Data */}
-          <article className="flex items-end gap-5">
+          <article className="flex items-end gap-5 w-[50%]">
             <Link to={ChannelData?.snippet?.customUrl}>
               <article className="flex items-center gap-2">
                 {/* Channel Avatar */}
@@ -113,13 +117,14 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
                 {/* Title and Meta */}
                 <div className="flex flex-col justify-start overflow-hidden">
-                  <p className="text-sm md:text-[1.03rem] line-clamp-1 text-text/90 font-semibold">
+                  <p className="text-sm md:text-[1rem] line-clamp-1 text-text/90 font-semibold">
                     {ChannelData?.snippet?.title || "Error"}
                   </p>
-                  <span className="text-[0.68rem] md:text-xs truncate text-subtext font-medium">
+                  <span className="text-[0.6rem] md:text-xs truncate text-subtext font-medium">
                     {millify(
                       Number(
-                        ChannelData?.statistics?.subscriberCount + (isSubscribe ? 1 : 0)
+                        ChannelData?.statistics?.subscriberCount +
+                          (isSubscribe ? 1 : 0)
                       )
                     )}{" "}
                     subscribers
@@ -132,11 +137,17 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
               className="flex justify-center items-center"
             >
               {isSubscribe ? (
-                <button className="bg-surface text-text/80 px-3 py-2 leading-none rounded-full text-[0.8rem] md:text-[0.85rem] font-medium border border-border transition">
+                <button
+                  disabled={!isLogged}
+                  className="bg-surface text-text/80 px-3 py-2 leading-none rounded-full text-[0.8rem] md:text-[0.85rem] font-medium border border-border transition disabled:pointer-events-none disabled:opacity-85 disabled:cursor-none"
+                >
                   Subscribed
                 </button>
               ) : (
-                <button className="bg-text text-bg/80 px-3 py-2 leading-none rounded-full text-[0.8rem] md:text-[0.85rem] font-medium border border-border transition">
+                <button
+                  disabled={!isLogged}
+                  className="bg-text text-bg/80 px-3 py-2 leading-none rounded-full text-[0.8rem] md:text-[0.85rem] font-medium border border-border transition disabled:pointer-events-none disabled:opacity-85 disabled:cursor-none"
+                >
                   Subscribe
                 </button>
               )}
@@ -148,10 +159,11 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
             <article className="flex justify-center items-center bg-surface text-text/80 rounded-full text-[0.85rem] font-medium border border-border transition">
               {/* Like */}
               <button
+                disabled={!isLogged}
                 onClick={handleLike}
                 className={`flex items-center gap-1.5 px-3 py-1 border-r-2 border-border rounded-s-full ${
                   isLiked ? "bg-bg/80" : "hover:bg-bg"
-                }`}
+                }  disabled:pointer-events-none disabled:opacity-85 disabled:cursor-none`}
               >
                 <span>
                   <ThumbsUp

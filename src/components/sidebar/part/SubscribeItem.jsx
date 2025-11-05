@@ -22,8 +22,8 @@ export default function SubscribeItem({
         />
       </div>
 
-      <div className="flex flex-col gap-1">
-        <span className="text-[1rem] font-medium truncate text-text mb-0.5">
+      <div className="w-[80%] flex flex-col justify-end gap-1">
+        <span className="text-[0.9rem] font-medium truncate text-text mb-0.5">
           {authName}
         </span>
       </div>

@@ -13,11 +13,12 @@ export default function AllSubscriptionsPart({
       {subscriptions.map((channel, i) => (
         <SubscriptionsPart
           key={i}
-          channel={channel}
+          cid={channel?.id}
+          channel={channel?.data}
           UnSubscribe={UnSubscribe}
         />
       ))}
-      {subscriptions <= 0 && (
+      {subscriptions.length === 0 && (
         <p className="text-subtext text-center py-32">
           No subscriptions found...
         </p>
