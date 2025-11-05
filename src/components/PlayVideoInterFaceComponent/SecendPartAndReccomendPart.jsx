@@ -13,17 +13,19 @@ export default function SecendPartAndReccomendPart({
             <Link
               key={item?.id}
               to={`/watch?v=${item?.id}`}
-              className="hover:scale-[1.01] transition-transform duration-300"
             >
               <article className="flex flex-col gap-3 w-full">
                 {/* Thumbnail */}
-                <div className="w-full aspect-video rounded-xl overflow-hidden border border-border">
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border">
                   <img
                     loading="lazy"
                     className="w-full h-full object-cover"
                     src={item?.thumbnails[1]?.url}
                     alt={item?.title || "Video Thumbnail"}
                   />
+                  <span className="absolute bottom-2 right-2 bg-bg px-2 rounded-2xl">
+                    {item?.lengthText}
+                  </span>
                 </div>
 
                 {/* Video Info */}
@@ -35,13 +37,23 @@ export default function SecendPartAndReccomendPart({
 
                   <div className="w-full flex justify-between items-center">
                     {/* Channel Name */}
-                    <p className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90">
+                    <Link
+                      to={item?.channel?.handle}
+                      className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90 hover:text-text transition-all duration-300"
+                    >
                       {item?.name || item?.channel?.name}
-                    </p>
+                    </Link>
 
                     {/* Published Time */}
                     <div className="flex items-center gap-1 text-xs lg:text-sm text-neutral-400 mt-1">
-                      <time dateTime={item?.publishedTimeText}>
+                      <span className="text-subtext">
+                        {item?.viewCountText}
+                      </span>
+                      <span aria-hidden="true">•</span>
+                      <time
+                        className="text-subtext"
+                        dateTime={item?.publishedTimeText}
+                      >
                         {item?.publishedTimeText}
                       </time>
                     </div>
