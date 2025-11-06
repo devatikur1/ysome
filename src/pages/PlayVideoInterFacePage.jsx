@@ -50,7 +50,7 @@ export default function PlayVideoInterFacePage() {
   const [CommentDataLoading, setCommentDataLoading] = useState(false);
   const [CommentNextToken, setCommentNextToken] = useState("");
 
-  const [reccomendVideoItem, setReccomendVideoItem] = useState([]);
+  const [ReccomendVideoItem, setReccomendVideoItem] = useState([]);
   const [ReccomendYtNextToken, setReccomendYtNextToken] = useState("");
 
   const [IsVdDetails, setIsVdDetails] = useState(false);
@@ -76,13 +76,17 @@ export default function PlayVideoInterFacePage() {
     apiKey6,
   ];
 
-  const activeKey = apiKeys[apiIndex];
+  const [activeKey, setActiveKey] = useState(apiKeys[0]);
 
   // ------------------------------
   // 2️⃣ LOGIC HELPERS
   // ------------------------------
   const rotateApiKey = () => {
-    setApiIndex((prev) => (prev + 1 < apiKeys.length ? prev + 1 : 0));
+    setApiIndex((prev) => {
+      let index = prev + 1 < apiKeys.length ? prev + 1 : 0;
+      setActiveKey(apiKeys[index]);
+      return index;
+    });
   };
 
   const safeFetch = async (fn, args) => {
@@ -183,7 +187,7 @@ export default function PlayVideoInterFacePage() {
         const relatedVideo = await safeFetch(GetRelateVideos, {
           videoID: VideoID,
           nextPageNoken: "",
-          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811",
+          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
         });
 
         if (relatedVideo) {
@@ -228,7 +232,7 @@ export default function PlayVideoInterFacePage() {
       video: { ...VideoData },
       channel: { ...ChannelData },
       publishedAt: new Date().toISOString(),
-      FirebasePublishedAt: Timestamp(),
+      FirebasePublishedAt: Timestamp.now(),
     };
     setlikeObject(lkObj);
   }, [ChannelData, VideoData]);
@@ -309,7 +313,7 @@ export default function PlayVideoInterFacePage() {
         minWidth: `${HomePageWidth}px`,
         minHeight: `${HomePageHeight}px`,
       }}
-      className="flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-x-hidden overflow-y-auto"
+      className="relative flex flex-col md:flex-row gap-5 py-3 px-2 md:px-4 overflow-x-hidden overflow-y-auto"
     >
       <FirstPartAndVideoPart
         VideoID={VideoID}
@@ -324,7 +328,7 @@ export default function PlayVideoInterFacePage() {
         likeObject={likeObject}
       />
       <SecendPartAndReccomendPart
-        reccomendVideoItem={reccomendVideoItem}
+        ReccomendVideoItem={ReccomendVideoItem}
         ReccomendLoading={ReccomendLoading}
       />
     </div>

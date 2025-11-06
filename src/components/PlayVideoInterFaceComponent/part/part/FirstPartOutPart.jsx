@@ -42,18 +42,20 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
   //🔹 Update this when chnage userAllLikedVdID
   useEffect(() => {
-    let isLikes = userAllLikedVdID.some((uv) => uv === VideoID);
+    let isLikes = userAllLikedVdID.find((uv) => uv === VideoID);
     setisLiked(isLikes);
   }, [userAllLikedVdID]);
 
   //🔹 Update this when chnage subscriptionsCID
   useEffect(() => {
-    let isLikes = subscriptionsCID.some((uv) => uv === ChannelData?.id);
+    let isLikes = subscriptionsCID.find((uv) => uv === ChannelData?.id);
     setisSubscribe(isLikes);
   }, [subscriptionsCID]);
 
   // handleLike
   async function handleLike() {
+    if (!VideoID) return;
+
     if (isLiked) {
       setisLiked(false);
       await DeleteLike({ vdId: VideoID });
@@ -66,6 +68,8 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
   // handleSubscribe
   async function handleSubscribe() {
+    if (!ChannelData?.id) return;
+
     if (isSubscribe) {
       setisSubscribe(false);
       await UnSubscribe({ cdId: ChannelData?.id });
@@ -100,7 +104,6 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
         {/* Channel data && Like comment data */}
         <section className="w-full flex flex-col sm:flex-row gap-3 justify-between">
-
           {/* Channel Data */}
           <article className="flex items-end gap-5 w-[50%]">
             <Link to={ChannelData?.snippet?.customUrl}>
@@ -122,10 +125,8 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
                   </p>
                   <span className="text-[0.6rem] md:text-xs truncate text-subtext font-medium">
                     {millify(
-                      Number(
-                        ChannelData?.statistics?.subscriberCount +
-                          (isSubscribe ? 1 : 0)
-                      )
+                      Number(ChannelData?.statistics?.subscriberCount || 0) +
+                        (isSubscribe ? 1 : 0)
                     )}{" "}
                     subscribers
                   </span>
@@ -172,9 +173,9 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
                   />
                 </span>
                 <span>
-                  {millify(
-                    Number(VideoData?.statistics?.likeCount) + (isLiked ? 1 : 0)
-                  )}
+                  {(VideoData?.statistics?.likeCount || 0 )+ (isLiked ? 1 : 0) >= 1
+                    ? millify(Number(VideoData?.statistics?.likeCount || 0) + (isLiked ? 1 : 0))
+                    : "Like"}
                 </span>
               </button>
 
