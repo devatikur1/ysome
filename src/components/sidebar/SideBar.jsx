@@ -190,7 +190,7 @@ export default function SideBar({ type = "", Height }) {
                 isReSideBarShow={isReSideBarShow}
               />
             ))}
-            {!SubLoding &&
+            {SubLoding &&
               [...Array(5)].map((_, i) => <SubscribeItemLoading key={i} />)}
             {subscriptions?.length === 0 && (
               <div className="flex justify-center items-center w-full h-auto">

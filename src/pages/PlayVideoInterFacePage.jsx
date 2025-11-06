@@ -1,60 +1,103 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/* --------- import Some Important Jinis --------- */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppContext } from "../contexts/App/AppContext";
+import { useScroll } from "motion/react";
+import { Timestamp } from "firebase/firestore";
+
+/* --------- import Context --------- */
 import { UiContext } from "../contexts/Ui/UiContext";
+
+/* --------- import main Two Component --------- */
 import FirstPartAndVideoPart from "../components/PlayVideoInterFaceComponent/FirstPartAndVideoPart";
 import SecendPartAndReccomendPart from "../components/PlayVideoInterFaceComponent/SecendPartAndReccomendPart";
 
+/* --------- import All Helper Funtion --------- */
 import { GetVideoData } from "../utils/GetVideoData";
 import { GetChannelData } from "../utils/GetChannelData";
 import { GetVideoDetails } from "../utils/GetVideoDetails";
 import { ParseMillified } from "../utils/ParseMillified";
 import GetCommentThreads from "../utils/GetCommentThreads";
-import { useScroll } from "motion/react";
 import { GetRelateVideos } from "../utils/GetRelateVideos";
 
+/* --------- import All api Keys --------- */
+import {
+  apiKey1,
+  apiKey2,
+  apiKey3,
+  apiKey4,
+  apiKey5,
+  apiKey6,
+  apiKey7,
+  apiKey8,
+} from "../utils/data";
+
 export default function PlayVideoInterFacePage() {
-  const { apiKey } = useContext(AppContext);
-  // Context
   const { HomePageWidth, HomePageHeight } = useContext(UiContext);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Custom
+  // ------------------------------
+  // 1️⃣ USE-STATES
+  // ------------------------------
   const [VideoID, setVideoID] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // ChannelData && Video Data && commentThreads
   const [VideoData, setVideoData] = useState({});
   const [ChannelData, setChannelData] = useState({});
   const [CommentData, setCommentData] = useState([]);
 
-  // commentThreads state
   const [CommentDataLoading, setCommentDataLoading] = useState(false);
   const [CommentNextToken, setCommentNextToken] = useState("");
 
-  // Reccomend Video Item state
   const [reccomendVideoItem, setReccomendVideoItem] = useState([]);
-  const [ReccomendYt_1NextToken, setReccomendYt_1NextToken] = useState("");
+  const [ReccomendYtNextToken, setReccomendYtNextToken] = useState("");
 
-  // IsVdDetails
   const [IsVdDetails, setIsVdDetails] = useState(false);
-  const [ReccomendLoading, setReccomendLoading] = useState(false);
   const [IsVdDetailsFetch, setIsVdDetailsFetch] = useState(false);
   const [videoDetails, setVideoDetails] = useState({});
+  const [ReccomendLoading, setReccomendLoading] = useState(false);
 
-  // Like and sub object
   const [likeObject, setlikeObject] = useState({});
+  const [apiIndex, setApiIndex] = useState(0);
 
-  // Ref
   const containerRef = useRef(null);
   const scrollTriggeredRef = useRef(false);
 
-  // ------------------------
-  // Fetch Video Details
-  // ------------------------
+  const apiKeys = [
+    "AIzaSyAFhOQVeWB1W6L6-WBVyq-ZJdwuJMiunho",
+    apiKey8,
+    apiKey7,
+    apiKey1,
+    apiKey2,
+    apiKey3,
+    apiKey4,
+    apiKey5,
+    apiKey6,
+  ];
 
+  const activeKey = apiKeys[apiIndex];
+
+  // ------------------------------
+  // 2️⃣ LOGIC HELPERS
+  // ------------------------------
+  const rotateApiKey = () => {
+    setApiIndex((prev) => (prev + 1 < apiKeys.length ? prev + 1 : 0));
+  };
+
+  const safeFetch = async (fn, args) => {
+    try {
+      return await fn(args);
+    } catch (err) {
+      console.error("⚠️ Fetch Error, Rotating Key...", err);
+      rotateApiKey();
+      return null;
+    }
+  };
+
+  // ------------------------------
+  //  3️⃣ FETCH VIDEO DETAILS
+  // ------------------------------
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const videoId = params.get("v");
@@ -69,45 +112,40 @@ export default function PlayVideoInterFacePage() {
     (async () => {
       setLoading(true);
       setReccomendLoading(true);
-      try {
-        const vdDetails = await GetVideoDetails({
-          videoID: videoId,
-          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811",
-        });
 
-        // const vdDetails = JSON.parse(localStorage.getItem("VdD"));
-        // const vdDetails = undefined;
-        if (!vdDetails) {
-          console.error("Video details not found!");
-          setVideoDetails({});
-          setIsVdDetails(false);
-        } else {
-          setVideoDetails(vdDetails);
-          setIsVdDetails(true);
-        }
-      } catch (err) {
-        console.error("Fetch Data Error:", err);
-      } finally {
-        setIsVdDetailsFetch(true);
-        setLoading(false);
+      const vdDetails = await GetVideoDetails({
+        videoID: videoId,
+        key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811",
+      });
+
+      if (!vdDetails) {
+        setIsVdDetails(false);
+        setVideoDetails({});
+      } else {
+        setVideoDetails(vdDetails);
+        setIsVdDetails(true);
       }
+
+      setIsVdDetailsFetch(true);
+      setLoading(false);
     })();
   }, [location]);
 
-  // ----------------------------------------------------
-  // Fetch Video + Channel + Comments + Recommendations
-  // ----------------------------------------------------
-
+  // ------------------------------
+  // 4️⃣ FETCH ALL DATA
+  // ------------------------------
   useEffect(() => {
     if (!IsVdDetailsFetch) return;
 
     const fetchAllData = async () => {
-      let vdData, chData;
+      let vdData = {};
+      let chData = {};
 
+      // ----- Case 1: Already have videoDetails -----
       if (IsVdDetails && videoDetails?.id) {
         const vd = videoDetails;
+        setReccomendLoading(true);
 
-        // vdData modify
         vdData = {
           kind: "youtube#video",
           id: vd.id,
@@ -119,10 +157,7 @@ export default function PlayVideoInterFacePage() {
             thumbnails: vd.thumbnails,
             channelTitle: vd.channel?.name,
             liveBroadcastContent: vd.isLiveStream ? "live" : "none",
-            localized: {
-              title: vd.title,
-              description: vd.description,
-            },
+            localized: { title: vd.title, description: vd.description },
           },
           statistics: {
             viewCount: vd.viewCount,
@@ -131,150 +166,140 @@ export default function PlayVideoInterFacePage() {
           },
         };
 
-        document.title = vd?.title;
-
-        // set many Data
+        document.title = vd.title;
         setVideoData(vdData);
         setReccomendVideoItem(vd.related?.items || []);
-        setReccomendYt_1NextToken(vd.related?.nextToken || "");
-      } else {
-        // if videoDetails not available
-        vdData = await GetVideoData(VideoID, apiKey);
-        document.title = vdData?.snippet?.title;
+        setReccomendYtNextToken(vd.related?.nextToken || "");
+        setReccomendLoading(false);
+      }
+      // ----- Case 2: Need to fetch video manually -----
+      else {
+        vdData = await safeFetch(GetVideoData, VideoID, activeKey);
+        if (!vdData) return;
+        document.title = vdData.snippet?.title || "YouTube Clone";
         setVideoData(vdData);
 
-      }
-
-      // Fetch related Video
-      setReccomendLoading(true);
-      try {
-        const relatedVideo = await GetRelateVideos({
+        setReccomendLoading(true);
+        const relatedVideo = await safeFetch(GetRelateVideos, {
           videoID: VideoID,
-          nextPageNoken: ReccomendYt_1NextToken,
-          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
+          nextPageNoken: "",
+          key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811",
         });
 
-        setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
-        setReccomendYt_1NextToken(relatedVideo?.nextToken);
-      } catch (err) {
-        console.error("Comment Fetch Error:", err);
-      } finally {
+        if (relatedVideo) {
+          setReccomendVideoItem((prev) => [...prev, ...relatedVideo.items]);
+          setReccomendYtNextToken(relatedVideo.nextToken);
+        }
         setReccomendLoading(false);
       }
 
-      chData = await GetChannelData(vdData?.snippet?.channelId, apiKey);
-      setChannelData(chData);
+      // ----- Channel Data -----
+      chData = await safeFetch(
+        GetChannelData,
+        (vdData?.snippet?.channelId, activeKey)
+      );
+      if (chData) setChannelData(chData);
 
-      // Fetch Comments
+      // ----- Comment Threads -----
       setCommentDataLoading(true);
-      try {
-        const commentThreads = await GetCommentThreads({
-          videoId: VideoID,
-          key: apiKey,
-          pageToken: null,
-        });
+      const commentThreads = await safeFetch(GetCommentThreads, {
+        videoId: VideoID,
+        key: activeKey,
+        pageToken: null,
+      });
 
-        setCommentData(commentThreads?.items || []);
-        setCommentNextToken(commentThreads?.nextPageToken || "");
-      } catch (err) {
-        console.error("Comment Fetch Error:", err);
-      } finally {
-        setCommentDataLoading(false);
+      if (commentThreads) {
+        setCommentData(commentThreads.items || []);
+        setCommentNextToken(commentThreads.nextPageToken || "");
         setIsVdDetailsFetch(false);
       }
+      setCommentDataLoading(false);
     };
 
     fetchAllData();
-  }, [videoDetails, IsVdDetailsFetch, apiKey]);
+  }, [videoDetails, IsVdDetailsFetch, apiIndex]);
 
-  // ------------------------
-  // Create  a LikeObj
-  // ------------------------
-
+  // ------------------------------
+  // 5️⃣ LIKE OBJECT
+  // ------------------------------
   useEffect(() => {
     if (!ChannelData && !VideoData) return;
-    let lkObj = {
-      video: {
-        ...VideoData,
-      },
-      channel: {
-        ...ChannelData,
-      },
-      publishedAt: new Date().toString(),
+    const lkObj = {
+      video: { ...VideoData },
+      channel: { ...ChannelData },
+      publishedAt: new Date().toISOString(),
+      FirebasePublishedAt: Timestamp(),
     };
     setlikeObject(lkObj);
   }, [ChannelData, VideoData]);
 
-  // ------------------------
-  // Load More Comments
-  // ------------------------
-
+  // ------------------------------
+  // 6️⃣ LOAD MORE COMMENTS
+  // ------------------------------
   const moreCommentThreads = async () => {
     if (!CommentNextToken || CommentDataLoading) return;
+    setCommentDataLoading(true);
 
-    try {
-      setCommentDataLoading(true);
-      const commentThreads = await GetCommentThreads({
-        videoId: VideoID,
-        key: apiKey,
-        pageToken: CommentNextToken,
-      });
+    const commentThreads = await safeFetch(GetCommentThreads, {
+      videoId: VideoID,
+      key: activeKey,
+      pageToken: CommentNextToken,
+    });
 
-      if (commentThreads) {
-        setCommentData((prev) => [...prev, ...commentThreads.items]);
-        setCommentNextToken(commentThreads.nextPageToken);
-      }
-    } catch (err) {
-      console.error("More Comments Error:", err);
-    } finally {
-      setCommentDataLoading(false);
+    if (commentThreads) {
+      setCommentData((prev) => [...prev, ...commentThreads.items]);
+      setCommentNextToken(commentThreads.nextPageToken);
     }
+    setCommentDataLoading(false);
   };
 
-  // ------------------------
-  // Infinite Scroll: Load More Recommendations
-  // ------------------------
+  // --------------------------------------
+  // 7️⃣ INFINITE SCROLL FOR RECOMMEND
+  // --------------------------------------
   const { scrollYProgress } = useScroll({ container: containerRef });
 
   useEffect(() => {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", async (value) => {
-
       if (
         value > 0.9 &&
         !ReccomendLoading &&
-        ReccomendYt_1NextToken &&
+        ReccomendYtNextToken &&
         !scrollTriggeredRef.current
       ) {
         scrollTriggeredRef.current = true;
         setReccomendLoading(true);
 
-        try {
-          // Fetch related Video
-          const relatedVideo = await GetRelateVideos({
-            videoID: VideoID,
-            nextPageNoken: ReccomendYt_1NextToken,
-            key: "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811", // f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64
-          });
+        const relatedVideo = await safeFetch(GetRelateVideos, {
+          videoID: VideoID,
+          nextPageNoken: ReccomendYtNextToken,
+          key: activeKey,
+        });
 
-          setReccomendVideoItem((prev) => [...prev, ...relatedVideo?.items]);
-          setReccomendYt_1NextToken(relatedVideo?.nextToken);
-        } catch (err) {
-          console.error("Scroll Load Error:", err);
-        } finally {
-          scrollTriggeredRef.current = false;
-          setReccomendLoading(false);
+        if (relatedVideo) {
+          setReccomendVideoItem((prev) => [...prev, ...relatedVideo.items]);
+          setReccomendYtNextToken(relatedVideo.nextToken);
         }
+
+        scrollTriggeredRef.current = false;
+        setReccomendLoading(false);
       }
     });
 
     return () => unsubscribe();
-  }, [scrollYProgress, ReccomendYt_1NextToken, ReccomendLoading, VideoData]);
+  }, [
+    scrollYProgress,
+    ReccomendYtNextToken,
+    ReccomendLoading,
+    VideoData,
+    VideoID,
+    activeKey,
+  ]);
 
-  // ------------------------
-  // JSX Render
-  // ------------------------
+  // ------------------------------
+  // 8️⃣ RENDER
+  // ------------------------------
   return (
     <div
       ref={containerRef}

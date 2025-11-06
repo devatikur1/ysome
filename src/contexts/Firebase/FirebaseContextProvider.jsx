@@ -34,6 +34,7 @@ export default function FirebaseContextProvider({ children }) {
   // ---------------------------------------
   // ✅ useEffect get all Data auth changes
   // ---------------------------------------
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {

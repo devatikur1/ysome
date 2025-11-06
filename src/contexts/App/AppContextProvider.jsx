@@ -8,8 +8,8 @@ import {
   apiKey4,
   apiKey5,
   apiKey6,
-  VideoData1,
-  VideoData2,
+  apiKey7,
+  apiKey8,
 } from "../../utils/data";
 import { GetDataWithSearch } from "../../utils/GetDataWithSearch";
 import { GetVideoData } from "../../utils/GetVideoData";
@@ -24,8 +24,8 @@ export default function AppContextProvider({ children }) {
 
   // apikeys
   const apiKeys = [
-    VideoData2,
-    VideoData1,
+    apiKey8,
+    apiKey7,
     apiKey1,
     apiKey2,
     apiKey3,
