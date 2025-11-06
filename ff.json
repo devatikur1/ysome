@@ -1,40 +1,1160 @@
 {
-  "type": "video",
-  "id": "gLptmcuCx6Q",
-  "title": "What is CI/CD Pipeline? | Simply Explained by Shradha Ma'am",
-  "channel": {
-    "id": "UCBwmMxybNva6P_5VmxjzwqA",
-    "name": "Apna College",
-    "handle": "@ApnaCollegeOfficial",
-    "avatar": [
-      {
-        "url": "https://yt3.ggpht.com/FEcjRtez5od8UowDo6tTt9WlE-MrIFEmcwPMTORmK9Swk6KCklOmA3xfIG9WuLWfNYfNThQE=s68-c-k-c0x00ffffff-no-rj",
-        "width": 68,
-        "height": 68
+  "kind": "youtube#activityListResponse",
+  "etag": "y_ix6YsNBAOef8FfWEYufnCJsCU",
+  "items": [
+    {
+      "kind": "youtube#activity",
+      "etag": "U5jC2ybKa7irrbpYE4UmoMFf8AM",
+      "id": "MTE3NjI0NTAxODkxNzYyNDUwMTg5MDAwNjg2",
+      "snippet": {
+        "publishedAt": "2025-11-06T17:29:49+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Just in 📰: Google Play Console updates -Gemini localization & deep link validation",
+        "description": "Uncover powerful new tools and features in Google Play Console designed for app developers. See how you can leverage Gemini for effortless localization, ensure reliable deep linking, and more!  Explore how these updates can accelerate your app's success and market reach.\n\nResources: \n Learn more → https://goo.gle/49711R4\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\n#GoogleDeveloperNews\n\nSpeaker: Andrew Brogdon\nProducts Mentioned:  Gemini",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "yx9zHnBK85o"
+          },
+          "playlistId": "PLOU2XLYxmsILyuEj2Ku3wZgmzSFOtZ5fR"
+        }
       }
-    ]
-  },
-  "lengthText": "18:58",
-  "viewCountText": "229K views",
-  "publishedTimeText": "4 weeks ago",
-  "thumbnails": [
-    {
-      "url": "https://i.ytimg.com/vi/gLptmcuCx6Q/hqdefault.jpg?sqp=-oaymwEbCKgBEF5IVfKriqkDDggBFQAAiEIYAXABwAEG&rs=AOn4CLB8f9K_AlhYGhZD0_rM-QiZjs-HYg",
-      "width": 168,
-      "height": 94,
-      "moving": false
     },
     {
-      "url": "https://i.ytimg.com/vi/gLptmcuCx6Q/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhg6KKfXhFfRz4X_syRx7fkjuYHw",
-      "width": 336,
-      "height": 188,
-      "moving": false
+      "kind": "youtube#activity",
+      "etag": "8M01BUzbAI_2RaXsoL6i6z3jiaw",
+      "id": "MTUxNzYyNDUwMTQ5MTc2MjQ1MDE0OTAwMDI3Mw",
+      "snippet": {
+        "publishedAt": "2025-11-06T17:29:09+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Just in 📰: Google Play Console updates -Gemini localization & deep link validation",
+        "description": "Uncover powerful new tools and features in Google Play Console designed for app developers. See how you can leverage Gemini for effortless localization, ensure reliable deep linking, and more!  Explore how these updates can accelerate your app's success and market reach.\n\nResources: \n Learn more → https://goo.gle/49711R4\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\n#GoogleDeveloperNews\n\nSpeaker: Andrew Brogdon\nProducts Mentioned:  Gemini",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/yx9zHnBK85o/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "yx9zHnBK85o"
+        }
+      }
     },
     {
-      "url": "https://i.ytimg.com/an_webp/gLptmcuCx6Q/mqdefault_6s.webp?du=3000&sqp=CKDXocgG&rs=AOn4CLA1R80GeHy2BPtiezTWexspwA77Eg",
-      "width": 320,
-      "height": 180,
-      "moving": true
+      "kind": "youtube#activity",
+      "etag": "kioy-4tIPxPd8Np6CcXjFI5Kg9o",
+      "id": "MTUxNzYyNDA1MjcwMTc2MjQwNTI3MDAwMDM5NQ",
+      "snippet": {
+        "publishedAt": "2025-11-06T05:01:10+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Supercharge your agents with Agent2Agent (A2A) Protocol! ⚡",
+        "description": "AI agents can write code, fetch data, and handle multi-step tasks, but often work in isolation. See how the Agent2Agent (A2A) Protocol can help your agents communicate, coordinate, and complete tasks across different systems. \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: M.E Francis \nProducts Mentioned: Cloud",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ukW6n0UCp5g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ukW6n0UCp5g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ukW6n0UCp5g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ukW6n0UCp5g/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ukW6n0UCp5g/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "ukW6n0UCp5g"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "DNfVyObHr6IpzSI0ZEjBJM8ezXM",
+      "id": "MTUxNzYyMzc0OTIwMTc2MjM3NDkyMDAwMDU3Mg",
+      "snippet": {
+        "publishedAt": "2025-11-05T20:35:20+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "How to get started on Opal",
+        "description": "Megan Li  - Senior PM @ Google Labs - walks through a tutorial of Opal's visual editor. Learn how to create a new AI workflow or mini-app using natural language and a visual app builder. \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Megan Li \nProducts Mentioned: Gemini",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/NWNNDvehBIU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/NWNNDvehBIU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/NWNNDvehBIU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/NWNNDvehBIU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/NWNNDvehBIU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "NWNNDvehBIU"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "p99uGHqaZM1kjidLhDC70sBn9So",
+      "id": "MTUxNzYyMzcyODMxMTc2MjM3MjgzMTAwMDQ1OA",
+      "snippet": {
+        "publishedAt": "2025-11-05T20:00:31+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Don’t forget to join us at #TheAndroidShow",
+        "description": "A behind the scenes peek at where Google devs ideate, design, and ship features that help developers distribute their apps and games. Get the full scoop at #TheAndroidShow!\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Sajna Verna",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LXqassleEcw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LXqassleEcw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LXqassleEcw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/LXqassleEcw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/LXqassleEcw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "LXqassleEcw"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "mlhx19JUttYHuxojO233MLRhEps",
+      "id": "MTUxNzYyMzE4ODczMTc2MjMxODg3MzAwMDI2Mw",
+      "snippet": {
+        "publishedAt": "2025-11-05T05:01:13+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "That feeling when you drop your app's wait time. ⚡️",
+        "description": "Why, yes. I am happier that my app is low-latency. \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: M.E Francis",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/wACQU4TWHTw/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/wACQU4TWHTw/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/wACQU4TWHTw/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/wACQU4TWHTw/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/wACQU4TWHTw/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "wACQU4TWHTw"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "ssUvivR7qbfAnPJ9U0AxSPwE6tc",
+      "id": "MTUxNzYyMzAwODQwMTc2MjMwMDg0MDAwMDg0OA",
+      "snippet": {
+        "publishedAt": "2025-11-05T00:00:40+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "What is SRE?",
+        "description": "Our Google SREs explain what Site Reliability Engineering is and why reliability is an essential component of modern software engineering.\n\nResources: \nLearn about SRE → https://goo.gle/43IXUv2 \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Salim Virji",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VK5fxLOKPu8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VK5fxLOKPu8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VK5fxLOKPu8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/VK5fxLOKPu8/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/VK5fxLOKPu8/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "VK5fxLOKPu8"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "iv9monwsQofC4VxtDCQvtm7XzVI",
+      "id": "MTUxNzYyMTc4NDgzMTc2MjE3ODQ4MzAwMDIzNQ",
+      "snippet": {
+        "publishedAt": "2025-11-03T14:01:23+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "What’s going to happen when we call show()? Go!",
+        "description": "Here's a Python scoping puzzle that catches many developers off guard! This code appears straightforward - print a global variable, reassign it locally, print again. But Python's scoping rules have a surprise in store. Will this print 10 and 5, or will it raise an error? Understanding local versus global scope is essential for writing correct Python code.\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeakers: Juan Vazquez",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/gq6mXwicBO4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/gq6mXwicBO4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/gq6mXwicBO4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/gq6mXwicBO4/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/gq6mXwicBO4/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "gq6mXwicBO4"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "uUmDfeJWeoDcl8R90KwLIjNBnOM",
+      "id": "MTE3NjE5Mjk2MjcxNzYxOTI5NjI3MDAwODYy",
+      "snippet": {
+        "publishedAt": "2025-10-31T16:53:47+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Connecting Gemini API to the Outside World with Tools | Intro to Tools",
+        "description": "Learn what tools are and why they're needed to get real-time information through a practical demo in Google AI Studio. This video shows how to enable the \"Grounding with Google Search\" tool to bypass a model's knowledge cutoff and provide a correct, cited answer to a real-world query. This is Part 1 of our series on using tools with the Gemini API.\n\nResources:\n\nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nProducts Mentioned: Google AI, Gemini, Gemini API",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "Pm3vxmvrK18"
+          },
+          "playlistId": "PLOU2XLYxmsIKkEa_-KTPF9DZ0IyHJ7V1H"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "Au76K9TLUHussrfSoH3hdT0-d9M",
+      "id": "MTUxNzYxODgzMjA2MTc2MTg4MzIwNjAwMDgyNA",
+      "snippet": {
+        "publishedAt": "2025-10-31T04:00:06+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "A developer’s haunted house 👻",
+        "description": "Outdated dependencies, endless meetings, and 3-way merge conflicts? Screamworthy! \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: M.E Francis",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1QdNxfI2wTc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1QdNxfI2wTc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1QdNxfI2wTc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/1QdNxfI2wTc/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/1QdNxfI2wTc/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "1QdNxfI2wTc"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "VxoZm9DS5lWsV0TXz3UBFLnTIKI",
+      "id": "MTUxNzYxODY1MjU5MTc2MTg2NTI1OTAwMDM4OQ",
+      "snippet": {
+        "publishedAt": "2025-10-30T23:00:59+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "How should devs use AI thoughtfully? (3 questions to guide you)",
+        "description": "3 essential questions to thoughtfully integrate AI into your products by prioritizing user needs.\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Mahima Pushkarna \nProducts Mentioned:  Google AI",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Y1SRd-HKbBU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Y1SRd-HKbBU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Y1SRd-HKbBU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Y1SRd-HKbBU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Y1SRd-HKbBU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "Y1SRd-HKbBU"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "zUxXf_e3MG4YzPTSclUNgm2bf5w",
+      "id": "MTUxNzYxODYyODAyMTc2MTg2MjgwMjAwMDg1MQ",
+      "snippet": {
+        "publishedAt": "2025-10-30T22:20:02+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Connecting Gemini API to the Outside World with Tools | Intro to Tools",
+        "description": "Learn what tools are and why they're needed to get real-time information through a practical demo in Google AI Studio. This video shows how to enable the \"Grounding with Google Search\" tool to bypass a model's knowledge cutoff and provide a correct, cited answer to a real-world query. This is Part 1 of our series on using tools with the Gemini API.\n\nResources:\n\nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nProducts Mentioned: Google AI, Gemini, Gemini API",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/Pm3vxmvrK18/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "Pm3vxmvrK18"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "d8fB0hwtAgLlIdozhPAM-IC_tdo",
+      "id": "MTE3NjE4NTQ5NDUxNzYxODU0OTQ1MDAwNDA1",
+      "snippet": {
+        "publishedAt": "2025-10-30T20:09:05+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Just in from the news desk 📰: Gemini 2.5 Computer Use Model",
+        "description": "The Computer Use model is a specialized model built on Gemini 2.5 Pro’s capabilities to power agents that can interact with user interfaces. See how this tool enables you to build browser control agents that interact with and automate tasks.\n\nResources:\nLearn more→ https://goo.gle/Computer-Use-Model \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\n#GoogleDeveloperNews\n\nSpeaker: Juan Vasquez \nProducts Mentioned:  Products Mentioned: Google AI, Gemini, Gemini API",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "-YGIV5nrI3M"
+          },
+          "playlistId": "PLOU2XLYxmsILyuEj2Ku3wZgmzSFOtZ5fR"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "A40xWfZt0el7NkdTlTeO383MdxY",
+      "id": "MTUxNzYxODQwMDAwMTc2MTg0MDAwMDAwMDIxNg",
+      "snippet": {
+        "publishedAt": "2025-10-30T16:00:00+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Just in from the news desk 📰: Gemini 2.5 Computer Use Model",
+        "description": "The Computer Use model is a specialized model built on Gemini 2.5 Pro’s capabilities to power agents that can interact with user interfaces. See how this tool enables you to build browser control agents that interact with and automate tasks.\n\nResources:\nLearn more→ https://goo.gle/Computer-Use-Model \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\n#GoogleDeveloperNews\n\nSpeaker: Juan Vasquez \nProducts Mentioned:  Products Mentioned: Google AI, Gemini, Gemini API",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/-YGIV5nrI3M/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "-YGIV5nrI3M"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "VZMk0cdEv5UZf6iAk-JikQUSncI",
+      "id": "MTUxNzYxNzk2ODEyMTc2MTc5NjgxMjAwMDE4OA",
+      "snippet": {
+        "publishedAt": "2025-10-30T04:00:12+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "The Halloween Haul - The Developer’s Version",
+        "description": "Some tricks, some treats, but everyone is excited for those AI goodies 👻\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: M.E Francis, Meg Bauman, Bri Davis",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/DuP1yo6jWmA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/DuP1yo6jWmA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/DuP1yo6jWmA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/DuP1yo6jWmA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/DuP1yo6jWmA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "DuP1yo6jWmA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "1I-7Tp5pgIjdT5EeCMSC1Oh1DKE",
+      "id": "MTUxNzYxNzEwNDYwMTc2MTcxMDQ2MDAwMDM5Mw",
+      "snippet": {
+        "publishedAt": "2025-10-29T04:01:00+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Dev Debates: small commits or big commits? Tests before or after?",
+        "description": "Developers sound off on their favorite coding practices. Share yours below. \n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nEvent: Google IO",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/gYZS61BRXW0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/gYZS61BRXW0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/gYZS61BRXW0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/gYZS61BRXW0/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/gYZS61BRXW0/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "gYZS61BRXW0"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "W-Ls0F0HVczWOaWTQOPQRVPXKzw",
+      "id": "MTUxNzYxNTkxMTczMTc2MTU5MTE3MzAwMDgyNw",
+      "snippet": {
+        "publishedAt": "2025-10-27T18:52:53+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "JJ Con • Keynote",
+        "description": "Jujutsu, aka JJ, is an open-source, Git-compatible VCS that is both simple and powerful. This year, JJ Con 2025 was a dedicated conference hosted by Google for the Jujutsu version control system. In this talk from JJ Con, Martin von Zweigbergk presents on architecture and future plans.\n\nResources: \nLearn more about Jujutsu, aka JJ, here → https://goo.gle/3L81HMa \nView the slides for this presentation here → https://goo.gle/4qfuFJZ \nCheck out other presentations from JJ Con in the playlist → https://www.youtube.com/playlist?list=PLOU2XLYxmsILM5cRwAK6yKdtKnCK6Y4Oh\n\nWatch more videos from JJ Con 2025 → https://goo.gle/3Jxbj2p \nSubscribe to Google for Developers → https://goo.gle/developers\n\nProducts mentioned: Google Open Source",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/VwmFyowbSR0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/VwmFyowbSR0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/VwmFyowbSR0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/VwmFyowbSR0/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/VwmFyowbSR0/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "VwmFyowbSR0"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "j51tCMv62jUZCgBUWxEP9E0lWlg",
+      "id": "MTUxNzYxNTcwMDUxMTc2MTU3MDA1MTAwMDgxOQ",
+      "snippet": {
+        "publishedAt": "2025-10-27T13:00:51+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "What do you think the second print will show? Go!",
+        "description": "Here's a classic Python gotcha that trips up developers at all levels! This simple helper function appears straightforward, but mutable default arguments create unexpected behavior. When you call this function twice, the results might surprise you. Understanding how Python handles default arguments is crucial for avoiding subtle bugs. What do you think the second print statement outputs?\n\nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeakers: Juan Vasquez",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/LoV307-d19A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/LoV307-d19A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/LoV307-d19A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/LoV307-d19A/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/LoV307-d19A/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "LoV307-d19A"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "DUSHCc46ZvAirm_8Aacb7rIIzNc",
+      "id": "MTUxNzYxMzMzODcwMTc2MTMzMzg3MDAwMDcxOQ",
+      "snippet": {
+        "publishedAt": "2025-10-24T19:24:30+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Introducing Google Maps Grounding in the Gemini API",
+        "description": "Unlock powerful new experiences by connecting the Gemini API with Google Maps. With access to real-time data from over 250 million places, you can now build incredible, location-aware AI applications.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Logan Kilpatrick \nProducts mentioned: Google AI Studio, Gemini APi, Gemini, Google Maps",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "HKW163OhuSU"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "50AL11d6ICbdEdxzzRtOoRfmPFk",
+      "id": "MTE3NjEzMzM4NjkxNzYxMzMzODY5MDAwNDI4",
+      "snippet": {
+        "publishedAt": "2025-10-24T19:24:29+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Introducing Google Maps Grounding in the Gemini API",
+        "description": "Unlock powerful new experiences by connecting the Gemini API with Google Maps. With access to real-time data from over 250 million places, you can now build incredible, location-aware AI applications.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Logan Kilpatrick \nProducts mentioned: Google AI Studio, Gemini APi, Gemini, Google Maps",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/HKW163OhuSU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "HKW163OhuSU"
+          },
+          "playlistId": "PLOU2XLYxmsIKkEa_-KTPF9DZ0IyHJ7V1H"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "wFgus7eWvLoOtRXJgctbsS6Idxc",
+      "id": "MTE3NjEzMzM4MjAxNzYxMzMzODIwMDAwMTk4",
+      "snippet": {
+        "publishedAt": "2025-10-24T19:23:40+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Build an AI Restaurant Finder in 60 Seconds with Gemini & Google Maps Grounding in AI Studio",
+        "description": "Go from idea to a live restaurant recommender app in under a minute. This tutorial shows you how to use the power of Gemini and Google Maps Grounding in Google AI Studio to build powerful, location-aware AI applications with incredible speed.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Ammaar Reshi\nProducts mentioned: Google AI Studio, Gemini",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "MwhJ2AAEWVo"
+          },
+          "playlistId": "PLOU2XLYxmsIKkEa_-KTPF9DZ0IyHJ7V1H"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "uQLwZMfrsE-TAqDpnTiFU_FY6Lo",
+      "id": "MTUxNzYxMzMzNzkxMTc2MTMzMzc5MTAwMDMyOA",
+      "snippet": {
+        "publishedAt": "2025-10-24T19:23:11+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Build an AI Restaurant Finder in 60 Seconds with Gemini & Google Maps Grounding in AI Studio",
+        "description": "Go from idea to a live restaurant recommender app in under a minute. This tutorial shows you how to use the power of Gemini and Google Maps Grounding in Google AI Studio to build powerful, location-aware AI applications with incredible speed.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Ammaar Reshi\nProducts mentioned: Google AI Studio, Gemini",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/MwhJ2AAEWVo/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "MwhJ2AAEWVo"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "Dtjdcfa6lkXO4zlpzZYFZuVPi60",
+      "id": "MTE3NjEzMzE1MjQxNzYxMzMxNTI0MDAwNDk1",
+      "snippet": {
+        "publishedAt": "2025-10-24T18:45:24+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Vibe Code with Your Voice in Google AI Studio",
+        "description": "Introducing a new way to build: vibe code with your voice. See how you can dictate changes, add features, or describe your app using our new speech-to-text feature in Google AI Studio. It intelligently removes filler words and mistakes for a clean, efficient prompt every time.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Ammaar Reshi\nProducts mentioned: Google AI Studio",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "playlistItem"
+      },
+      "contentDetails": {
+        "playlistItem": {
+          "resourceId": {
+            "kind": "youtube#video",
+            "videoId": "ZHpT3ev2XLA"
+          },
+          "playlistId": "PLOU2XLYxmsIKkEa_-KTPF9DZ0IyHJ7V1H"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "KkWr5GgXt4edhp_Vf0xHyNUzqBs",
+      "id": "MTUxNzYxMzMxNTE0MTc2MTMzMTUxNDAwMDc4Mw",
+      "snippet": {
+        "publishedAt": "2025-10-24T18:45:14+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "Vibe Code with Your Voice in Google AI Studio",
+        "description": "Introducing a new way to build: vibe code with your voice. See how you can dictate changes, add features, or describe your app using our new speech-to-text feature in Google AI Studio. It intelligently removes filler words and mistakes for a clean, efficient prompt every time.\n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Ammaar Reshi\nProducts mentioned: Google AI Studio",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ZHpT3ev2XLA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "ZHpT3ev2XLA"
+        }
+      }
+    },
+    {
+      "kind": "youtube#activity",
+      "etag": "yIr6h_cu_Kzp1fUv5uqPlM8mKOo",
+      "id": "MTUxNzYxMzMwOTQ2MTc2MTMzMDk0NjAwMDMwNA",
+      "snippet": {
+        "publishedAt": "2025-10-24T18:35:46+00:00",
+        "channelId": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
+        "title": "New & Improved API Key and Project Management in Google AI Studio",
+        "description": "We've shipped a brand new API key and Projects page inside of Google AI Studio, making it easier to create, import, and manage projects. \n\nResources: \nStart building AI apps → https://goo.gle/4oARdmR \n\nWatch more AI Studio Tutorials→https://goo.gle/AIStudioTutorials \nSubscribe to Google for Developers → https://goo.gle/developers \n\nSpeaker: Logan Kilpatrick \nProducts mentioned: Google AI Studio",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/zlDziSQ4JTk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/zlDziSQ4JTk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/zlDziSQ4JTk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/zlDziSQ4JTk/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/zlDziSQ4JTk/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Google for Developers",
+        "type": "upload"
+      },
+      "contentDetails": {
+        "upload": {
+          "videoId": "zlDziSQ4JTk"
+        }
+      }
     }
-  ]
+  ],
+  "nextPageToken": "CBkQAA",
+  "pageInfo": {
+    "totalResults": 60,
+    "resultsPerPage": 25
+  }
 }

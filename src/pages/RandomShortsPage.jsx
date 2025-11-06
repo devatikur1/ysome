@@ -163,7 +163,10 @@ export default function RandomShortsPage() {
       if (sChannelsData[channelId]) return;
 
       try {
-        const channelItem = await GetChannelData(channelId, apiKey);
+        const channelItem = await GetChannelData({
+          channelId: channelId,
+          key: apiKey,
+        });
         setSChannelsData((prev) => ({
           ...prev,
           [channelId]: channelItem,
@@ -203,7 +206,10 @@ export default function RandomShortsPage() {
       } else {
         async function fetchChanaleData(ChanaleId) {
           try {
-            const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
+            const ChanaleItem = await GetChannelData({
+              channelId: ChanaleId,
+              key: apiKey,
+            });
             setSChannelsData((prev) => ({
               ...prev,
               [ChanaleId]: ChanaleItem,

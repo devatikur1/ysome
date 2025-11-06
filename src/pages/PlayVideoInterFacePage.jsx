@@ -19,6 +19,7 @@ import { GetVideoDetails } from "../utils/GetVideoDetails";
 import { ParseMillified } from "../utils/ParseMillified";
 import GetCommentThreads from "../utils/GetCommentThreads";
 import { GetRelateVideos } from "../utils/GetRelateVideos";
+import { GetRelatedVideosOnYt } from "../utils/GetRelatedVideosOnYt";
 
 /* --------- import All api Keys --------- */
 import {
@@ -46,20 +47,19 @@ export default function PlayVideoInterFacePage() {
   const [VideoData, setVideoData] = useState({});
   const [ChannelData, setChannelData] = useState({});
   const [CommentData, setCommentData] = useState([]);
-
   const [CommentDataLoading, setCommentDataLoading] = useState(false);
   const [CommentNextToken, setCommentNextToken] = useState("");
 
   const [ReccomendVideoItem, setReccomendVideoItem] = useState([]);
   const [ReccomendYtNextToken, setReccomendYtNextToken] = useState("");
+  const [ReccomendLoading, setReccomendLoading] = useState(false);
 
   const [IsVdDetails, setIsVdDetails] = useState(false);
   const [IsVdDetailsFetch, setIsVdDetailsFetch] = useState(false);
   const [videoDetails, setVideoDetails] = useState({});
-  const [ReccomendLoading, setReccomendLoading] = useState(false);
 
   const [likeObject, setlikeObject] = useState({});
-  const [apiIndex, setApiIndex] = useState(0);
+  const [setApiIndex] = useState(0);
 
   const containerRef = useRef(null);
   const scrollTriggeredRef = useRef(false);
@@ -75,15 +75,16 @@ export default function PlayVideoInterFacePage() {
     apiKey5,
     apiKey6,
   ];
-
-  const [activeKey, setActiveKey] = useState(apiKeys[0]);
+  const [activeKey, setActiveKey] = useState(
+    "AIzaSyC7UAG4RL1rMwGKr7pNB2RsF46pJUIFGcs"
+  );
 
   // ------------------------------
   // 2️⃣ LOGIC HELPERS
   // ------------------------------
   const rotateApiKey = () => {
     setApiIndex((prev) => {
-      let index = prev + 1 < apiKeys.length ? prev + 1 : 0;
+      const index = prev + 1 < apiKeys.length ? prev + 1 : 0;
       setActiveKey(apiKeys[index]);
       return index;
     });
@@ -100,7 +101,7 @@ export default function PlayVideoInterFacePage() {
   };
 
   // ------------------------------
-  //  3️⃣ FETCH VIDEO DETAILS
+  // 3️⃣ FETCH VIDEO DETAILS
   // ------------------------------
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -148,7 +149,6 @@ export default function PlayVideoInterFacePage() {
       // ----- Case 1: Already have videoDetails -----
       if (IsVdDetails && videoDetails?.id) {
         const vd = videoDetails;
-        setReccomendLoading(true);
 
         vdData = {
           kind: "youtube#video",
@@ -178,17 +178,20 @@ export default function PlayVideoInterFacePage() {
       }
       // ----- Case 2: Need to fetch video manually -----
       else {
-        vdData = await safeFetch(GetVideoData, VideoID, activeKey);
-        if (!vdData) return;
-        document.title = vdData.snippet?.title || "YouTube Clone";
-        setVideoData(vdData);
+        console.log("aaa");
 
-        setReccomendLoading(true);
-        const relatedVideo = await safeFetch(GetRelateVideos, {
-          videoID: VideoID,
-          nextPageNoken: "",
-          key: "f2bfc248f0mshdb3bed87a9340e0p11e04ejsncd1b2f7ceb64",
+        vdData = await safeFetch(GetVideoData, VideoID, activeKey);
+        if (vdData) {
+          document.title = vdData.snippet?.title || "YouTube Clone";
+          setVideoData(vdData);
+        }
+
+        const relatedVideo = await GetRelatedVideosOnYt({
+          videoId: VideoID,
+          pageToken: "",
+          key: activeKey,
         });
+        console.log(relatedVideo);
 
         if (relatedVideo) {
           setReccomendVideoItem((prev) => [...prev, ...relatedVideo.items]);
@@ -198,11 +201,13 @@ export default function PlayVideoInterFacePage() {
       }
 
       // ----- Channel Data -----
-      chData = await safeFetch(
-        GetChannelData,
-        (vdData?.snippet?.channelId, activeKey)
-      );
-      if (chData) setChannelData(chData);
+      if (vdData?.snippet?.channelId) {
+        chData = await safeFetch(GetChannelData, {
+          channelId: vdData?.snippet?.channelId,
+          key: activeKey,
+        });
+        if (chData) setChannelData(chData);
+      }
 
       // ----- Comment Threads -----
       setCommentDataLoading(true);
@@ -221,7 +226,7 @@ export default function PlayVideoInterFacePage() {
     };
 
     fetchAllData();
-  }, [videoDetails, IsVdDetailsFetch, apiIndex]);
+  }, [videoDetails, IsVdDetailsFetch, activeKey]);
 
   // ------------------------------
   // 5️⃣ LIKE OBJECT
@@ -275,15 +280,17 @@ export default function PlayVideoInterFacePage() {
         scrollTriggeredRef.current = true;
         setReccomendLoading(true);
 
-        const relatedVideo = await safeFetch(GetRelateVideos, {
-          videoID: VideoID,
-          nextPageNoken: ReccomendYtNextToken,
-          key: activeKey,
-        });
+        if (IsVdDetails) {
+          const relatedVideo = await safeFetch(GetRelateVideos, {
+            videoID: VideoID,
+            nextPageNoken: ReccomendYtNextToken,
+            key: activeKey,
+          });
 
-        if (relatedVideo) {
-          setReccomendVideoItem((prev) => [...prev, ...relatedVideo.items]);
-          setReccomendYtNextToken(relatedVideo.nextToken);
+          if (relatedVideo) {
+            setReccomendVideoItem((prev) => [...prev, ...relatedVideo.items]);
+            setReccomendYtNextToken(relatedVideo.nextToken);
+          }
         }
 
         scrollTriggeredRef.current = false;

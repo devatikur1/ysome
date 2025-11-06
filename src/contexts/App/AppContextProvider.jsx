@@ -164,7 +164,7 @@ export default function AppContextProvider({ children }) {
     // 📺 Channel Data
     async function fetchChannelData(ChanaleId) {
       try {
-        const ChanaleItem = await GetChannelData(ChanaleId, apiKey);
+        const ChanaleItem = await GetChannelData({ channelId: ChanaleId, key: apiKey });
 
         setChannelsData((prev) => ({
           ...prev,
