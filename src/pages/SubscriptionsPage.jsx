@@ -11,7 +11,7 @@ export default function SubscriptionsPage() {
   const seceltionRef = useRef(null);
   const optionRef = useRef(null);
   // const [showActivity, setShowActivity] = useState(false);
-  const { subscriptions, UnSubscribe } = useContext(FirebaseContext);
+  const { subscriptions, UnSubscribe, SubLoding } = useContext(FirebaseContext);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -55,6 +55,7 @@ export default function SubscriptionsPage() {
           subscriptions={subscriptions}
           activeOptionName={activeOptionName}
           UnSubscribe={UnSubscribe}
+          SubLoding={SubLoding}
         />
         <AnimatePresence>
           {showActivity === true && (

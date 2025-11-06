@@ -35,7 +35,7 @@ export async function GetUsd({
 
     if (snapshot.empty) {
       console.warn("⚠️ No more data found in subcollection");
-      return { data: [], lastVisible: null };
+      return [];
     }
 
     // 🔹 Data map
@@ -44,15 +44,9 @@ export async function GetUsd({
       ...doc.data(),
     }));
 
-    // 🔹 Pagination handle
-    const lastVisible = data[snapshot.length - 1];
-
-    return {
-      data,
-      lastVisible,
-    };
+    return data;
   } catch (error) {
     console.error("🔥 Firestore fetch error in GetUsd:", error);
-    return { data: [], lastVisible: null };
+    return [];
   }
 }

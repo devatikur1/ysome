@@ -38,9 +38,7 @@ export default function AppContextProvider({ children }) {
   const [apiIndex, setApiIndex] = useState(0);
 
   // Parent Width
-  const [apiKey, setApiKey] = useState(
-    "AIzaSyAFhOQVeWB1W6L6-WBVyq-ZJdwuJMiunho"
-  );
+  const [apiKey, setApiKey] = useState(apiKeys[1]); // "AIzaSyAFhOQVeWB1W6L6-WBVyq-ZJdwuJMiunho"
 
   // Items & Next Page Tokens & Maxmimam result
   const [items, setItems] = useState([]);
@@ -226,7 +224,6 @@ export default function AppContextProvider({ children }) {
   //   console.log(videosData);
   //   console.log(channelsData);
   // }, [channelsData, videosData]);
-  
 
   // context value
   const value = {

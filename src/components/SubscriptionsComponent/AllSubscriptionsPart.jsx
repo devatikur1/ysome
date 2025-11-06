@@ -1,12 +1,13 @@
 import React from "react";
 import SubscriptionsPart from "./part/SubscriptionsPart";
+import SubscriptionsLoding from "./part/SubscriptionsLoding";
 
 export default function AllSubscriptionsPart({
   activeOptionName,
   subscriptions,
   UnSubscribe,
+  SubLoding,
 }) {
-
   return (
     <section className="w-full flex flex-col gap-6">
       {subscriptions.map((channel, i) => (
@@ -17,7 +18,9 @@ export default function AllSubscriptionsPart({
           UnSubscribe={UnSubscribe}
         />
       ))}
-      {subscriptions.length === 0 && (
+      {SubLoding &&
+        [...Array(5)].map((_, i) => <SubscriptionsLoding key={i} />)}
+      {!SubLoding && subscriptions.length === 0 && (
         <p className="text-subtext text-center py-32">
           No subscriptions found...
         </p>

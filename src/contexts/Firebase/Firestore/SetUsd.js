@@ -8,8 +8,9 @@ export async function SetUsd({ userId, SubCollection, manualID, data }) {
 
     // Set data
     await setDoc(docRef, data);
+    return true;
   } catch (error) {
     console.error("🔥 Firestore write error:", error);
-    return null;
+    return false;
   }
 }

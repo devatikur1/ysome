@@ -23,11 +23,13 @@ export default function FirebaseContextProvider({ children }) {
   const [userAllLikedVdData, setUserAllLikedVdData] = useState([]);
   const [userAllLikedVdDatalastVisible, setUserAllLikedVdDatalastVisible] =
     useState({});
+  const [LikeLoding, setLikeLoding] = useState(false);
 
   // 🔹 subscriptions
   const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionsCID, setSubscriptionsCID] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
+  const [SubLoding, setSubLoding] = useState(false);
 
   // ---------------------------------------
   // ✅ useEffect get all Data auth changes
@@ -39,6 +41,7 @@ export default function FirebaseContextProvider({ children }) {
         return;
       }
       setUserID(user.email);
+      setSubLoding(true);
 
       // 🔹 1️⃣ Get logged-user main data
       try {
@@ -61,12 +64,16 @@ export default function FirebaseContextProvider({ children }) {
 
       // 🔹 2️⃣ Get user likes (subcollection)
       try {
-        const { data, lastVisible } = await GetUsd({
+        const data = await GetUsd({
           userId: user.email,
           SubCollection: "like",
           pageSize: 20,
           lastDoc: null,
         });
+        let lastVisible = {};
+        if (data.length === 20) {
+          lastVisible = data[data.length - 1];
+        }
         setUserAllLikedVdDatalastVisible(lastVisible);
         setUserAllLikedVdData(data);
       } catch (error) {
@@ -76,19 +83,26 @@ export default function FirebaseContextProvider({ children }) {
       }
 
       // 🔹 2️⃣ Get user Subscribe (subcollection)
+
       try {
-        const { data, lastVisible } = await GetUsd({
+        const data = await GetUsd({
           userId: user.email,
           SubCollection: "sub",
           pageSize: 20,
           lastDoc: null,
         });
+        let lastVisible = {};
+        if (data.length === 20) {
+          lastVisible = data[data.length - 1];
+        }
         setSubscriptionslastVisible(lastVisible);
         setSubscriptions(data);
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setSubscriptions([]);
         setSubscriptionslastVisible({});
+      } finally {
+        setSubLoding(false);
       }
     });
 
@@ -119,9 +133,9 @@ export default function FirebaseContextProvider({ children }) {
     setSubscriptionsCID(Array.from(ids));
   }, [subscriptions]);
 
-  // ------------------------------------------------
+  // --------------------
   // ✅ AddLike funtion
-  // ------------------------------------------------
+  // --------------------
 
   async function AddLike({ vdId, Edata }) {
     if (!vdId && !userID) return;
@@ -144,9 +158,9 @@ export default function FirebaseContextProvider({ children }) {
     ]);
   }
 
-  // ------------------------------------------------
+  // ----------------------
   // ✅ deleteLike funtion
-  // ------------------------------------------------
+  // ----------------------
 
   async function DeleteLike({ vdId }) {
     if (!vdId || !userID) return;
@@ -213,6 +227,43 @@ export default function FirebaseContextProvider({ children }) {
   }
 
   // ------------------------
+  // ✅ GetLikeData funtion
+  // ------------------------
+
+  async function GetLikeData() {
+    if (!subscriptionslastVisible && !userID) return;
+
+    setSubLoding(true);
+    console.log(subscriptionslastVisible);
+
+    // try {
+    //   const data = await GetUsd({
+    //     userId: userID,
+    //     SubCollection: "like",
+    //     pageSize: 20,
+    //     lastDoc: subscriptionslastVisible,
+    //   });
+    //   console.log(data);
+
+    //   let lastVisible = {};
+    //   if (data.length === 20) {
+    //     lastVisible = data[data.length - 1];
+    //   }
+    //   setSubscriptionslastVisible(lastVisible);
+    //   setSubscriptions((p) => [...p, ...data]);
+    // } catch (error) {
+    //   console.error("🔥 Error fetching user likes:", error);
+    // }
+    setSubLoding(false);
+  }
+
+  useEffect(() => {
+    console.log(subscriptions);
+    
+  }, [subscriptions]);
+  
+
+  // ------------------------
   // ✅ Handle Google Sign-In
   // ------------------------
 
@@ -246,6 +297,8 @@ export default function FirebaseContextProvider({ children }) {
     Subscribe,
     UnSubscribe,
     subscriptionsCID,
+
+    SubLoding,
   };
 
   return (

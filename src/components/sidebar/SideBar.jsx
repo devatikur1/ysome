@@ -11,6 +11,7 @@ import SubscribeItem from "./part/SubscribeItem";
 import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
 import googleLogo from "../../assets/google.png";
 import clsx from "clsx";
+import SubscribeItemLoading from "./part/SubscribeItemLoading";
 
 // ✅ move outside → prevent re-creation on each rerender
 const menuItems = [
@@ -51,7 +52,7 @@ export default function SideBar({ type = "", Height }) {
   const { isReSideBarShow } = useContext(UiContext);
 
   // Firebase Context
-  const { isLogged, handleGoogleSignIn, subscriptions } =
+  const { isLogged, handleGoogleSignIn, subscriptions, SubLoding } =
     useContext(FirebaseContext);
 
   // google Is Disable
@@ -114,6 +115,7 @@ export default function SideBar({ type = "", Height }) {
                 />
               );
             })}
+
             <AnimatePresence>
               {menuItem.section === "you" && !isLogged && (
                 <motion.div
@@ -188,6 +190,8 @@ export default function SideBar({ type = "", Height }) {
                 isReSideBarShow={isReSideBarShow}
               />
             ))}
+            {!SubLoding &&
+              [...Array(5)].map((_, i) => <SubscribeItemLoading key={i} />)}
             {subscriptions?.length === 0 && (
               <div className="flex justify-center items-center w-full h-auto">
                 <p className="text-subtext text-sm text-center py-32">
