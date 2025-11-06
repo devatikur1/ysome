@@ -42,13 +42,13 @@ export default function FirstPartOutPart({ prop, VideoWidth }) {
 
   //🔹 Update this when chnage userAllLikedVdID
   useEffect(() => {
-    let isLikes = userAllLikedVdID.find((uv) => uv === VideoID);
+    let isLikes = userAllLikedVdID.some((uv) => uv === VideoID);
     setisLiked(isLikes);
   }, [userAllLikedVdID]);
 
   //🔹 Update this when chnage subscriptionsCID
   useEffect(() => {
-    let isLikes = subscriptionsCID.find((uv) => uv === VideoID);
+    let isLikes = subscriptionsCID.some((uv) => uv === ChannelData?.id);
     setisSubscribe(isLikes);
   }, [subscriptionsCID]);
 
