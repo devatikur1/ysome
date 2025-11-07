@@ -39,6 +39,14 @@ import {
   apiKey7,
   apiKey8,
 } from "../utils/data";
+import {
+  CommentSkeleton,
+  RelatedSkeleton,
+  VideoHeaderSkeleton,
+  VideoSkeleton,
+} from "../components/PlayVideoInterFaceComponent/part/Video/VdIdBaseLoading";
+
+/* --------- import Important Loading Part  --------- */
 
 export default function PlayVideoInterFacePage() {
   const { HomePageWidth, HomePageHeight } = useContext(UiContext);
@@ -85,8 +93,9 @@ export default function PlayVideoInterFacePage() {
   const [apiIndex, setApiIndex] = useState(0);
   const [activeKey, setActiveKey] = useState(apiKeys[0]);
   const [VideoDetailsApi] = useState(
-    "6300721694msh8f42ed36c1e74d6p1d2b3ejsn5867222c6811"
-  ); // 
+    // "0bd62bad36msh6e3bc79e04d7b2fp12fbdejsnec04ef171475"
+    ""
+  );
 
   // ------------------------------
   // 2️⃣ LOGIC HELPERS
@@ -125,10 +134,11 @@ export default function PlayVideoInterFacePage() {
     (async () => {
       setLoading(true);
 
-      const { status, data} = await GetVideoDetails({
+      const { status, data } = await GetVideoDetails({
         videoID: videoId,
         key: VideoDetailsApi,
       });
+      console.log(status);
 
       if (!status) {
         setError(!status);
@@ -301,7 +311,6 @@ export default function PlayVideoInterFacePage() {
   // ------------------------------
   return (
     <div
-      ref={containerRef}
       style={{
         width: `${HomePageWidth}px`,
         height: `${HomePageHeight}px`,
@@ -309,18 +318,25 @@ export default function PlayVideoInterFacePage() {
         minHeight: `${HomePageHeight}px`,
       }}
       ref={containerRef}
+      className=" overflow-x-hidden overflow-y-auto"
     >
-      {t ? (
-        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4 overflow-x-hidden overflow-y-auto">
+      {loading ? (
+        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4 *:select-none">
           <section
             className={`flex flex-col w-[100%] md:w-[67%] h-auto pl-2 md:px-0`}
           >
             <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
               <VideoSkeleton />
             </article>
-            <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
+            <VideoHeaderSkeleton />
             <article className="w-full">
-              <CommentSkeleton count={20} />
+              <article className="w-full py-5 pl-5 select-none cursor-pointer pt-12 pb-5">
+                <h1 className="text-xl font-semibold flex items-center gap-3">
+                  <div className="w-8 h-5 bg-surface rounded"></div>{" "}
+                  <span>Comments</span>
+                </h1>
+              </article>
+              <CommentSkeleton count={15} />
             </article>
           </section>
 
@@ -331,9 +347,9 @@ export default function PlayVideoInterFacePage() {
           </section>
         </div>
       ) : (
-        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4 overflow-x-hidden overflow-y-auto">
+        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4">
           <section
-            className={`flex flex-col w-[100%] md:w-[67%] h-auto pl-2 md:px-0`}
+            className={`w-[100%] md:w-[67%] flex flex-col h-auto pl-2 md:px-0`}
           >
             <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
               <PlayerVideo videoDetails={videoDetails} />
@@ -350,15 +366,16 @@ export default function PlayVideoInterFacePage() {
             </article>
           </section>
 
-      <section
-        className={`w-[${HomePageWidth}px] md:w-[${
-          HomePageWidth * 0.33
-        }px] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
-      >
-        {RelatedVideoItem?.map((item, idx) => (
-          <ReccomendPart key={idx} item={item} />
-        ))}
-      </section>
+          <section
+            className={`w-[100%] md:w-[33%] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
+          >
+            {RelatedVideoItem?.map((item, idx) => (
+              <ReccomendPart key={idx} item={item} />
+            ))}
+            {RelatedVideoLoading && <RelatedSkeleton count={12} />}
+          </section>
+        </div>
+      )}
     </div>
   );
 }

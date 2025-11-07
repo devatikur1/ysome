@@ -1,7 +1,7 @@
 import React from "react";
 import CommoentPart from "./part/CommoentPart";
 import millify from "millify";
-import CommentLoading from "./Comment/CommentLoading";
+import { CommentSkeleton } from "./Video/VdIdBaseLoading";
 
 export default function CommoentInterFace({
   commentCount,
@@ -25,8 +25,7 @@ export default function CommoentInterFace({
             replies={item?.replies?.comments || []}
           />
         ))}
-      {CommentDataLoading === true &&
-        [...Array(10)].map((_, i) => <CommentLoading key={i} />)}
+      {CommentDataLoading && <CommentSkeleton count={12} />}
 
       {CommentData?.length <= 0 && (
         <p className="text-subtext text-center py-24">No comments found...</p>
