@@ -125,23 +125,19 @@ export default function PlayVideoInterFacePage() {
     (async () => {
       setLoading(true);
 
-      // const { status, data} = await GetVideoDetails({
-      //   videoID: videoId,
-      //   key: VideoDetailsApi,
-      // });
-
-      const status = true;
-      const vdDetails = JSON.parse(localStorage.getItem("c"));
-      console.log(vdDetails);
+      const { status, data} = await GetVideoDetails({
+        videoID: videoId,
+        key: VideoDetailsApi,
+      });
 
       if (!status) {
         setError(!status);
         setVideoDetails({});
       } else {
         setError(!status);
-        setVideoDetails(vdDetails);
+        setVideoDetails(data);
         let [videoData, VdDetails, cmtData, RelatedVideo] = await fetchAllData({
-          videoDetails: vdDetails,
+          videoDetails: data,
         });
 
         console.log(cmtData?.items);
