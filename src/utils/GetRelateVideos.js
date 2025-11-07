@@ -1,8 +1,8 @@
-export async function GetRelateVideos({ videoID, nextPageNoken, key }) {
+export async function GetRelateVideos({ videoID, nextPageToken, key }) {
   try {
     const res = await fetch(
       `https://youtube-media-downloader.p.rapidapi.com/v2/video/related?videoId=${videoID}${
-        nextPageNoken ? `&nextToken=${nextPageNoken}` : ""
+        nextPageToken ? `&nextToken=${nextPageToken}` : ""
       }`,
       {
         method: "GET",
@@ -13,11 +13,15 @@ export async function GetRelateVideos({ videoID, nextPageNoken, key }) {
       }
     );
 
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    if (!res.ok) {
+      console.log(`HTTP error! status: ${res.status}`);
+      return { status: false, data: {} };
+    }
 
     const data = await res.json();
-    return data;
+    return { status: true, data: data };
   } catch (err) {
     console.error("Fetch failed:", err);
+    return { status: false, data: {} };
   }
 }

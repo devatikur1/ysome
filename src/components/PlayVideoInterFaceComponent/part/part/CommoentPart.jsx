@@ -35,9 +35,9 @@ export default function CommoentPart({ comment, replies }) {
             </time>
           </Link>
           <article>
-            <p className="text-text/80 text-[0.9rem] text-wrap">
+            <pre className="text-text/80 text-[0.9rem] text-wrap">
               {comment?.textOriginal}
-            </p>
+            </pre>
           </article>
           <article className="flex justify-start items-center mt-3">
             <article className="flex bg-surface text-text/80 rounded-full text-[0.85rem] font-medium border border-border transition">
@@ -75,8 +75,9 @@ export default function CommoentPart({ comment, replies }) {
       <AnimatePresence>
         {replies?.length > 0 &&
           showReplies &&
-          replies.map((rp) => (
-            <motion.article
+          replies.map((rp, idx) => (
+            <motion.aside
+              key={idx}
               initial={{
                 height: 0,
               }}
@@ -89,14 +90,14 @@ export default function CommoentPart({ comment, replies }) {
               transition={{
                 duration: 0.3,
               }}
-              className="bg-bg-pecondary pl-28"
+              className="bg-bg-pecondary pl-28 border-b border-black"
             >
               <article className="flex justify-start gap-5 px-3 py-5">
                 <Link to={`/${rp?.snippet?.authorDisplayName}`}>
                   <img
                     className="rounded-full min-w-[45px] min-h-[45px] w-[45px] h-[45px] max-w-[45px] max-h-[45px]"
                     src={rp?.snippet?.authorProfileImageUrl}
-                    alt={rp?.snippet?.textDisplay}
+                    alt={rp?.snippet?.textOriginal}
                   />
                 </Link>
                 <section>
@@ -117,9 +118,9 @@ export default function CommoentPart({ comment, replies }) {
                     </time>
                   </Link>
                   <article>
-                    <p className="text-text/80 text-[0.9rem] text-wrap">
+                    <pre className="text-text/80 text-[0.9rem] text-wrap">
                       {rp?.snippet?.textOriginal}
-                    </p>
+                    </pre>
                   </article>
                   <article className="flex justify-start items-center mt-3">
                     <article className="flex bg-surface text-text/80 rounded-full text-[0.85rem] font-medium border border-border transition">
@@ -143,7 +144,7 @@ export default function CommoentPart({ comment, replies }) {
                   </article>
                 </section>
               </article>
-            </motion.article>
+            </motion.aside>
           ))}
       </AnimatePresence>
     </aside>

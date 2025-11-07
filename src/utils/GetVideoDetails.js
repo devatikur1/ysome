@@ -11,11 +11,15 @@ export async function GetVideoDetails({ videoID, key }) {
       }
     );
 
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    if (!res.ok) {
+      console.log(`HTTP error! status: ${res.status}`);
+      return { status: false, data: {} };
+    }
 
     const data = await res.json();
-    return data;
+    return { status: true, data: data };
   } catch (err) {
     console.error("Fetch failed:", err);
+    return { status: false, data: {} };
   }
 }

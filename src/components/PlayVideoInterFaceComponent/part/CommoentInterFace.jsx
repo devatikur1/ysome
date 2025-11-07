@@ -1,6 +1,7 @@
 import React from "react";
 import CommoentPart from "./part/CommoentPart";
 import millify from "millify";
+import CommentLoading from "./Comment/CommentLoading";
 
 export default function CommoentInterFace({
   commentCount,
@@ -15,46 +16,20 @@ export default function CommoentInterFace({
           {millify(Number(commentCount))} Comments
         </h1>
       </article>
-      {
-        <>
-          {CommentData?.length > 0 &&
-            CommentData.map((item) => (
-              <CommoentPart
-                key={item.id}
-                comment={item?.snippet?.topLevelComment.snippet}
-                replies={item?.replies?.comments || []}
-              />
-            ))}
-          {CommentDataLoading === true &&
-            [...Array(10)].map((_, i) => (
-              <article
-                key={i}
-                className="flex justify-start gap-5 px-3 py-5 animate-pulse"
-              >
-                <section>
-                  <div className="rounded-full bg-surface min-w-[45px] min-h-[45px] w-[45px] h-[45px]" />
-                </section>
 
-                <section className="flex-1 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-24 h-3 bg-surface rounded"></div>
-                    <div className="w-10 h-2 bg-surface rounded"></div>
-                  </div>
+      {CommentData?.length > 0 &&
+        CommentData.map((item) => (
+          <CommoentPart
+            key={item.id}
+            comment={item?.snippet?.topLevelComment.snippet}
+            replies={item?.replies?.comments || []}
+          />
+        ))}
+      {CommentDataLoading === true &&
+        [...Array(10)].map((_, i) => <CommentLoading key={i} />)}
 
-                  <div className="w-full h-3 bg-surface rounded"></div>
-                  <div className="w-3/4 h-3 bg-surface rounded"></div>
-
-                  <div className="flex gap-3 mt-3">
-                    <div className="w-16 h-6 bg-surface rounded-full"></div>
-                    <div className="w-16 h-6 bg-surface rounded-full"></div>
-                  </div>
-                </section>
-              </article>
-            ))}
-        </>
-      }
       {CommentData?.length <= 0 && (
-        <p className="text-subtext text-center py-32">No comments found...</p>
+        <p className="text-subtext text-center py-24">No comments found...</p>
       )}
 
       {CommentData?.length > 0 && (
