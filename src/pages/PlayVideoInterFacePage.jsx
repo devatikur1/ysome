@@ -308,27 +308,47 @@ export default function PlayVideoInterFacePage() {
         minWidth: `${HomePageWidth}px`,
         minHeight: `${HomePageHeight}px`,
       }}
-      className="flex flex-col md:flex-row gap-5 py-3 md:px-4 overflow-x-hidden overflow-y-auto"
+      ref={containerRef}
     >
-      <section
-        className={`flex flex-col w-[${HomePageWidth}px] md:w-[${
-          HomePageWidth * 0.67
-        }px]  md:w-[69vw] h-auto pl-2 md:px-0`}
-      >
-        <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
-          <PlayerVideo videoDetails={videoDetails} />
-        </article>
-        <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
-        <article className="w-full">
-          <CommoentInterFace
-            VideoID={VideoID}
-            CommentData={CommentData}
-            commentCount={VideoData?.statistics?.commentCount}
-            moreCommentThreads={moreCommentThreads}
-            CommentDataLoading={CommentDataLoading}
-          />
-        </article>
-      </section>
+      {t ? (
+        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4 overflow-x-hidden overflow-y-auto">
+          <section
+            className={`flex flex-col w-[100%] md:w-[67%] h-auto pl-2 md:px-0`}
+          >
+            <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
+              <VideoSkeleton />
+            </article>
+            <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
+            <article className="w-full">
+              <CommentSkeleton count={20} />
+            </article>
+          </section>
+
+          <section
+            className={`w-[100%] md:w-[33%] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
+          >
+            <RelatedSkeleton count={22} />
+          </section>
+        </div>
+      ) : (
+        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4 overflow-x-hidden overflow-y-auto">
+          <section
+            className={`flex flex-col w-[100%] md:w-[67%] h-auto pl-2 md:px-0`}
+          >
+            <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
+              <PlayerVideo videoDetails={videoDetails} />
+            </article>
+            <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
+            <article className="w-full">
+              <CommoentInterFace
+                VideoID={VideoID}
+                CommentData={CommentData}
+                commentCount={VideoData?.statistics?.commentCount}
+                moreCommentThreads={moreCommentThreads}
+                CommentDataLoading={CommentDataLoading}
+              />
+            </article>
+          </section>
 
       <section
         className={`w-[${HomePageWidth}px] md:w-[${
