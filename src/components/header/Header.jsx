@@ -23,15 +23,12 @@ export default function Header() {
   } = useContext(UiContext);
 
   // Firebase Context
-  const {
-    isLogged,
-    userData,
-    handleGoogleSignIn,
-  } = useContext(FirebaseContext);
+  const { auth } = useContext(FirebaseContext);
+
+  const { isLogged, userData, handleGoogleSignIn } = auth;
 
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);
-
 
   return (
     <header className="w-full h-full max-h-[60px] flex justify-between items-center px-5 py-2 border-border border-b *:select-none">
@@ -109,7 +106,14 @@ export default function Header() {
             </article>
           </>
         ) : (
-          <article onClick={() => handleGoogleSignIn({ setGoogleIsDis: setGoogleIsDis, googleIsDis: googleIsDis })}>
+          <article
+            onClick={() =>
+              handleGoogleSignIn({
+                setGoogleIsDis: setGoogleIsDis,
+                googleIsDis: googleIsDis,
+              })
+            }
+          >
             <button
               disabled={googleIsDis}
               className="bg-surface hover:bg-hover border border-border transition-all duration-300 

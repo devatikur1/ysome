@@ -34,7 +34,7 @@ export default function PlayerVideo({ videoDetails }) {
     data?.audios?.items?.[0];
 
   const videoUrl =
-    data?.videos?.items?.[3]?.url || data?.videos?.items?.[0]?.url;
+    data?.video?.items?.[3]?.url || data?.videos?.items?.[0]?.url;
 
   // -------------------------
   // Video-Audio sync

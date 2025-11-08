@@ -1,13 +1,13 @@
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../Firebase";
 
-export async function DeleteUsd({ userId, SubCollection, docId }) {
+export async function DeleteUsd({ userId, subCollection, docId }) {
   try {
-    if (!userId || !SubCollection || !docId) {
-      console.error("⚠️ Missing parameters in DeleteSubCollectionDoc");
+    if (!userId || !subCollection || !docId) {
+      console.error("⚠️ Missing parameters in DeletesubCollectionDoc");
       return false;
     }
-    const docRef = doc(db, "usd", userId, SubCollection, docId);
+    const docRef = doc(db, "usd", userId, subCollection, docId);
 
     // delete data
     await deleteDoc(docRef);

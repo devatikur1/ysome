@@ -10,14 +10,16 @@ export default function AllSubscriptionsPart({
 }) {
   return (
     <section className="w-full flex flex-col gap-6">
-      {subscriptions.map((channel, i) => (
-        <SubscriptionsPart
-          key={i}
-          cid={channel?.id}
-          channel={channel?.data}
-          UnSubscribe={UnSubscribe}
-        />
-      ))}
+      {subscriptions.map((channel) => [
+        [...Array(30)].map((_, i) => (
+          <SubscriptionsPart
+            key={i}
+            cid={channel?.id}
+            channel={channel?.data}
+            UnSubscribe={UnSubscribe}
+          />
+        )),
+      ])}
       {SubLoding &&
         [...Array(5)].map((_, i) => <SubscriptionsLoding key={i} />)}
       {!SubLoding && subscriptions.length === 0 && (

@@ -52,8 +52,10 @@ export default function SideBar({ type = "", Height }) {
   const { isReSideBarShow } = useContext(UiContext);
 
   // Firebase Context
-  const { isLogged, handleGoogleSignIn, subscriptions, SubLoding } =
-    useContext(FirebaseContext);
+  const { auth, sub } = useContext(FirebaseContext);
+
+  let { isLogged, handleGoogleSignIn } = auth;
+  let { subscriptions, SubLoding } = sub;
 
   // google Is Disable
   const [googleIsDis, setGoogleIsDis] = useState(false);

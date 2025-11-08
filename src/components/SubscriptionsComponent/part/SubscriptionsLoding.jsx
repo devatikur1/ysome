@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function SubscriptionsLoding() {
   return (
-    <div className="flex items-center justify-between w-full gap-5 p-3 py-5 rounded-2xl animate-pulse bg-neutral-900/40">
+    <div className="w-full flex items-center justify-between gap-5 p-3 py-5 rounded-2xl animate-pulse bg-neutral-900/40">
       {/* Left: Photo skeleton */}
       <div className="flex-shrink-0">
         <div className="h-[95px] w-[95px] rounded-full bg-neutral-700" />
@@ -11,7 +11,7 @@ export default function SubscriptionsLoding() {
       {/* Middle: Info skeleton */}
       <div className="flex flex-col flex-1 min-w-0 gap-3">
         {/* Channel Name */}
-        <div className="h-4 w-1/3 bg-neutral-700 rounded"></div>
+        <div className="h-4 w-1/2 bg-neutral-700 rounded"></div>
 
         {/* Subscriber count */}
         <div className="flex items-center gap-2">

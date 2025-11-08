@@ -36,7 +36,7 @@ export default function HomeLayout() {
           minWidth: `${HomePageOutletWidth}px`,
           minHeight: `${HomePageHeight}px`,
         }}
-        className="overflow-y-auto transition-all duration-30"
+        className="overflow-hidden transition-all duration-30"
       >
         <Outlet />
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FirebaseContext } from "./FirebaseContext";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./Firebase";
 import { GoogleAuth } from "./Auth/GoogleAuth";
 import { GetUsd } from "./Firestore/GetUsd";
@@ -11,7 +11,7 @@ import { DeleteUsd } from "./Firestore/DeleteUsd";
 export default function FirebaseContextProvider({ children }) {
   // 🔹 Logged state
   const [isLogged, setIsLogged] = useState(
-    localStorage.getItem("logged") || false
+    localStorage.getItem("logged") === "true"
   );
 
   // 🔹 User Data
@@ -26,15 +26,23 @@ export default function FirebaseContextProvider({ children }) {
   const [LikeLoding, setLikeLoding] = useState(false);
 
   // 🔹 subscriptions
-  const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionsCID, setSubscriptionsCID] = useState([]);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
   const [SubLoding, setSubLoding] = useState(false);
+
+  // ------------------------------------------------
+  // ✅ Get Last Visible funtion
+  // ------------------------------------------------
+
+  function getLastVisible(data, pageSize = 20) {
+    return data?.length === pageSize ? data[data.length - 1] : {};
+  }
 
   // ---------------------------------------
   // ✅ useEffect get all Data auth changes
   // ---------------------------------------
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -43,6 +51,7 @@ export default function FirebaseContextProvider({ children }) {
       }
       setUserID(user.email);
       setSubLoding(true);
+      setLikeLoding(true);
 
       // 🔹 1️⃣ Get logged-user main data
       try {
@@ -61,43 +70,52 @@ export default function FirebaseContextProvider({ children }) {
         console.error("🔥 Error fetching user data:", error);
         setIsLogged(false);
         setUserData({});
+      } finally {
+        setLikeLoding(false);
       }
 
-      // 🔹 2️⃣ Get user likes (subcollection)
+      // 🔹 2️⃣ Get user likes (subCollection)
       try {
         const data = await GetUsd({
           userId: user.email,
-          SubCollection: "like",
+          subCollection: "like",
           pageSize: 20,
           lastDoc: null,
         });
-        let lastVisible = {};
-        if (data.length === 20) {
-          lastVisible = data[data.length - 1];
+        console.log(data);
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+          setUserAllLikedVdDatalastVisible({});
+          setUserAllLikedVdData([]);
+        } else {
+          const lastVisible = getLastVisible(data, 20);
+
+          setUserAllLikedVdDatalastVisible(lastVisible);
+          setUserAllLikedVdData(data);
         }
-        setUserAllLikedVdDatalastVisible(lastVisible);
-        setUserAllLikedVdData(data);
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setUserAllLikedVdDatalastVisible({});
         setUserAllLikedVdData([]);
       }
 
-      // 🔹 2️⃣ Get user Subscribe (subcollection)
-
+      // 🔹 2️⃣ Get user Subscribe (subCollection)
       try {
         const data = await GetUsd({
           userId: user.email,
-          SubCollection: "sub",
+          subCollection: "sub",
           pageSize: 20,
           lastDoc: null,
         });
-        let lastVisible = {};
-        if (data.length === 20) {
-          lastVisible = data[data.length - 1];
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+          setSubscriptions([]);
+          setSubscriptionslastVisible({});
+        } else {
+          const lastVisible = getLastVisible(data, 20);
+          console.log(data);
+
+          setSubscriptions(data);
+          setSubscriptionslastVisible(lastVisible);
         }
-        setSubscriptionslastVisible(lastVisible);
-        setSubscriptions(data);
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setSubscriptions([]);
@@ -117,7 +135,7 @@ export default function FirebaseContextProvider({ children }) {
   useEffect(() => {
     let ids = new Set();
     userAllLikedVdData.forEach((dt) => {
-      ids.add(dt.id);
+      ids.add(dt.data.id);
     });
     setUserAllLikedVdID(Array.from(ids));
   }, [userAllLikedVdData]);
@@ -141,22 +159,23 @@ export default function FirebaseContextProvider({ children }) {
   async function AddLike({ vdId, Edata }) {
     if (!vdId && !userID) return;
 
+    let data = {
+      publishedAt: new Date().toString(),
+      data: {
+        ...Edata,
+      },
+    };
+
     let IsLike = await SetUsd({
       userId: userID,
-      SubCollection: "like",
+      subCollection: "like",
       manualID: vdId,
-      data: Edata,
+      data: data,
     });
 
     if (!IsLike) return;
 
-    setUserAllLikedVdData((p) => [
-      {
-        id: vdId,
-        ...Edata,
-      },
-      ...p,
-    ]);
+    setUserAllLikedVdData((p) => [data, ...p]);
   }
 
   // ----------------------
@@ -168,7 +187,7 @@ export default function FirebaseContextProvider({ children }) {
 
     const isDeleted = await DeleteUsd({
       userId: userID,
-      SubCollection: "sub",
+      subCollection: "like",
       docId: vdId,
     });
 
@@ -182,7 +201,8 @@ export default function FirebaseContextProvider({ children }) {
   // ------------------------
 
   async function Subscribe({ cdId, ChannelData }) {
-    if (!cdId && !userID) return;
+    if (!cdId && !userID && !ChannelData) return;
+    console.log(ChannelData);
 
     let data = {
       publishedAt: new Date().toString(),
@@ -191,14 +211,14 @@ export default function FirebaseContextProvider({ children }) {
       },
     };
 
-    let IsLike = await SetUsd({
+    let sub = await SetUsd({
       userId: userID,
-      SubCollection: "sub",
+      subCollection: "sub",
       manualID: cdId,
       data: data,
     });
 
-    if (!IsLike) return;
+    if (!sub) return;
 
     setSubscriptions((p) => [
       {
@@ -218,7 +238,7 @@ export default function FirebaseContextProvider({ children }) {
 
     const isDeleted = await DeleteUsd({
       userId: userID,
-      SubCollection: "sub",
+      subCollection: "sub",
       docId: cdId,
     });
 
@@ -228,41 +248,13 @@ export default function FirebaseContextProvider({ children }) {
   }
 
   // ------------------------
-  // ✅ GetLikeData funtion
+  // ✅ Temp
   // ------------------------
-
-  async function GetLikeData() {
-    if (!subscriptionslastVisible && !userID) return;
-
-    setSubLoding(true);
-    console.log(subscriptionslastVisible);
-
-    // try {
-    //   const data = await GetUsd({
-    //     userId: userID,
-    //     SubCollection: "like",
-    //     pageSize: 20,
-    //     lastDoc: subscriptionslastVisible,
-    //   });
-    //   console.log(data);
-
-    //   let lastVisible = {};
-    //   if (data.length === 20) {
-    //     lastVisible = data[data.length - 1];
-    //   }
-    //   setSubscriptionslastVisible(lastVisible);
-    //   setSubscriptions((p) => [...p, ...data]);
-    // } catch (error) {
-    //   console.error("🔥 Error fetching user likes:", error);
-    // }
-    setSubLoding(false);
-  }
 
   useEffect(() => {
     console.log(subscriptions);
-    
-  }, [subscriptions]);
-  
+    console.log(userAllLikedVdData);
+  }, [subscriptions, userAllLikedVdData]);
 
   // ------------------------
   // ✅ Handle Google Sign-In
@@ -286,20 +278,27 @@ export default function FirebaseContextProvider({ children }) {
 
   // ✅ Context value
   const value = {
-    isLogged,
-    userData,
-    handleGoogleSignIn,
-
-    AddLike,
-    DeleteLike,
-    userAllLikedVdID,
-
-    subscriptions,
-    Subscribe,
-    UnSubscribe,
-    subscriptionsCID,
-
-    SubLoding,
+    auth: {
+      isLogged,
+      userData,
+      handleGoogleSignIn,
+    },
+    likes: {
+      userAllLikedVdData,
+      userAllLikedVdID,
+      userAllLikedVdDatalastVisible,
+      AddLike,
+      DeleteLike,
+      LikeLoding,
+    },
+    sub: {
+      subscriptions,
+      subscriptionsCID,
+      subscriptionslastVisible,
+      Subscribe,
+      UnSubscribe,
+      SubLoding,
+    },
   };
 
   return (

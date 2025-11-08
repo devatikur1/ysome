@@ -7,20 +7,11 @@ import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
 
 export default function ChannelAndLike({ VideoData }) {
   //🔹 FirebaseContext
-  const {
-    // Like
-    AddLike,
-    DeleteLike,
-    userAllLikedVdID,
+  const { auth, likes, sub } = useContext(FirebaseContext);
 
-    // Subscribe
-    Subscribe,
-    UnSubscribe,
-    subscriptionsCID,
-
-    // isLogged
-    isLogged,
-  } = useContext(FirebaseContext);
+  const { isLogged } = auth;
+  const { userAllLikedVdID, AddLike, DeleteLike } = likes;
+  const { subscriptionsCID, Subscribe, UnSubscribe } = sub;
 
   //🔹 state
   const [isLiked, setisLiked] = useState(false);
@@ -49,7 +40,6 @@ export default function ChannelAndLike({ VideoData }) {
       setisLiked(false);
       await DeleteLike({ vdId: vid });
     } else {
-      if (!VideoData) return;
       setisLiked(true);
       await AddLike({ vdId: vid, Edata: VideoData });
     }
