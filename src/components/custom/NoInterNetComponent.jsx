@@ -3,7 +3,10 @@ import NoInternetIcon from "../../others/NoInternetIcon";
 
 export default function NoInterNetComponent({ style, fetchData }) {
   return (
-    <main style={style} className="w-full h-full flex justify-center items-center">
+    <main
+      style={style}
+      className="w-full h-full flex justify-center items-center"
+    >
       <div className="mb-14 flex flex-col justify-center items-center gap-1.5">
         <div className="w-[180px] flex flex-col justify-center items-center">
           <NoInternetIcon />

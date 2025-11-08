@@ -30,6 +30,7 @@ export default function FirebaseContextProvider({ children }) {
   const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
   const [SubLoding, setSubLoding] = useState(false);
+  const [SubError, setSubError] = useState(false);
 
   // ------------------------------------------------
   // ✅ Get Last Visible funtion
@@ -109,17 +110,18 @@ export default function FirebaseContextProvider({ children }) {
         if (!data || (Array.isArray(data) && data.length === 0)) {
           setSubscriptions([]);
           setSubscriptionslastVisible({});
+          setSubError(true);
         } else {
           const lastVisible = getLastVisible(data, 20);
-          console.log(data);
-
           setSubscriptions(data);
           setSubscriptionslastVisible(lastVisible);
+          setSubError(false);
         }
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setSubscriptions([]);
         setSubscriptionslastVisible({});
+        setSubError(true);
       } finally {
         setSubLoding(false);
       }
@@ -281,7 +283,9 @@ export default function FirebaseContextProvider({ children }) {
     auth: {
       isLogged,
       userData,
+      userID,
       handleGoogleSignIn,
+      getLastVisible,
     },
     likes: {
       userAllLikedVdData,
@@ -293,11 +297,16 @@ export default function FirebaseContextProvider({ children }) {
     },
     sub: {
       subscriptions,
+      setSubscriptions,
       subscriptionsCID,
+      setSubscriptionsCID,
       subscriptionslastVisible,
+      setSubscriptionslastVisible,
       Subscribe,
       UnSubscribe,
       SubLoding,
+      setSubLoding,
+      SubError,
     },
   };
 
