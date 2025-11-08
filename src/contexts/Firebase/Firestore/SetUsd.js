@@ -1,9 +1,9 @@
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 
-export async function SetUsd({ userId, SubCollection, manualID, data }) {
+export async function SetUsd({ userId, subCollection, manualID, data }) {
   try {
-    const subColRef = collection(db, "usd", userId, SubCollection);
+    const subColRef = collection(db, "usd", userId, subCollection);
     const docRef = doc(subColRef, manualID);
 
     // Set data

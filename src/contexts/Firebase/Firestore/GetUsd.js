@@ -10,13 +10,13 @@ import { db } from "../Firebase";
 
 export async function GetUsd({
   userId,
-  SubCollection,
+  subCollection,
   pageSize = 10,
   lastDoc = null,
 }) {
   try {
-    // 🔹 Path: collectionName → userId → SubCollection
-    const subColRef = collection(db, "usd", userId, SubCollection);
+    // 🔹 Path: collectionName → userId → subCollection
+    const subColRef = collection(db, "usd", userId, subCollection);
 
     // 🔹 Query
     let q = query(subColRef, limit(pageSize));
@@ -34,7 +34,7 @@ export async function GetUsd({
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
-      console.warn("⚠️ No more data found in subcollection");
+      console.warn("⚠️ No more data found in subCollection");
       return [];
     }
 
