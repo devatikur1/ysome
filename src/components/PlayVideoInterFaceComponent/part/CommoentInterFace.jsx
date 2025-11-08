@@ -1,7 +1,7 @@
 import React from "react";
 import CommoentPart from "./part/CommoentPart";
 import millify from "millify";
-import { CommentSkeleton } from "./Video/VdIdBaseLoading";
+import { CommentSkeleton } from "../../custom/LoadingComponent";
 
 export default function CommoentInterFace({
   commentCount,

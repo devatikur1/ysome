@@ -39,15 +39,10 @@ import {
   apiKey7,
   apiKey8,
 } from "../utils/data";
-import {
-  CommentSkeleton,
-  RelatedSkeleton,
-  VideoHeaderSkeleton,
-  VideoSkeleton,
-} from "../components/PlayVideoInterFaceComponent/part/Video/VdIdBaseLoading";
 import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 
 /* --------- import Important Loading Part  --------- */
+import { CommentSkeleton, RelatedSkeleton, VideoHeaderSkeleton, VideoSkeleton } from "../components/custom/LoadingComponent";
 
 export default function PlayVideoInterFacePage() {
   const { HomePageWidth, HomePageHeight } = useContext(UiContext);
