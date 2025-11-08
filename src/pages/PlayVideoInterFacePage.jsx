@@ -45,6 +45,7 @@ import {
   VideoHeaderSkeleton,
   VideoSkeleton,
 } from "../components/PlayVideoInterFaceComponent/part/Video/VdIdBaseLoading";
+import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 
 /* --------- import Important Loading Part  --------- */
 
@@ -93,7 +94,7 @@ export default function PlayVideoInterFacePage() {
   const [apiIndex, setApiIndex] = useState(0);
   const [activeKey, setActiveKey] = useState(apiKeys[0]);
   const [VideoDetailsApi] = useState(
-    "0bd62bad36msh6e3bc79e04d7b2fp12fbdejsnec04ef171475"
+    "88a6dbea6dmsh48f6c586db2dfd0p17067bjsnafdeb4861d22"
   );
 
   // ------------------------------
@@ -119,6 +120,41 @@ export default function PlayVideoInterFacePage() {
   // ------------------------------
   // 3️⃣ FETCH VIDEO DETAILS
   // ------------------------------
+
+  async function CallFirstData(id) {
+    setLoading(true);
+
+    const { status, data } = await GetVideoDetails({
+      videoID: id,
+      key: VideoDetailsApi,
+    });
+    console.log(status);
+
+    if (status === false) {
+      setError(true);
+      setVideoDetails({});
+    } else {
+      setError(false);
+      setVideoDetails(data);
+      let [videoData, VdDetails, cmtData, RelatedVideo] = await fetchAllData({
+        videoDetails: data,
+      });
+
+      console.log(cmtData?.items);
+      console.log(videoData);
+
+      setVideoData(videoData);
+      setVideoDetails(VdDetails);
+      setCommentData(cmtData?.items);
+      setRelatedVideoItem(RelatedVideo?.items);
+
+      setCommentNextToken(cmtData?.nextPageToken);
+      setRelatedVideoToken(RelatedVideo?.nextToken);
+    }
+
+    setLoading(false);
+  }
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const videoId = params.get("v");
@@ -129,39 +165,7 @@ export default function PlayVideoInterFacePage() {
     }
 
     setVideoID(videoId);
-
-    (async () => {
-      setLoading(true);
-
-      const { status, data } = await GetVideoDetails({
-        videoID: videoId,
-        key: VideoDetailsApi,
-      });
-      console.log(status);
-
-      if (!status) {
-        setError(!status);
-        setVideoDetails({});
-      } else {
-        setError(!status);
-        setVideoDetails(data);
-        let [videoData, VdDetails, cmtData, RelatedVideo] = await fetchAllData({
-          videoDetails: data,
-        });
-
-        console.log(cmtData?.items);
-
-        setVideoData(videoData);
-        setVideoDetails(VdDetails);
-        setCommentData(cmtData?.items);
-        setRelatedVideoItem(RelatedVideo?.items);
-
-        setCommentNextToken(cmtData?.nextPageToken);
-        setRelatedVideoToken(RelatedVideo?.nextToken);
-      }
-
-      setLoading(false);
-    })();
+    CallFirstData(videoId);
   }, [location, navigate]);
 
   // ------------------------------
@@ -346,33 +350,47 @@ export default function PlayVideoInterFacePage() {
           </section>
         </div>
       ) : (
-        <div className="w-full flex flex-col md:flex-row gap-5 py-3 md:px-4">
-          <section
-            className={`w-[100%] md:w-[67%] flex flex-col h-auto pl-2 md:px-0`}
-          >
-            <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
-              <PlayerVideo videoDetails={videoDetails} />
-            </article>
-            <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
-            <article className="w-full">
-              <CommoentInterFace
-                VideoID={VideoID}
-                CommentData={CommentData}
-                commentCount={VideoData?.statistics?.commentCount}
-                moreCommentThreads={moreCommentThreads}
-                CommentDataLoading={CommentDataLoading}
-              />
-            </article>
-          </section>
+        <div className="w-full h-full flex flex-col md:flex-row gap-5 py-3 md:px-4">
+          {isError ? (
+            <NoInterNetComponent
+              style={{
+                width: `${HomePageWidth}px`,
+                height: `${HomePageHeight}px`,
+                minWidth: `${HomePageWidth}px`,
+                minHeight: `${HomePageHeight}px`,
+              }}
+              fetchData={() => CallFirstData(VideoID)}
+            />
+          ) : (
+            <>
+              <section
+                className={`w-[100%] md:w-[67%] flex flex-col h-auto pl-2 md:px-0`}
+              >
+                <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
+                  <PlayerVideo videoDetails={videoDetails} />
+                </article>
+                <ChannelAndLike VideoID={VideoID} VideoData={VideoData} />
+                <article className="w-full">
+                  <CommoentInterFace
+                    VideoID={VideoID}
+                    CommentData={CommentData}
+                    commentCount={VideoData?.statistics?.commentCount}
+                    moreCommentThreads={moreCommentThreads}
+                    CommentDataLoading={CommentDataLoading}
+                  />
+                </article>
+              </section>
 
-          <section
-            className={`w-[100%] md:w-[33%] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
-          >
-            {RelatedVideoItem?.map((item, idx) => (
-              <ReccomendPart key={idx} item={item} />
-            ))}
-            {RelatedVideoLoading && <RelatedSkeleton count={12} />}
-          </section>
+              <section
+                className={`w-[100%] md:w-[33%] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
+              >
+                {RelatedVideoItem?.map((item, idx) => (
+                  <ReccomendPart key={idx} item={item} />
+                ))}
+                {RelatedVideoLoading && <RelatedSkeleton count={12} />}
+              </section>
+            </>
+          )}
         </div>
       )}
     </div>
