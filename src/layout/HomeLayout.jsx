@@ -35,11 +35,10 @@ export default function HomeLayout() {
       to: "/channel",
     },
   ];
-  console.log(userData);
 
   return (
     <section
-      className="w-full flex md:items-start md:justify-start items-center justify-center overflow-hidden"
+      className="mb-[50px] md:mb-[0px] w-full flex md:items-start md:justify-start items-center justify-center overflow-hidden"
       style={{
         maxHeight: `${HomePageHeight}px`,
         maxWidth: `${HomePageWidth}px`,
@@ -64,7 +63,7 @@ export default function HomeLayout() {
           <div className="w-full h-full flex justify-between items-center">
             {menuItems.map((mt) => (
               <NavLink
-                to={mt.to === "/channel" && isLogged === false ? "/" : mt.to}
+                to={mt.to}
                 className={({ isActive }) =>
                   clsx(
                     "w-[45px] h-full",
@@ -84,7 +83,7 @@ export default function HomeLayout() {
             ))}
             {isLogged ? (
               <NavLink
-                to={"/@atikur"}
+                to={"/you"}
                 className={({ isActive }) =>
                   clsx(
                     "w-[45px] h-full py-2 flex items-center justify-center gap-5 rounded-xl",

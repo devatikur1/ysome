@@ -30,7 +30,7 @@ const menuItems = [
     sectionPath: "/liked",
     items: [
       { icon: <History size={21} />, label: "History", to: "/history" },
-      { icon: <Youtube />, label: "Your videos", to: "/@atikur" },
+      { icon: <Youtube />, label: "Your videos", to: "/you" },
       {
         icon: <ThumbsUp size={21} />,
         label: "Liked videos",
@@ -49,7 +49,7 @@ const subscriptionsDt = {
 };
 
 export default function SideBar({ type = "", Height }) {
-  const { isReSideBarShow } = useContext(UiContext);
+  const { isReSideBarShow, HomePageHeight } = useContext(UiContext);
 
   // Firebase Context
   const { auth, sub } = useContext(FirebaseContext);
@@ -67,8 +67,8 @@ export default function SideBar({ type = "", Height }) {
         width: isReSideBarShow ? 260 : 60,
         minWidth: isReSideBarShow ? 260 : 60,
         opacity: 1,
-        height: Height,
-        minHeight: Height,
+        height: HomePageHeight,
+        minHeight: HomePageHeight,
       }}
       exit={{ width: 0, opacity: 0, minHeight: Height }}
       transition={{ duration: 0.3 }}

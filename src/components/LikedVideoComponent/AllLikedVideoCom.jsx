@@ -10,7 +10,6 @@ export default function AllLikedVideoCom({
   LikeLoding,
 }) {
   const [subsData, setsubData] = useState([]);
-  console.log(userAllLikedVdData);
 
   useEffect(() => {
     switch (activeOptionName) {

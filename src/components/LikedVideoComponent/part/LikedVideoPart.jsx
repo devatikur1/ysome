@@ -4,8 +4,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function LikedVideoPart({ item }) {
-  console.log(item);
-
   return (
     <div>
       <article className="flex flex-col gap-3 w-full">
