@@ -82,8 +82,12 @@ export default function AppContextProvider({ children }) {
       const newNextTokens = [];
       const newChannelIds = new Set();
       const newVideoIds = new Set();
+      console.log(results);
+      let isDtaFetch = results.some(
+        (pc) => pc === null || Object.values(pc) > 0
+      );
 
-      if (results.some((r) => (r === null ? false : true))) {
+      if (isDtaFetch) {
         results.forEach((data, idx) => {
           if (!data?.items) return;
 
@@ -130,15 +134,14 @@ export default function AppContextProvider({ children }) {
           Array.from(newVideoIds).forEach((id) => mergedVideoIds.add(id));
           return Array.from(mergedVideoIds);
         });
-
-        setPageLoading(false);
       } else {
         setPageError(true);
-        setPageLoading(false);
       }
     } catch (err) {
       console.error("Fetch Data Error:" + err);
       setPageError(true);
+    } finally {
+      setPageLoading(false);
     }
   };
 
@@ -164,7 +167,10 @@ export default function AppContextProvider({ children }) {
     // 📺 Channel Data
     async function fetchChannelData(ChanaleId) {
       try {
-        const ChanaleItem = await GetChannelData({ channelId: ChanaleId, key: apiKey });
+        const ChanaleItem = await GetChannelData({
+          channelId: ChanaleId,
+          key: apiKey,
+        });
 
         setChannelsData((prev) => ({
           ...prev,

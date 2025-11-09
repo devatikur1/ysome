@@ -12,10 +12,6 @@ export default function AllSubscriptionsPart({
   const [subsData, setsubData] = useState([]);
 
   useEffect(() => {
-    setsubData(subscriptions);
-  }, [subscriptions]);
-
-  useEffect(() => {
     switch (activeOptionName) {
       // 🔹 0 = Latest
       case 0: {

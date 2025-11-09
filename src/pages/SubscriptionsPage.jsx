@@ -11,7 +11,6 @@ import { AnimatePresence, motion, useScroll } from "motion/react";
 import clsx from "clsx";
 import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 import { UiContext } from "../contexts/Ui/UiContext";
-import NoInterNetComponent from "../components/custom/NoInterNetComponent";
 import { GetUsd } from "../contexts/Firebase/Firestore/GetUsd";
 
 export default function SubscriptionsPage() {
@@ -33,7 +32,6 @@ export default function SubscriptionsPage() {
     UnSubscribe,
     SubLoding,
     setSubLoding,
-    SubError,
   } = sub;
 
   let { userID, getLastVisible } = auth;
@@ -83,7 +81,6 @@ export default function SubscriptionsPage() {
 
         try {
           // Call your function to fetch more subscriptions
-          if (!SubError) {
             const data = await GetUsd({
               userId: userID,
               subCollection: "sub",
@@ -104,7 +101,7 @@ export default function SubscriptionsPage() {
 
               setSubscriptionslastVisible(lastVisible);
             }
-          }
+
         } catch (error) {
           console.error("Infinite scroll fetch failed:", error);
         } finally {
@@ -119,7 +116,6 @@ export default function SubscriptionsPage() {
       SubLoding,
       subscriptionslastVisible,
       setSubLoding,
-      SubError,
       userID,
       getLastVisible,
       setSubscriptions,
@@ -143,9 +139,7 @@ export default function SubscriptionsPage() {
         minHeight: `${HomePageHeight}px`,
       }}
       className="h-full flex flex-col justify-start items-center select-none *:select-none overflow-y-auto"
-    >
-      {subscriptions.length === 0 && SubError && <NoInterNetComponent />}
-      {!SubError && (
+    > 
         <article className="w-full md:w-[80%] lg:w-[90%] xl:w-[60%] h-full flex flex-col gap-14 relative px-2 md:px-5 py-8">
           <section className="w-full flex justify-between items-center px-2">
             <h1 className="text-xl lg:text-4xl font-semibold">
@@ -231,7 +225,6 @@ export default function SubscriptionsPage() {
             )}
           </AnimatePresence>
         </article>
-      )}
     </section>
   );
 }

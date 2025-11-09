@@ -11,7 +11,7 @@ import { DeleteUsd } from "./Firestore/DeleteUsd";
 export default function FirebaseContextProvider({ children }) {
   // 🔹 Logged state
   const [isLogged, setIsLogged] = useState(
-    localStorage.getItem("logged") === "true"
+    JSON.parse(localStorage.getItem("logged"))
   );
 
   // 🔹 User Data
@@ -23,14 +23,13 @@ export default function FirebaseContextProvider({ children }) {
   const [userAllLikedVdData, setUserAllLikedVdData] = useState([]);
   const [userAllLikedVdDatalastVisible, setUserAllLikedVdDatalastVisible] =
     useState({});
-  const [LikeLoding, setLikeLoding] = useState(false);
+  const [LikeLoding, setLikeLoding] = useState(true);
 
   // 🔹 subscriptions
   const [subscriptionsCID, setSubscriptionsCID] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
-  const [SubLoding, setSubLoding] = useState(false);
-  const [SubError, setSubError] = useState(false);
+  const [SubLoding, setSubLoding] = useState(true);
 
   // ------------------------------------------------
   // ✅ Get Last Visible funtion
@@ -39,6 +38,11 @@ export default function FirebaseContextProvider({ children }) {
   function getLastVisible(data, pageSize = 20) {
     return data?.length === pageSize ? data[data.length - 1] : {};
   }
+
+  useEffect(() => {
+     localStorage.setItem("logged", JSON.stringify(isLogged));
+  }, [isLogged]);
+  
 
   // ---------------------------------------
   // ✅ useEffect get all Data auth changes
@@ -84,15 +88,11 @@ export default function FirebaseContextProvider({ children }) {
           lastDoc: null,
         });
         console.log(data);
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-          setUserAllLikedVdDatalastVisible({});
-          setUserAllLikedVdData([]);
-        } else {
-          const lastVisible = getLastVisible(data, 20);
 
-          setUserAllLikedVdDatalastVisible(lastVisible);
-          setUserAllLikedVdData(data);
-        }
+        const lastVisible = getLastVisible(data, 20);
+
+        setUserAllLikedVdDatalastVisible(lastVisible);
+        setUserAllLikedVdData(data);
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setUserAllLikedVdDatalastVisible({});
@@ -107,21 +107,14 @@ export default function FirebaseContextProvider({ children }) {
           pageSize: 20,
           lastDoc: null,
         });
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-          setSubscriptions([]);
-          setSubscriptionslastVisible({});
-          setSubError(true);
-        } else {
-          const lastVisible = getLastVisible(data, 20);
-          setSubscriptions(data);
-          setSubscriptionslastVisible(lastVisible);
-          setSubError(false);
-        }
+
+        const lastVisible = getLastVisible(data, 20);
+        setSubscriptions(data);
+        setSubscriptionslastVisible(lastVisible);
       } catch (error) {
         console.error("🔥 Error fetching user likes:", error);
         setSubscriptions([]);
         setSubscriptionslastVisible({});
-        setSubError(true);
       } finally {
         setSubLoding(false);
       }
@@ -289,24 +282,25 @@ export default function FirebaseContextProvider({ children }) {
     },
     likes: {
       userAllLikedVdData,
+      setUserAllLikedVdData,
       userAllLikedVdID,
       userAllLikedVdDatalastVisible,
+      setUserAllLikedVdDatalastVisible,
       AddLike,
       DeleteLike,
       LikeLoding,
+      setLikeLoding,
     },
     sub: {
       subscriptions,
       setSubscriptions,
       subscriptionsCID,
-      setSubscriptionsCID,
       subscriptionslastVisible,
       setSubscriptionslastVisible,
       Subscribe,
       UnSubscribe,
       SubLoding,
       setSubLoding,
-      SubError,
     },
   };
 

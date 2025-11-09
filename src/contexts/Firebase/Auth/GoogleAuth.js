@@ -23,11 +23,11 @@ export const GoogleAuth = async () => {
     });
 
     if (!ISSet) throw new Error("Failed to save user data to Firestore");
-    localStorage.setItem("logged", true);
+    localStorage.setItem("logged", JSON.parse(true));
     return { success: true, user: userObj };
   } catch (error) {
     console.error("❌ Google Login Error:", error.message);
-    localStorage.setItem("logged", false);
+    localStorage.setItem("logged", JSON.parse(false));
     return { success: false, message: error.message };
   }
 };

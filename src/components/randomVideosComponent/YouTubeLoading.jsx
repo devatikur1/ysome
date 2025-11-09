@@ -3,7 +3,7 @@ import React from "react";
 export default function YouTubeLoading() {
     
   return (
-    <aside className="w-full max-h-[500px] min-h-[500px] overflow-hidden duration-300">
+    <aside className="w-full max-h-[260px] min-h-[260px] overflow-hidden duration-300">
       <section className="flex flex-col gap-3 w-full">
         {/* Thumbnail */}
         <div className="w-full h-[190px] sm:h-[280px] md:h-[300px] lg:h-[210px] xl:h-[240px] 2xl:h-[325px] rounded-xl bg-gray-300 dark:bg-gray-700 overflow-hidden relative">

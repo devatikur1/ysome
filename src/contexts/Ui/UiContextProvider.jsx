@@ -38,7 +38,7 @@ export default function UiContextProvider({ children }) {
   useEffect(() => {
     const handleResize = () => {
       setHomePageWidth(window.innerWidth);
-      setHomePageHeight(window.innerHeight - 60);
+      setHomePageHeight(window.innerHeight - 60 - 60 + 15);
       if (window.innerWidth <= 768) {
         setHomePageOutletWidth(window.innerWidth);
       } else {

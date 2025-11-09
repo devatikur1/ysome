@@ -139,10 +139,10 @@ export default function RandomVideosPage() {
           ))}
 
           {pageLoading === true &&
-            [...Array(23)].map((_, i) => <YouTubeLoading key={i} />)}
+            [...Array(15)].map((_, i) => <YouTubeLoading key={i} />)}
         </main>
       )}
-      {pageError && items?.length === 0 && (
+      {pageError && (
         <NoInterNetComponent
           style={{
             // width
