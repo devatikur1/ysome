@@ -34,7 +34,7 @@ export default function RandomVideosPage() {
 
   // refs
   const containerRef = useRef(null);
-  const scrollTriggeredRef = useRef(false);
+  const [scrollTriggered, setScrollTriggered] = useState(false);
 
   // Grid Columns
   const [gridCols, setGridCols] = useState("grid-cols-1");
@@ -80,16 +80,16 @@ export default function RandomVideosPage() {
         value > 0.9 &&
         !pageLoading &&
         nextPageTokens.length > 0 &&
-        !scrollTriggeredRef.current &&
+        !scrollTriggered &&
         resultsCount < 501
       ) {
-        scrollTriggeredRef.current = true;
+        setScrollTriggered(true);
         setPageLoading(true);
         fetchData({
           maxResults: Math.floor(60 / queries.length),
           nxtPgTokens: nextPageTokens,
         }).finally(() => {
-          scrollTriggeredRef.current = false;
+          setScrollTriggered(false);
         });
       }
     });
@@ -129,40 +129,42 @@ export default function RandomVideosPage() {
             gridCols
           )}
         >
-          {items.map((item, idx) => (
-            <RandomVideosPart
-              key={idx}
-              item={item}
-              videosData={videosData?.[item?.id?.videoId]}
-              channelsData={channelsData?.[item?.snippet?.channelId]}
-            />
-          ))}
+          <>
+            {items.map((item, idx) => (
+              <RandomVideosPart
+                key={idx}
+                item={item}
+                videosData={videosData?.[item?.id?.videoId]}
+                channelsData={channelsData?.[item?.snippet?.channelId]}
+              />
+            ))}
 
-          {pageLoading === true &&
-            [...Array(15)].map((_, i) => <YouTubeLoading key={i} />)}
+            {pageLoading === true &&
+              [...Array(15)].map((_, i) => <YouTubeLoading key={i} />)}
+            {pageError && (
+              <NoInterNetComponent
+                style={{
+                  // width
+                  maxWidth: `${HomePageOutletWidth}px`,
+                  minWidth: `${HomePageOutletWidth}px`,
+                  width: `${HomePageOutletWidth}px`,
+
+                  // height
+                  maxHeight: `${HomePageHeight}px`,
+                  minHeight: `${HomePageHeight}px`,
+                  height: `${HomePageHeight}px`,
+                }}
+                fetchData={() => {
+                  setPageLoading(true);
+                  fetchData({
+                    maxResults: Math.floor(100 / queries.length),
+                    nxtPgTokens: nextPageTokens,
+                  });
+                }}
+              />
+            )}
+          </>
         </main>
-      )}
-      {pageError && (
-        <NoInterNetComponent
-          style={{
-            // width
-            maxWidth: `${HomePageOutletWidth}px`,
-            minWidth: `${HomePageOutletWidth}px`,
-            width: `${HomePageOutletWidth}px`,
-
-            // height
-            maxHeight: `${HomePageHeight}px`,
-            minHeight: `${HomePageHeight}px`,
-            height: `${HomePageHeight}px`,
-          }}
-          fetchData={() => {
-            setPageLoading(true);
-            fetchData({
-              maxResults: Math.floor(100 / queries.length),
-              nxtPgTokens: nextPageTokens,
-            });
-          }}
-        />
       )}
     </>
   );
