@@ -24,6 +24,6 @@ export default async function GetCommentThreads({ videoId, key, pageToken }) {
     return data;
   } catch (err) {
     console.error("Error fetching comment threads:", err);
-    return {};
+    return null;
   }
 }

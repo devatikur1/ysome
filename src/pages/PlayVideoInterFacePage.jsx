@@ -40,10 +40,15 @@ import {
   apiKey8,
 } from "../utils/data";
 
-import NoInterNetComponent from "../components/custom/NoInterNetComponent";
+import ErrorPage from "../components/custom/ErrorPage";
 
 /* --------- import Important Loading Part  --------- */
-import { CommentSkeleton, RelatedSkeleton, VideoHeaderSkeleton, VideoSkeleton } from "../components/custom/LoadingComponent";
+import {
+  CommentSkeleton,
+  RelatedSkeleton,
+  VideoHeaderSkeleton,
+  VideoSkeleton,
+} from "../components/custom/LoadingComponent";
 
 export default function PlayVideoInterFacePage() {
   const { HomePageWidth, HomePageHeight } = useContext(UiContext);
@@ -105,7 +110,7 @@ export default function PlayVideoInterFacePage() {
 
   const safeFetch = async ({ fn, args }) => {
     const data = await fn(args);
-    if (!data || data.error) {
+    if (!data || data === null) {
       const nextKey = rotateApiKey();
       console.warn("🔁 API key rotated:", nextKey);
       return await fn({ ...args, key: nextKey });
@@ -119,6 +124,7 @@ export default function PlayVideoInterFacePage() {
 
   async function CallFirstData(id) {
     setLoading(true);
+    setRelatedVideoLoading(true);
 
     const { status, data } = await GetVideoDetails({
       videoID: id,
@@ -149,6 +155,7 @@ export default function PlayVideoInterFacePage() {
     }
 
     setLoading(false);
+    setRelatedVideoLoading(false);
   }
 
   useEffect(() => {
@@ -274,13 +281,10 @@ export default function PlayVideoInterFacePage() {
 
         try {
           if (!isError) {
-            const { status, data } = await safeFetch({
-              fn: GetRelateVideos,
-              args: {
-                videoID: VideoID,
-                nextPageToken: RelatedVideoToken,
-                key: VideoDetailsApi,
-              },
+            const { status, data } = await GetRelateVideos({
+              videoID: VideoID,
+              nextPageToken: RelatedVideoToken,
+              key: VideoDetailsApi,
             });
 
             if (status && data?.items?.length) {
@@ -335,20 +339,21 @@ export default function PlayVideoInterFacePage() {
                   <span>Comments</span>
                 </h1>
               </article>
-              <CommentSkeleton count={15} />
+              <CommentSkeleton count={10} />
             </article>
           </section>
 
           <section
             className={`w-[100%] md:w-[33%] md:h-full grid sm:grid-cols-2 md:grid-cols-1 2xl:grid-cols-2 gap-4 px-2 md:px-0 pb-2 *:select-none`}
           >
-            <RelatedSkeleton count={22} />
+            {RelatedVideoLoading &&
+              [...Array(15)].map((_, i) => <RelatedSkeleton key={i} />)}
           </section>
         </div>
       ) : (
         <div className="w-full h-full flex flex-col md:flex-row gap-5 py-3 md:px-4">
           {isError ? (
-            <NoInterNetComponent
+            <ErrorPage
               style={{
                 width: `${HomePageWidth}px`,
                 height: `${HomePageHeight}px`,
@@ -383,7 +388,8 @@ export default function PlayVideoInterFacePage() {
                 {RelatedVideoItem?.map((item, idx) => (
                   <ReccomendPart key={idx} item={item} />
                 ))}
-                {RelatedVideoLoading && <RelatedSkeleton count={12} />}
+                {RelatedVideoLoading &&
+                  [...Array(15)].map((_, i) => <RelatedSkeleton key={i} />)}
               </section>
             </>
           )}

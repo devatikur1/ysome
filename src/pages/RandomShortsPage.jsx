@@ -11,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UiContext } from "../contexts/Ui/UiContext";
 import RandomShortsPart from "../components/RandomShortsComponent/RandomShortsPart";
 import { GetVideoData } from "../utils/GetVideoData";
-import NoInterNetComponent from "../components/custom/NoInterNetComponent";
+import ErrorPage from "../components/custom/ErrorPage";
 import { AppContext } from "../contexts/App/AppContext";
 import { GetChannelData } from "../utils/GetChannelData";
 
@@ -394,7 +394,7 @@ export default function RandomShortsPage() {
       )}
 
       {pageError && (
-        <NoInterNetComponent
+        <ErrorPage
           style={{
             maxWidth: `${HomePageOutletWidth}px`,
             minWidth: `${HomePageOutletWidth}px`,

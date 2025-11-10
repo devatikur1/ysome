@@ -11,7 +11,7 @@ import SubscribeItem from "./part/SubscribeItem";
 import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
 import googleLogo from "../../assets/google.png";
 import clsx from "clsx";
-import SubscribeItemLoading from "./part/SubscribeItemLoading";
+import { SidebarSubscribeLoading } from "../custom/LoadingComponent";
 
 // ✅ move outside → prevent re-creation on each rerender
 const menuItems = [
@@ -193,7 +193,7 @@ export default function SideBar({ type = "", Height }) {
               />
             ))}
             {SubLoding &&
-              [...Array(5)].map((_, i) => <SubscribeItemLoading key={i} />)}
+              [...Array(5)].map((_, i) => <SidebarSubscribeLoading key={i} />)}
             {subscriptions?.length === 0 && (
               <div className="flex justify-center items-center w-full h-auto">
                 <p className="text-subtext text-sm text-center py-32">

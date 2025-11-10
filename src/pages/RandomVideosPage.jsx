@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { UiContext } from "../contexts/Ui/UiContext";
 import RandomVideosPart from "../components/randomVideosComponent/RandomVideosPart";
-import YouTubeLoading from "../components/randomVideosComponent/YouTubeLoading";
-import NoInterNetComponent from "../components/custom/NoInterNetComponent";
+import ErrorPage from "../components/custom/ErrorPage";
 import { useScroll } from "motion/react";
 import { AppContext } from "../contexts/App/AppContext";
+import { RelatedSkeleton } from "../components/custom/LoadingComponent";
 
 export default function RandomVideosPage() {
   // Context
@@ -110,62 +110,64 @@ export default function RandomVideosPage() {
   // -------------------------
   return (
     <>
-      {!pageError && (
-        <main
-          ref={containerRef}
-          style={{
-            // width
-            maxWidth: `${HomePageOutletWidth}px`,
-            minWidth: `${HomePageOutletWidth}px`,
-            width: `${HomePageOutletWidth}px`,
+      <main
+        ref={containerRef}
+        style={{
+          // width
+          maxWidth: `${HomePageOutletWidth}px`,
+          minWidth: `${HomePageOutletWidth}px`,
+          width: `${HomePageOutletWidth}px`,
 
-            // height
-            maxHeight: `${HomePageHeight}px`,
-            minHeight: `${HomePageHeight}px`,
-            height: `${HomePageHeight}px`,
-          }}
-          className={clsx(
-            "h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden",
-            gridCols
+          // height
+          maxHeight: `${HomePageHeight}px`,
+          minHeight: `${HomePageHeight}px`,
+          height: `${HomePageHeight}px`,
+        }}
+        className={clsx(
+          "h-full grid gap-4 px-5 pt-8 pb-11 overflow-x-hidden",
+          gridCols
+        )}
+      >
+        <>
+          {!pageError && (
+            <>
+              {items.map((item, idx) => (
+                <RandomVideosPart
+                  key={idx}
+                  item={item}
+                  videosData={videosData?.[item?.id?.videoId]}
+                  channelsData={channelsData?.[item?.snippet?.channelId]}
+                />
+              ))}
+
+              {pageLoading &&
+                [...Array(15)].map((_, i) => <RelatedSkeleton key={i} />)}
+            </>
           )}
-        >
-          <>
-            {items.map((item, idx) => (
-              <RandomVideosPart
-                key={idx}
-                item={item}
-                videosData={videosData?.[item?.id?.videoId]}
-                channelsData={channelsData?.[item?.snippet?.channelId]}
-              />
-            ))}
+          {pageError && (
+            <ErrorPage
+              style={{
+                // width
+                maxWidth: `${HomePageOutletWidth}px`,
+                minWidth: `${HomePageOutletWidth}px`,
+                width: `${HomePageOutletWidth}px`,
 
-            {pageLoading === true &&
-              [...Array(15)].map((_, i) => <YouTubeLoading key={i} />)}
-            {pageError && (
-              <NoInterNetComponent
-                style={{
-                  // width
-                  maxWidth: `${HomePageOutletWidth}px`,
-                  minWidth: `${HomePageOutletWidth}px`,
-                  width: `${HomePageOutletWidth}px`,
-
-                  // height
-                  maxHeight: `${HomePageHeight}px`,
-                  minHeight: `${HomePageHeight}px`,
-                  height: `${HomePageHeight}px`,
-                }}
-                fetchData={() => {
-                  setPageLoading(true);
-                  fetchData({
-                    maxResults: Math.floor(100 / queries.length),
-                    nxtPgTokens: nextPageTokens,
-                  });
-                }}
-              />
-            )}
-          </>
-        </main>
-      )}
+                // height
+                maxHeight: `${HomePageHeight}px`,
+                minHeight: `${HomePageHeight}px`,
+                height: `${HomePageHeight}px`,
+              }}
+              fetchData={() => {
+                setPageLoading(true);
+                fetchData({
+                  maxResults: Math.floor(100 / queries.length),
+                  nxtPgTokens: nextPageTokens,
+                });
+              }}
+            />
+          )}
+        </>
+      </main>
     </>
   );
 }

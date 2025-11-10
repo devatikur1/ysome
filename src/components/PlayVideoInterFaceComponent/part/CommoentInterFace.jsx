@@ -1,5 +1,5 @@
 import React from "react";
-import CommoentPart from "./part/CommoentPart";
+import CommoentPart from "./Commoent/CommoentPart";
 import millify from "millify";
 import { CommentSkeleton } from "../../custom/LoadingComponent";
 

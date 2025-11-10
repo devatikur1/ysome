@@ -1,7 +1,7 @@
 import React from "react";
 import NoInternetIcon from "../../others/NoInternetIcon";
 
-export default function NoInterNetComponent({ style, fetchData }) {
+export default function ErrorPage({ style, fetchData }) {
   return (
     <main
       style={style}

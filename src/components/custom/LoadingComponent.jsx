@@ -86,35 +86,50 @@ export function CommentSkeleton({ count = 4 }) {
   );
 }
 
-export function RelatedSkeleton({ count = 6 }) {
+export function RelatedSkeleton() {
   return (
-    <>
-      {[...Array(count)].map((_, i) => (
-        <aside key={i} className="w-full flex flex-col gap-2 animate-fadeIn">
-          {/* 🔹 Thumbnail Skeleton */}
-          <div className="relative w-full h-[170px] sm:h-[180px] md:h-[190px] lg:h-[200px] rounded-xl overflow-hidden bg-surface animate-pulse">
+    <aside className="w-full flex flex-col gap-2 animate-fadeIn">
+      {/* 🔹 Thumbnail Skeleton */}
+      <div className="relative w-full h-[170px] sm:h-[180px] md:h-[190px] lg:h-[200px] rounded-xl overflow-hidden bg-surface animate-pulse">
+        <div className="absolute inset-0 shimmer" />
+      </div>
+
+      {/* 🔹 Text Skeleton */}
+      <div className="space-y-2 mt-2">
+        {/* Title */}
+        <div className="relative w-[100%] h-4 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
+          <div className="absolute inset-0 shimmer" />
+        </div>
+
+        {/* Channel name */}
+        <div className="flex justify-between">
+          <div className="relative w-[50%] h-3 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
             <div className="absolute inset-0 shimmer" />
           </div>
-
-          {/* 🔹 Text Skeleton */}
-          <div className="space-y-2 mt-2">
-            {/* Title */}
-            <div className="relative w-[100%] h-4 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
-              <div className="absolute inset-0 shimmer" />
-            </div>
-
-            {/* Channel name */}
-            <div className="flex justify-between">
-              <div className="relative w-[50%] h-3 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
-                <div className="absolute inset-0 shimmer" />
-              </div>
-              <div className="relative w-[35%] h-3 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
-                <div className="absolute inset-0 shimmer" />
-              </div>
-            </div>
+          <div className="relative w-[35%] h-3 rounded-md overflow-hidden bg-gradient-to-br bg-surface">
+            <div className="absolute inset-0 shimmer" />
           </div>
-        </aside>
-      ))}
-    </>
+        </div>
+      </div>
+    </aside>
+  );
+}
+export function SidebarSubscribeLoading() {
+  return (
+    <div
+      className="w-full bg-transparent border border-transparent
+      hover:bg-bg-pecondary hover:border-border transition-all duration-300 flex
+      items-center justify-start gap-3 px-3 py-2 mb-1 rounded-xl animate-pulse"
+    >
+      {/* Left: Channel photo skeleton */}
+      <div className="flex justify-center items-center">
+        <div className="w-[30px] h-[30px] rounded-full bg-neutral-700" />
+      </div>
+
+      {/* Right: Channel name skeleton */}
+      <div className="w-[80%] flex flex-col justify-end gap-1">
+        <div className="h-4 w-[80%] bg-neutral-700 rounded" />
+      </div>
+    </div>
   );
 }
