@@ -1,8 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UiContext } from "../contexts/Ui/UiContext";
+import TopAndProfilePart from "../components/YouPageComponents/TopAndProfilePart";
+import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function YouPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
+  const { auth } = useContext(FirebaseContext);
+  const { isLogged, userData, } = auth;
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (!isLogged) {
+      navigate("/");
+    }
+  }, [location, isLogged, navigate]);
+  
   return (
     <div
       style={{
@@ -16,9 +30,9 @@ export default function YouPage() {
         minHeight: `${HomePageHeight}px`,
         height: `${HomePageHeight}px`,
       }}
-      className=" overflow-x-hidden overflow-y-auto"
+      className=" overflow-x-hidden overflow-y-auto px-5 py-8"
     >
-      hhh
+      <TopAndProfilePart userData={userData} />
     </div>
   );
 }
