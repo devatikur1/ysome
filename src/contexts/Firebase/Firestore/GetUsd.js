@@ -24,7 +24,7 @@ export async function GetUsd({
     if (lastDoc) {
       q = query(
         subColRef,
-        orderBy("publishedAt", "desc"),
+        orderBy("uid", "asc"),
         startAfter(lastDoc),
         limit(pageSize)
       );

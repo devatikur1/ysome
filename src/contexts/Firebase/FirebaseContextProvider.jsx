@@ -192,8 +192,14 @@ export default function FirebaseContextProvider({ children }) {
   async function AddLike({ vdId, Edata }) {
     if (!vdId && !userID) return;
 
+    const lik = await GetSubCollectionCount({
+      userId: userID,
+      subCollection: "like",
+    });
+
     let data = {
       publishedAt: new Date().toString(),
+      uid: lik + 1,
       data: {
         ...Edata,
       },
@@ -253,10 +259,15 @@ export default function FirebaseContextProvider({ children }) {
 
   async function Subscribe({ cdId, ChannelData }) {
     if (!cdId && !userID && !ChannelData) return;
-    console.log(ChannelData);
+
+    const subc = await GetSubCollectionCount({
+      userId: userID,
+      subCollection: "sub",
+    });
 
     let data = {
       publishedAt: new Date().toString(),
+      uid: subc + 1,
       data: {
         ...ChannelData,
       },
@@ -317,8 +328,14 @@ export default function FirebaseContextProvider({ children }) {
   async function AddHistory({ vdId, Edata }) {
     if (!vdId && !userID) return;
 
+    const his = await GetSubCollectionCount({
+      userId: userID,
+      subCollection: "his",
+    });
+
     let data = {
       publishedAt: new Date().toString(),
+      uid: his + 1,
       data: {
         ...Edata,
       },
