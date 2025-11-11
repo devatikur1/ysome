@@ -65,6 +65,7 @@ export default function FirebaseContextProvider({ children }) {
       setUserID(user.email);
       setSubLoding(true);
       setLikeLoding(true);
+      setHistoryLoading(true);
 
       // 🔹 1️⃣ Get logged-user main data
       try {
@@ -102,8 +103,6 @@ export default function FirebaseContextProvider({ children }) {
         console.error("🔥 Error fetching user data:", error);
         setIsLogged(false);
         setUserData({});
-      } finally {
-        setLikeLoding(false);
       }
 
       // 🔹 2️⃣ Get user likes (subCollection)
@@ -124,6 +123,8 @@ export default function FirebaseContextProvider({ children }) {
         console.error("🔥 Error fetching user likes:", error);
         setUserAllLikedVdDatalastVisible({});
         setUserAllLikedVdData([]);
+      } finally {
+        setLikeLoding(false);
       }
 
       // 🔹 2️⃣ Get user Subscribe (subCollection)
@@ -144,6 +145,26 @@ export default function FirebaseContextProvider({ children }) {
         setSubscriptionslastVisible({});
       } finally {
         setSubLoding(false);
+      }
+
+      // 🔹 3️⃣ Get user History (subCollection)
+      try {
+        const data = await GetUsd({
+          userId: user.email,
+          subCollection: "his",
+          pageSize: 20,
+          lastDoc: null,
+        });
+
+        const lastVisible = getLastVisible(data, 20);
+        setHistorys(data);
+        setHistorylastVisible(lastVisible);
+      } catch (error) {
+        console.error("🔥 Error fetching user likes:", error);
+        setHistorys([]);
+        setHistorylastVisible({});
+      } finally {
+        setHistoryLoading(false);
       }
     });
 

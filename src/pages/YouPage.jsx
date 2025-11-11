@@ -4,11 +4,13 @@ import TopAndProfilePart from "../components/YouPageComponents/TopAndProfilePart
 import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import BottomAndVideoPart from "../components/YouPageComponents/BottomAndVideoPart";
+import { FullPageLoader } from "../components/custom/LoadingComponent";
 
 export default function YouPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
-  const { auth } = useContext(FirebaseContext);
+  const { auth, likes } = useContext(FirebaseContext);
   const { userID, isLogged, userData, setUserData, countData } = auth;
+  const { LikeLoding } = likes;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,13 +35,19 @@ export default function YouPage() {
       }}
       className=" overflow-x-hidden overflow-y-auto py-8"
     >
-      <TopAndProfilePart
-        userID={userID}
-        setUserData={setUserData}
-        userData={userData}
-        countData={countData}
-      />
-      <BottomAndVideoPart countData={countData} />
+      {LikeLoding ? (
+        <FullPageLoader />
+      ) : (
+        <>
+          <TopAndProfilePart
+            userID={userID}
+            setUserData={setUserData}
+            userData={userData}
+            countData={countData}
+          />
+          <BottomAndVideoPart countData={countData} />
+        </>
+      )}
     </div>
   );
 }

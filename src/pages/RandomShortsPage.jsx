@@ -11,9 +11,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UiContext } from "../contexts/Ui/UiContext";
 import RandomShortsPart from "../components/RandomShortsComponent/RandomShortsPart";
 import { GetVideoData } from "../utils/GetVideoData";
-import ErrorPage from "../components/custom/ErrorPage";
 import { AppContext } from "../contexts/App/AppContext";
 import { GetChannelData } from "../utils/GetChannelData";
+import { FullPageLoader } from "../components/custom/LoadingComponent";
 
 export default function RandomShortsPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
@@ -335,7 +335,7 @@ export default function RandomShortsPage() {
               maxHeight: `${HomePageHeight}px`,
               minHeight: `${HomePageHeight}px`,
             }}
-            className="w-[100%] h-[100%] px-5 py-5 flex justify-center items-center snap-start snap-always relative"
+            className="w-[100%] h-[100%] px-3 pt-2 flex justify-center items-center snap-start snap-always relative"
           >
             {sitems?.length > 0 && sitems?.[currentIndex] && (
               <RandomShortsPart
@@ -359,7 +359,7 @@ export default function RandomShortsPage() {
 
           {pageLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-              <div className="text-white">Loading...</div>
+              <FullPageLoader />
             </div>
           )}
 
@@ -391,17 +391,6 @@ export default function RandomShortsPage() {
             </button>
           </section>
         </>
-      )}
-
-      {pageError && (
-        <ErrorPage
-          fetchData={() => {
-            fetchData({
-              maxResults: Math.floor(100 / queries.length),
-              nxtPgTokens: nextPageTokens,
-            });
-          }}
-        />
       )}
     </main>
   );

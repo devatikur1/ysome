@@ -13,6 +13,7 @@ import SubscriptionsPage from "./pages/SubscriptionsPage";
 import PlayVideoInterFacePage from "./pages/PlayVideoInterFacePage";
 import LikedVideoPage from "./pages/LikedVideoPage";
 import YouPage from "./pages/YouPage";
+import HistoryPage from "./pages/HistoryPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="shorts/*" element={<RandomShortsPage />} />
           <Route path="/channel" element={<SubscriptionsPage />} />
           <Route path="/liked" element={<LikedVideoPage />} />
+          <Route path="/history" element={<HistoryPage />} />
           <Route path="/you" element={<YouPage />} />
           <Route path="/watch" element={<PlayVideoInterFacePage />} />
         </Route>

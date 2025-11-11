@@ -95,17 +95,23 @@ export default function RandomShortsPart({
         <article className="relative w-full h-full">
           <div className="relative w-full h-full overflow-hidden">
             {/* ✅ YouTube iframe */}
-            <iframe
-              ref={playerRef}
-              width="100%"
-              height="100%"
-              src={`https://www.youtube.com/embed/${VideoID}?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&modestbranding=1`}
-              title={item?.snippet?.title || "YouTube Shorts"}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="rounded-2xl"
-            ></iframe>
+            {isPlaying ? (
+              <iframe
+                ref={playerRef}
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${VideoID}?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&modestbranding=1`}
+                title={item?.snippet?.title || "YouTube Shorts"}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="rounded-2xl"
+              ></iframe>
+            ) : (
+              <div  className="h-full flex justify-center items-center">
+                <img src={item?.snippet?.thumbnails?.high?.url} alt={item?.snippet?.title || "Video thumbnail"} />
+              </div>
+            )}
 
             {/* ✅ Top overlay - title/logo hide */}
             <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b bg-black pointer-events-none z-10"></div>
