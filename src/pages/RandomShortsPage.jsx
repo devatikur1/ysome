@@ -395,14 +395,6 @@ export default function RandomShortsPage() {
 
       {pageError && (
         <ErrorPage
-          style={{
-            maxWidth: `${HomePageOutletWidth}px`,
-            minWidth: `${HomePageOutletWidth}px`,
-            width: `${HomePageOutletWidth}px`,
-            maxHeight: `${HomePageHeight}px`,
-            minHeight: `${HomePageHeight}px`,
-            height: `${HomePageHeight}px`,
-          }}
           fetchData={() => {
             fetchData({
               maxResults: Math.floor(100 / queries.length),

@@ -3,6 +3,7 @@ import { UiContext } from "../contexts/Ui/UiContext";
 import TopAndProfilePart from "../components/YouPageComponents/TopAndProfilePart";
 import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import BottomAndVideoPart from "../components/YouPageComponents/BottomAndVideoPart";
 
 export default function YouPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
@@ -30,9 +31,11 @@ export default function YouPage() {
         minHeight: `${HomePageHeight}px`,
         height: `${HomePageHeight}px`,
       }}
-      className=" overflow-x-hidden overflow-y-auto px-5 py-8"
+      className=" overflow-x-hidden overflow-y-auto md:px-5 py-8 pb-[55px]"
     >
       <TopAndProfilePart userData={userData} countData={countData} />
+      <BottomAndVideoPart countData={countData} />
+
     </div>
   );
 }

@@ -38,12 +38,14 @@ export default function UiContextProvider({ children }) {
   useEffect(() => {
     const handleResize = () => {
       setHomePageWidth(window.innerWidth);
-      setHomePageHeight(window.innerHeight - 60);
+      
       if (window.innerWidth <= 768) {
         setHomePageOutletWidth(window.innerWidth);
+        setHomePageHeight(window.innerHeight - 60 - 60);
       } else {
         let width = window.innerWidth - (isReSideBarShow ? 260 : 60);
         setHomePageOutletWidth(width);
+        setHomePageHeight(window.innerHeight - 60);
       }
     };
 

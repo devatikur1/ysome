@@ -32,7 +32,13 @@ export default function FirebaseContextProvider({ children }) {
   const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
   const [SubLoding, setSubLoding] = useState(true);
-  // signOut(auth)
+
+  // 🔹 History
+  const [historyIDs, setHistoryIDs] = useState([]);
+  const [historys, setHistorys] = useState([]);
+  const [historylastVisible, setHistorylastVisible] = useState({});
+  const [historyLoading, setHistoryLoading] = useState(true);
+ 
   // ------------------------------------------------
   // ✅ Get Last Visible funtion
   // ------------------------------------------------
@@ -55,18 +61,7 @@ export default function FirebaseContextProvider({ children }) {
         setIsLogged(false);
         return;
       }
-      const sub = await GetSubCollectionCount({
-        userId: user.email,
-        subCollection: "sub",
-      });
-      const lik = await GetSubCollectionCount({
-        userId: user.email,
-        subCollection: "like",
-      });
-      const his = await GetSubCollectionCount({
-        userId: user.email,
-        subCollection: "his",
-      });
+
       setUserID(user.email);
       setSubLoding(true);
       setLikeLoding(true);
@@ -75,6 +70,19 @@ export default function FirebaseContextProvider({ children }) {
       try {
         const data = await GetAuthData({
           documentID: user.email,
+        });
+
+        const sub = await GetSubCollectionCount({
+          userId: user.email,
+          subCollection: "sub",
+        });
+        const lik = await GetSubCollectionCount({
+          userId: user.email,
+          subCollection: "like",
+        });
+        const his = await GetSubCollectionCount({
+          userId: user.email,
+          subCollection: "his",
         });
 
         if (data) {
@@ -141,7 +149,6 @@ export default function FirebaseContextProvider({ children }) {
 
     return () => unsubscribe();
   }, []);
-
   // ------------------------------------------------
   // ✅ When Update userAllLikedVdData then call this
   // ------------------------------------------------
@@ -155,7 +162,7 @@ export default function FirebaseContextProvider({ children }) {
   }, [userAllLikedVdData]);
 
   // ------------------------------------------------
-  // ✅ When Update userAllLikedVdData then call this
+  // ✅ When Update subscriptions then call this
   // ------------------------------------------------
 
   useEffect(() => {
@@ -165,6 +172,18 @@ export default function FirebaseContextProvider({ children }) {
     });
     setSubscriptionsCID(Array.from(ids));
   }, [subscriptions]);
+
+  // ------------------------------------------------
+  // ✅ When Update historys then call this
+  // ------------------------------------------------
+
+  useEffect(() => {
+    let ids = new Set();
+    historys.forEach((dt) => {
+      ids.add(dt.id);
+    });
+    setHistoryIDs(Array.from(ids));
+  }, [historys]);
 
   // --------------------
   // ✅ AddLike funtion
@@ -195,7 +214,13 @@ export default function FirebaseContextProvider({ children }) {
       subscribe: Number(p?.subscribe),
     }));
 
-    setUserAllLikedVdData((p) => [data, ...p]);
+    setUserAllLikedVdData((p) => [
+      {
+        ...data,
+        id: vdId,
+      },
+      ...p,
+    ]);
   }
 
   // ----------------------
@@ -286,6 +311,38 @@ export default function FirebaseContextProvider({ children }) {
   }
 
   // ------------------------
+  // ✅ Add History funtion
+  // ------------------------
+
+  async function AddHistory({ vdId, Edata }) {
+    if (!vdId && !userID) return;
+
+    let data = {
+      publishedAt: new Date().toString(),
+      data: {
+        ...Edata,
+      },
+    };
+
+    let isAddHis = await SetUsd({
+      userId: userID,
+      subCollection: "his",
+      manualID: vdId,
+      data: data,
+    });
+
+    if (!isAddHis) return;
+
+    setCountData((p) => ({
+      history: Number(p?.history) + 1,
+      liked: Number(p?.liked),
+      subscribe: Number(p?.subscribe),
+    }));
+
+    setHistorys((p) => [{ ...data, id: vdId }, ...p]);
+  }
+
+  // ------------------------
   // ✅ Temp
   // ------------------------
 
@@ -350,6 +407,16 @@ export default function FirebaseContextProvider({ children }) {
       UnSubscribe,
       SubLoding,
       setSubLoding,
+    },
+    his: {
+      historys,
+      setHistorys,
+      historyIDs,
+      historylastVisible,
+      setHistorylastVisible,
+      AddHistory,
+      historyLoading,
+      setHistoryLoading,
     },
   };
 

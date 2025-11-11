@@ -10,27 +10,17 @@ export default function RandomVideosPart({
   videosData,
   channelsData,
 }) {
-  const [time, setTime] = useState("");
   const [channelAvatar, setChannelAvatar] = useState(profile);
   const [viewCount, setViewCount] = useState(150000);
   const [username, setUserName] = useState("@something");
 
   useEffect(() => {
-    let date = moment(item?.snippet?.publishTime).fromNow();
-    let dateArr = date.split(" ");
-
-    if (dateArr[0] === "a") {
-      setTime(`1 ${dateArr[1]}`);
-    } else {
-      setTime(date);
-    }
-
     const viewCount = videosData?.statistics?.viewCount || 0;
 
     const channelCustomUrl = channelsData?.snippet?.customUrl || "";
     const channelThumbnail =
-    channelsData?.snippet?.thumbnails?.high?.url ||
-    channelsData?.snippet?.thumbnails?.default?.url ||
+      channelsData?.snippet?.thumbnails?.high?.url ||
+      channelsData?.snippet?.thumbnails?.default?.url ||
       "";
     setViewCount(viewCount);
     setUserName(channelCustomUrl);
@@ -95,7 +85,10 @@ export default function RandomVideosPart({
                 className="text-neutral-400"
                 dateTime={item?.snippet?.publishTime}
               >
-                {time}
+                {moment(item?.snippet?.publishTime)
+                  .fromNow()
+                  .replace(/^a /, "1 ")
+                  .replace(/^an /, "1 ")}
               </time>
             </Link>
           </div>

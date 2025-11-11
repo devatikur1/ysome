@@ -2,7 +2,6 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../Firebase";
 import { SetAuthData } from "../Firestore/SetAuthData";
 import { GetAuthData } from "../Firestore/GetAuthData";
-import { SetUsd } from "../Firestore/SetUsd";
 import { generateUsername } from "../../../utils/GenerateUsername";
 import { GetSubCollectionCount } from "../Firestore/GetSubCollectionCount";
 
@@ -66,6 +65,8 @@ export const GoogleAuth = async () => {
       liked: Number(lik),
       subscribe: Number(sub),
     };
+    console.log(countData);
+    
 
     // ✅ If existing user
     localStorage.setItem("logged", JSON.stringify(true));

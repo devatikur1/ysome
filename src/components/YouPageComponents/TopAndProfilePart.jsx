@@ -1,10 +1,10 @@
 import React from "react";
 
 export default function TopAndProfilePart({ userData, countData }) {
-  console.log(userData);
+  console.log(userData?.photo);
 
   return (
-    <section className="w-full flex flex-col sm:flex-row items-center justify-between bg-surface/50 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-border/20 gap-5 sm:gap-0 *:select-none">
+    <section className="w-full flex flex-col sm:flex-row items-center justify-between p-5 gap-5 sm:gap-0 *:select-none">
       {/* ---- Left: Profile Info ---- */}
       <div className="flex items-center gap-5">
         <img
@@ -16,34 +16,33 @@ export default function TopAndProfilePart({ userData, countData }) {
         <div className="flex flex-col gap-0.5">
           <h1 className="text-2xl font-semibold text-text">{userData?.name}</h1>
           <small className="text-subtext/80">{userData?.userName}</small>
-          <p className="text-subtext text-sm">{userData?.email}</p>
+          <div className="flex items-center gap-6 sm:gap-10">
+            {/* ---- Stats ---- */}
+            <div className="flex items-center gap-5 text-center text-sm text-subtext">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-text">
+                  {countData?.liked}
+                </span>
+                <span className="text-xs text-subtext">Liked</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-text">
+                  {countData?.history}
+                </span>
+                <span className="text-xs text-subtext">History</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-text">
+                  {countData?.subscribe}
+                </span>
+                <span className="text-xs text-subtext">Subscribe</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ---- Right: Stats + Button ---- */}
-      <div className="flex items-center gap-6 sm:gap-10">
-        {/* ---- Stats ---- */}
-        <div className="flex items-center gap-5 text-center text-sm text-subtext">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-text/80">
-              {countData?.liked}
-            </span>
-            <span>Liked</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-text/80">
-              {countData?.history}
-            </span>
-            <span>History</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-text/80">
-              {countData?.subscribe}
-            </span>
-            <span>Subscribe</span>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

@@ -49,11 +49,15 @@ import {
   VideoHeaderSkeleton,
   VideoSkeleton,
 } from "../components/custom/LoadingComponent";
+import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 
 export default function PlayVideoInterFacePage() {
   const { HomePageWidth, HomePageHeight } = useContext(UiContext);
+  const { his } = useContext(FirebaseContext);
   const location = useLocation();
   const navigate = useNavigate();
+
+  let { AddHistory } = his;
 
   // ------------------------------
   // 1️⃣ USE-STATES
@@ -141,6 +145,7 @@ export default function PlayVideoInterFacePage() {
       let [videoData, VdDetails, cmtData, RelatedVideo] = await fetchAllData({
         videoDetails: data,
       });
+      await AddHistory({ vdId: videoData?.id, Edata: videoData });
 
       console.log(cmtData?.items);
       console.log(videoData);

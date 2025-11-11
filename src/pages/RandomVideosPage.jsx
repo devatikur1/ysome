@@ -146,17 +146,6 @@ export default function RandomVideosPage() {
           )}
           {pageError && (
             <ErrorPage
-              style={{
-                // width
-                maxWidth: `${HomePageOutletWidth}px`,
-                minWidth: `${HomePageOutletWidth}px`,
-                width: `${HomePageOutletWidth}px`,
-
-                // height
-                maxHeight: `${HomePageHeight}px`,
-                minHeight: `${HomePageHeight}px`,
-                height: `${HomePageHeight}px`,
-              }}
               fetchData={() => {
                 setPageLoading(true);
                 fetchData({
