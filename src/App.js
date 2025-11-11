@@ -24,8 +24,8 @@ export default function App() {
           <Route path="/channel" element={<SubscriptionsPage />} />
           <Route path="/liked" element={<LikedVideoPage />} />
           <Route path="/you" element={<YouPage />} />
+          <Route path="/watch" element={<PlayVideoInterFacePage />} />
         </Route>
-        <Route path="/watch" element={<PlayVideoInterFacePage />} />
         {/* <Route path="watch?v=:id" /> */}
         <Route path="*" element={<h1>404 | Page Not Found</h1>} />
       </Route>

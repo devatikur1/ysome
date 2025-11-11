@@ -83,11 +83,12 @@ export default function AppContextProvider({ children }) {
       const newChannelIds = new Set();
       const newVideoIds = new Set();
       console.log(results);
-      let isDtaFetch = results.some(
-        (pc) => pc === null || Object.values(pc) > 0
+      // Consider data fetched if any result has a non-empty `items` array
+      let isDataFetch = results.some(
+        (pc) => pc && Array.isArray(pc.items) && pc.items.length > 0
       );
 
-      if (isDtaFetch) {
+      if (isDataFetch) {
         results.forEach((data, idx) => {
           if (!data?.items) return;
 

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function LikedComponent({ countData }) {
   const { likes } = useContext(FirebaseContext);
   let { userAllLikedVdData } = likes;
-  console.log(userAllLikedVdData);
+
   return (
     <article
       className={`flex flex-col ${
@@ -31,8 +31,9 @@ export default function LikedComponent({ countData }) {
       </div>
       {userAllLikedVdData.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-rows-1 gap-2">
-          {userAllLikedVdData.slice(0, 4).map((ul) => (
+          {userAllLikedVdData.slice(0, 4).map((ul, idx) => (
             <VdPart
+              key={idx}
               id={ul?.id}
               thumbnail={
                 ul?.data?.snippet?.thumbnails[4].url ||
@@ -49,7 +50,9 @@ export default function LikedComponent({ countData }) {
       )}
       {userAllLikedVdData.length === 0 && (
         <div className="w-full flex items-center justify-center">
-          <p className="text-xs md:text-sm text-subtext/80 text-center py-32">No Liked found...</p>
+          <p className="text-xs md:text-sm text-subtext/80 text-center py-32">
+            No Like videos found...
+          </p>
         </div>
       )}
     </article>

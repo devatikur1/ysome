@@ -8,16 +8,16 @@ import BottomAndVideoPart from "../components/YouPageComponents/BottomAndVideoPa
 export default function YouPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
   const { auth } = useContext(FirebaseContext);
-  const { isLogged, userData, countData } = auth;
+  const { userID, isLogged, userData, setUserData, countData } = auth;
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (!isLogged) {
       navigate("/");
     }
   }, [location, isLogged, navigate]);
-  
+
   return (
     <div
       style={{
@@ -31,11 +31,15 @@ export default function YouPage() {
         minHeight: `${HomePageHeight}px`,
         height: `${HomePageHeight}px`,
       }}
-      className=" overflow-x-hidden overflow-y-auto md:px-5 py-8 pb-[55px]"
+      className=" overflow-x-hidden overflow-y-auto py-8"
     >
-      <TopAndProfilePart userData={userData} countData={countData} />
+      <TopAndProfilePart
+        userID={userID}
+        setUserData={setUserData}
+        userData={userData}
+        countData={countData}
+      />
       <BottomAndVideoPart countData={countData} />
-
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Bell, Menu, Plus, Search } from "lucide-react";
 import { UiContext } from "../../contexts/Ui/UiContext";
 import clsx from "clsx";
 import { FirebaseContext } from "../../contexts/Firebase/FirebaseContext";
+import emptyProfilePic from "../../assets/emptyProfilePic.jpg";
 
 export default function Header() {
   // Ui Context
@@ -100,7 +101,7 @@ export default function Header() {
             <article>
               <img
                 className="w-[35px] h-[35px] rounded-full"
-                src={userData?.photo}
+                src={userData?.photo || emptyProfilePic}
                 alt=""
               />
             </article>

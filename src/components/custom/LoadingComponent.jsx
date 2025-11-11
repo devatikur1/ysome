@@ -61,7 +61,7 @@ export function CommentSkeleton({ count = 4 }) {
   return (
     <>
       {[...Array(count)].map((_, i) => (
-        <article className="flex justify-start gap-5 px-3 py-5 animate-pulse">
+        <article key={i} className="flex justify-start gap-5 px-3 py-5 animate-pulse">
           <section>
             <div className="rounded-full bg-surface min-w-[45px] min-h-[45px] w-[45px] h-[45px]" />
           </section>

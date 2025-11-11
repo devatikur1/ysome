@@ -38,7 +38,7 @@ export default function FirebaseContextProvider({ children }) {
   const [historys, setHistorys] = useState([]);
   const [historylastVisible, setHistorylastVisible] = useState({});
   const [historyLoading, setHistoryLoading] = useState(true);
- 
+
   // ------------------------------------------------
   // ✅ Get Last Visible funtion
   // ------------------------------------------------
@@ -380,6 +380,7 @@ export default function FirebaseContextProvider({ children }) {
   const value = {
     auth: {
       isLogged,
+      setUserData,
       userData,
       countData,
       userID,

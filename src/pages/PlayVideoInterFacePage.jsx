@@ -52,7 +52,7 @@ import {
 import { FirebaseContext } from "../contexts/Firebase/FirebaseContext";
 
 export default function PlayVideoInterFacePage() {
-  const { HomePageWidth, HomePageHeight } = useContext(UiContext);
+  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
   const { his } = useContext(FirebaseContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -320,9 +320,9 @@ export default function PlayVideoInterFacePage() {
   return (
     <div
       style={{
-        width: `${HomePageWidth}px`,
+        width: `${HomePageOutletWidth}px`,
         height: `${HomePageHeight}px`,
-        minWidth: `${HomePageWidth}px`,
+        minWidth: `${HomePageOutletWidth}px`,
         minHeight: `${HomePageHeight}px`,
       }}
       ref={containerRef}
@@ -360,9 +360,9 @@ export default function PlayVideoInterFacePage() {
           {isError ? (
             <ErrorPage
               style={{
-                width: `${HomePageWidth}px`,
+                width: `${HomePageOutletWidth}px`,
                 height: `${HomePageHeight}px`,
-                minWidth: `${HomePageWidth}px`,
+                minWidth: `${HomePageOutletWidth}px`,
                 minHeight: `${HomePageHeight}px`,
               }}
               fetchData={() => CallFirstData(VideoID)}

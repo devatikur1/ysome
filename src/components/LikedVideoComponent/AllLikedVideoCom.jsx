@@ -68,7 +68,7 @@ export default function AllLikedVideoCom({
       {!LikeLoding && subsData.length === 0 && (
         <div className="w-full flex justify-center items-center">
           <p className=" text-subtext text-center py-32">
-            No subscriptions found...
+            No Like Video found...
           </p>
         </div>
       )}

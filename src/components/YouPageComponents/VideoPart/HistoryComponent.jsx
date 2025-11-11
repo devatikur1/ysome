@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 export default function HistoryComponent({ countData }) {
   const { his } = useContext(FirebaseContext);
   let { historys } = his;
-  console.log(historys);
 
   return (
     <article
@@ -32,8 +31,9 @@ export default function HistoryComponent({ countData }) {
       </div>
       {historys.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-rows-1 gap-2">
-          {historys.slice(0, 4).map((ul) => (
+          {historys.slice(0, 4).map((ul, idx) => (
             <VdPart
+              key={idx}
               id={ul?.id}
               thumbnail={
                 ul?.data?.snippet?.thumbnails[4].url ||
