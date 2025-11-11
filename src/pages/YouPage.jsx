@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function YouPage() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
   const { auth } = useContext(FirebaseContext);
-  const { isLogged, userData, } = auth;
+  const { isLogged, userData, countData } = auth;
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -32,7 +32,7 @@ export default function YouPage() {
       }}
       className=" overflow-x-hidden overflow-y-auto px-5 py-8"
     >
-      <TopAndProfilePart userData={userData} />
+      <TopAndProfilePart userData={userData} countData={countData} />
     </div>
   );
 }

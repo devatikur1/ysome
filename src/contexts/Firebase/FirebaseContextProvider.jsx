@@ -7,6 +7,7 @@ import { GetUsd } from "./Firestore/GetUsd";
 import { GetAuthData } from "./Firestore/GetAuthData";
 import { SetUsd } from "./Firestore/SetUsd";
 import { DeleteUsd } from "./Firestore/DeleteUsd";
+import { GetSubCollectionCount } from "./Firestore/GetSubCollectionCount";
 
 export default function FirebaseContextProvider({ children }) {
   // 🔹 Logged state
@@ -16,6 +17,7 @@ export default function FirebaseContextProvider({ children }) {
 
   // 🔹 User Data
   const [userData, setUserData] = useState({});
+  const [countData, setCountData] = useState({});
   const [userID, setUserID] = useState("");
 
   // 🔹  Like
@@ -30,7 +32,7 @@ export default function FirebaseContextProvider({ children }) {
   const [subscriptions, setSubscriptions] = useState([]);
   const [subscriptionslastVisible, setSubscriptionslastVisible] = useState({});
   const [SubLoding, setSubLoding] = useState(true);
-
+  // signOut(auth)
   // ------------------------------------------------
   // ✅ Get Last Visible funtion
   // ------------------------------------------------
@@ -40,9 +42,8 @@ export default function FirebaseContextProvider({ children }) {
   }
 
   useEffect(() => {
-     localStorage.setItem("logged", JSON.stringify(isLogged));
+    localStorage.setItem("logged", JSON.stringify(isLogged));
   }, [isLogged]);
-  
 
   // ---------------------------------------
   // ✅ useEffect get all Data auth changes
@@ -54,6 +55,18 @@ export default function FirebaseContextProvider({ children }) {
         setIsLogged(false);
         return;
       }
+      const sub = await GetSubCollectionCount({
+        userId: user.email,
+        subCollection: "sub",
+      });
+      const lik = await GetSubCollectionCount({
+        userId: user.email,
+        subCollection: "like",
+      });
+      const his = await GetSubCollectionCount({
+        userId: user.email,
+        subCollection: "his",
+      });
       setUserID(user.email);
       setSubLoding(true);
       setLikeLoding(true);
@@ -67,9 +80,15 @@ export default function FirebaseContextProvider({ children }) {
         if (data) {
           setIsLogged(true);
           setUserData(data);
+          setCountData(() => ({
+            history: Number(his),
+            liked: Number(lik),
+            subscribe: Number(sub),
+          }));
         } else {
           setIsLogged(false);
           setUserData({});
+          setCountData({});
         }
       } catch (error) {
         console.error("🔥 Error fetching user data:", error);
@@ -170,6 +189,12 @@ export default function FirebaseContextProvider({ children }) {
 
     if (!IsLike) return;
 
+    setCountData((p) => ({
+      history: Number(p?.history),
+      liked: Number(p?.liked) + 1,
+      subscribe: Number(p?.subscribe),
+    }));
+
     setUserAllLikedVdData((p) => [data, ...p]);
   }
 
@@ -187,6 +212,12 @@ export default function FirebaseContextProvider({ children }) {
     });
 
     if (!isDeleted) return;
+
+    setCountData((p) => ({
+      history: Number(p?.history),
+      liked: Number(p?.liked) - 1,
+      subscribe: Number(p?.subscribe),
+    }));
 
     setUserAllLikedVdData((prev) => prev.filter((item) => item.id !== vdId));
   }
@@ -215,6 +246,12 @@ export default function FirebaseContextProvider({ children }) {
 
     if (!sub) return;
 
+    setCountData((p) => ({
+      history: Number(p?.history),
+      liked: Number(p?.liked),
+      subscribe: Number(p?.subscribe) + 1,
+    }));
+
     setSubscriptions((p) => [
       {
         id: cdId,
@@ -239,6 +276,12 @@ export default function FirebaseContextProvider({ children }) {
 
     if (!isDeleted) return;
 
+    setCountData((p) => ({
+      history: Number(p?.history),
+      liked: Number(p?.liked),
+      subscribe: Number(p?.subscribe) - 1,
+    }));
+
     setSubscriptions((prev) => prev.filter((item) => item.id !== cdId));
   }
 
@@ -259,12 +302,17 @@ export default function FirebaseContextProvider({ children }) {
     if (googleIsDis) return;
     setGoogleIsDis(true);
     try {
-      let { success, user } = await GoogleAuth();
+      let { success, user, countData } = await GoogleAuth();
+
       if (success === true) {
         setUserData(user);
+        setCountData(countData);
       }
       setIsLogged(success);
     } catch (err) {
+      setIsLogged(false);
+      setUserData({});
+      setCountData({});
       console.error(err);
     } finally {
       setGoogleIsDis(false);
@@ -276,6 +324,7 @@ export default function FirebaseContextProvider({ children }) {
     auth: {
       isLogged,
       userData,
+      countData,
       userID,
       handleGoogleSignIn,
       getLastVisible,

@@ -10,7 +10,6 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 
 export default function PlayerVideo({ videoDetails }) {
-  console.log(videoDetails);
 
   const [data] = useState(videoDetails);
   const videoRef = useRef(null);
