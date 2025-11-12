@@ -57,7 +57,7 @@ export default function RandomShortsPage() {
     if (items.length > 0) return;
     setPageLoading(true);
     fetchData({
-      maxResults: Math.floor(100 / queries.length),
+      maxResults: Math.floor(80 / queries.length),
       nxtPgTokens: nextPageTokens,
     });
   }, []);
@@ -240,7 +240,7 @@ export default function RandomShortsPage() {
       isInitialMount.current = true;
 
       fetchData({
-        maxResults: Math.floor(100 / queries.length),
+        maxResults: Math.floor(80 / queries.length),
         nxtPgTokens: nextPageTokens,
       })
         .catch((err) => {

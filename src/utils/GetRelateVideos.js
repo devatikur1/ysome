@@ -1,4 +1,4 @@
-export async function GetRelateVideos({ videoID, nextPageToken, key }) {
+export async function GetRelateVideos({ videoID, nextPageToken }) {
   try {
     const res = await fetch(
       `https://youtube-media-downloader.p.rapidapi.com/v2/video/related?videoId=${videoID}${
@@ -7,7 +7,7 @@ export async function GetRelateVideos({ videoID, nextPageToken, key }) {
       {
         method: "GET",
         headers: {
-          "x-rapidapi-key": key,
+          "x-rapidapi-key": process.env.REACT_APP_RELATE_VIDEOS_FN_KEY,
           "x-rapidapi-host": "youtube-media-downloader.p.rapidapi.com",
         },
       }

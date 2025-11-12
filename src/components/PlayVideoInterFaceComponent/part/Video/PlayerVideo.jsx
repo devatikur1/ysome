@@ -2,9 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Expand, Shrink } from "lucide-react";
 
 export default function PlayerVideo({ videoDetails }) {
-  console.log(videoDetails);
-  
-  let videoData = videoDetails;
   const videoRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -16,16 +13,14 @@ export default function PlayerVideo({ videoDetails }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
 
-  // ----------------------------
-  // Pick best quality video
-  // ----------------------------
+  const videoData = videoDetails;
+
+  // Best quality video selection
   const videoUrl =
     videoData?.video?.items?.find((v) => v.quality === "720p" || v.hasAudio)
       ?.url || videoData?.video?.items?.[0]?.url;
 
-  // ----------------------------
-  // Play/Pause Toggle
-  // ----------------------------
+  // Play / Pause toggle
   const togglePlay = () => {
     const video = videoRef.current;
     if (video.paused) {
@@ -37,9 +32,7 @@ export default function PlayerVideo({ videoDetails }) {
     }
   };
 
-  // ----------------------------
-  // Time Updates
-  // ----------------------------
+  // Time update
   const handleTimeUpdate = () => {
     const video = videoRef.current;
     setProgress((video.currentTime / video.duration) * 100);
@@ -47,9 +40,7 @@ export default function PlayerVideo({ videoDetails }) {
     setDuration(video.duration);
   };
 
-  // ----------------------------
   // Format time
-  // ----------------------------
   const formatTime = (sec) => {
     if (!sec || isNaN(sec)) return "0:00";
     const m = Math.floor(sec / 60);
@@ -59,18 +50,14 @@ export default function PlayerVideo({ videoDetails }) {
     return `${m}:${s}`;
   };
 
-  // ----------------------------
   // Volume control
-  // ----------------------------
   const handleVolume = (e) => {
     const val = parseFloat(e.target.value);
     setVolume(val);
     videoRef.current.volume = val;
   };
 
-  // ----------------------------
   // Seek control
-  // ----------------------------
   const handleSeek = (e) => {
     const val = parseFloat(e.target.value);
     const newTime = (val / 100) * videoRef.current.duration;
@@ -78,9 +65,7 @@ export default function PlayerVideo({ videoDetails }) {
     setProgress(val);
   };
 
-  // ----------------------------
   // Fullscreen toggle
-  // ----------------------------
   const toggleFullscreen = () => {
     const container = containerRef.current;
     if (!document.fullscreenElement) {
@@ -92,9 +77,7 @@ export default function PlayerVideo({ videoDetails }) {
     }
   };
 
-  // ----------------------------
   // Auto-hide controls
-  // ----------------------------
   useEffect(() => {
     let timeout;
     const show = () => {
@@ -124,7 +107,7 @@ export default function PlayerVideo({ videoDetails }) {
       ref={containerRef}
       className="relative w-full h-full bg-black rounded-xl overflow-hidden"
     >
-      {/* 🎥 VIDEO */}
+      {/* VIDEO & Center Play Icon */}
       <div className="relative flex justify-center items-center w-full h-full">
         <video
           ref={videoRef}
@@ -136,9 +119,19 @@ export default function PlayerVideo({ videoDetails }) {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         />
+
+        {/* Center Play Icon only when paused */}
+        {!isPlaying && (
+          <button
+            onClick={togglePlay}
+            className="absolute text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition"
+          >
+            <Play size={25} strokeWidth={3} />
+          </button>
+        )}
       </div>
 
-      {/* 🎛️ Controls */}
+      {/* Controls */}
       {showControls && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col-reverse md:flex-col p-3 gap-2">
           {/* Seekbar */}
@@ -151,17 +144,18 @@ export default function PlayerVideo({ videoDetails }) {
             className="w-full accent-red-500 cursor-pointer"
           />
 
+          {/* Bottom Controls */}
           <div className="flex justify-between items-center text-white text-sm">
-            {/* Left Controls */}
+            {/* Left controls */}
             <div className="flex items-center gap-3">
               <button
                 onClick={togglePlay}
                 className="hidden md:flex p-2 rounded-full hover:bg-white/20 transition"
               >
                 {isPlaying ? (
-                  <Pause size={20} strokeWidth={3} />
+                  <Pause size={25} strokeWidth={3} />
                 ) : (
-                  <Play size={20} strokeWidth={3} />
+                  <Play size={25} strokeWidth={3} />
                 )}
               </button>
 
@@ -169,6 +163,7 @@ export default function PlayerVideo({ videoDetails }) {
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
 
+              {/* Volume */}
               <div className="hidden md:flex items-center gap-3">
                 {volume > 0 ? <Volume2 size={18} /> : <VolumeX size={18} />}
                 <input
@@ -183,7 +178,7 @@ export default function PlayerVideo({ videoDetails }) {
               </div>
             </div>
 
-            {/* Right Controls */}
+            {/* Right controls */}
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleFullscreen}

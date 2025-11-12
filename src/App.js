@@ -14,6 +14,8 @@ import PlayVideoInterFacePage from "./pages/PlayVideoInterFacePage";
 import LikedVideoPage from "./pages/LikedVideoPage";
 import YouPage from "./pages/YouPage";
 import HistoryPage from "./pages/HistoryPage";
+import SearchQueryPage from "./pages/SearchQueryPage";
+import ChanalDataPage from "./pages/ChanalDataPage";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -27,6 +29,8 @@ export default function App() {
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/you" element={<YouPage />} />
           <Route path="/watch" element={<PlayVideoInterFacePage />} />
+          <Route path="/search" element={<SearchQueryPage />} />
+          <Route path="/:id" element={<ChanalDataPage />} />
         </Route>
         {/* <Route path="watch?v=:id" /> */}
         <Route path="*" element={<h1>404 | Page Not Found</h1>} />

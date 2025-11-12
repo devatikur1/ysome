@@ -32,7 +32,7 @@ export default function HistoryVideoPart({ item }) {
           {/* Public Time and Vews */}
           <div className="w-full flex justify-between items-center">
             <Link
-              to={item?.channel?.snippet?.customUrl}
+              to={`/${item?.channel?.snippet?.customUrl}`}
               className="w-[50%] text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90 hover:text-text transition-all duration-300"
             >
               {item?.channel?.snippet?.title}

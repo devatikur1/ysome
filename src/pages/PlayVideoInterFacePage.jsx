@@ -86,21 +86,17 @@ export default function PlayVideoInterFacePage() {
   /* 🔹 Error And Api Sate */
   const [isError, setError] = useState(false);
   const apiKeys = [
-    "AIzaSyAFhOQVeWB1W6L6-WBVyq-ZJdwuJMiunho",
-    apiKey8,
-    apiKey7,
-    apiKey1,
+    apiKey1,  
     apiKey2,
     apiKey3,
     apiKey4,
     apiKey5,
     apiKey6,
+    apiKey7,
+    apiKey8,
   ];
   const [apiIndex, setApiIndex] = useState(0);
   const [activeKey, setActiveKey] = useState(apiKeys[0]);
-  const [VideoDetailsApi] = useState(
-    "5e865515cemsh025d8c10c773f06p153484jsnfd4264586339"
-  );
 
   // ------------------------------
   // 2️⃣ LOGIC HELPERS
@@ -132,7 +128,7 @@ export default function PlayVideoInterFacePage() {
 
     const { status, data } = await GetVideoDetails({
       videoID: id,
-      key: VideoDetailsApi,
+      key: process.env.REACT_APP_VIDEO_DETAILS_FN_KEY,
     });
     console.log(status);
 
@@ -146,6 +142,7 @@ export default function PlayVideoInterFacePage() {
         videoDetails: data,
       });
       await AddHistory({ vdId: videoData?.id, Edata: videoData });
+      document.title = `${videoData?.snippet?.title}`;
 
       console.log(cmtData?.items);
       console.log(videoData);
@@ -289,7 +286,6 @@ export default function PlayVideoInterFacePage() {
             const { status, data } = await GetRelateVideos({
               videoID: VideoID,
               nextPageToken: RelatedVideoToken,
-              key: VideoDetailsApi,
             });
 
             if (status && data?.items?.length) {
@@ -305,7 +301,7 @@ export default function PlayVideoInterFacePage() {
         }
       }
     },
-    [RelatedVideoLoading, RelatedVideoToken, isError, VideoID, VideoDetailsApi]
+    [RelatedVideoLoading, RelatedVideoToken, isError, VideoID]
   );
 
   useEffect(() => {

@@ -57,16 +57,14 @@ export default function AppLayout() {
       <aside className="w-full h-full flex flex-col overflow-hidden">
         <Header />
         <Outlet />
-        <SpeedInsights
-          route="/"
-          sampleRate={0.5}
-        />
+        <SpeedInsights route="/" sampleRate={0.5} />
       </aside>
       <AnimatePresence>
         {isSearchShow === true && (
           <Search
             SearchFeedRef={SearchFeedRef}
             setIsSearchShow={setIsSearchShow}
+            isSearchShow={isSearchShow}
           />
         )}
       </AnimatePresence>

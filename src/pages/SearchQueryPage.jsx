@@ -1,60 +1,61 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useRef, useState } from "react";
-import clsx from "clsx";
-import { UiContext } from "../contexts/Ui/UiContext";
-import RandomVideosPart from "../components/randomVideosComponent/RandomVideosPart";
-import ErrorPage from "../components/custom/ErrorPage";
-import { useScroll } from "motion/react";
-import { AppContext } from "../contexts/App/AppContext";
-import { RelatedSkeleton } from "../components/custom/LoadingComponent";
 
-export default function RandomVideosPage() {
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { UiContext } from "../contexts/Ui/UiContext";
+import ErrorPage from "../components/custom/ErrorPage";
+import SearchVideosPart from "../components/SearchQueryComponent/SearchVideosPart";
+import clsx from "clsx";
+import { GetSearchFn } from "../utils/GetSearchFn";
+import { RelatedSkeleton } from "../components/custom/LoadingComponent";
+import { useLocation } from "react-router-dom";
+import { useScroll } from "motion/react";
+
+export default function SearchQueryPage() {
   // Context
   const { gridCols, HomePageOutletWidth, HomePageHeight } =
     useContext(UiContext);
-  const {
-    queries,
-
-    // Items & Next Page Tokens & Maxmimam result
-    items,
-
-    videosData,
-
-    channelsData,
-
-    nextPageTokens,
-
-    pageLoading,
-    setPageLoading,
-
-    pageError,
-
-    fetchData,
-  } = useContext(AppContext);
-
-  // refs
   const containerRef = useRef(null);
   const [scrollTriggered, setScrollTriggered] = useState(false);
 
+  const [items, setItems] = useState([]);
+  const [itemsToken, setItemsToken] = useState("");
+  const [pageLoading, setPageLoading] = useState(false);
+  const [pageError, setPageError] = useState(false);
+  const [q, setQ] = useState("");
 
+  async function callData({ q, tk }) {
+    let it = await GetSearchFn({ query: q, token: tk });
+    setItems((p) => [...p, ...it?.data]);
+    setItemsToken(it?.continuation);
+  }
 
-  // resultsCount
-  const [resultsCount, setResultsCount] = useState(0);
+  let location = useLocation();
 
   // -------------------------
   // Initial fetch
   // -------------------------
 
   useEffect(() => {
-    if (items.length > 0) return;
-    setPageLoading(true);
-    fetchData({
-      maxResults: Math.floor(80 / queries.length),
-      nxtPgTokens: nextPageTokens,
-    });
-  }, []);
+    const params = new URLSearchParams(location.search);
+    const q = params.get("q") || "";
+    console.log(q);
+    setQ(q);
 
+    async function fetchData() {
+      try {
+        setPageLoading(true);
+        setPageError(false);
+        await callData({ q, tk: itemsToken });
+      } catch (err) {
+        console.error(err);
+        setPageError(true);
+      } finally {
+        setPageLoading(false);
+      }
+    }
 
+    fetchData();
+  }, [location]);
 
   // ------------------------------
   // Scroll base get videos data
@@ -66,38 +67,18 @@ export default function RandomVideosPage() {
     if (!scrollYProgress) return;
 
     const unsubscribe = scrollYProgress.on("change", (value) => {
-      if (
-        value > 0.9 &&
-        !pageLoading &&
-        nextPageTokens.length > 0 &&
-        !scrollTriggered &&
-        resultsCount < 501
-      ) {
+      if (value > 0.9 && !pageLoading && itemsToken && !scrollTriggered) {
         setScrollTriggered(true);
         setPageLoading(true);
-        fetchData({
-          maxResults: Math.floor(80 / queries.length),
-          nxtPgTokens: nextPageTokens,
-        }).finally(() => {
+        callData({ q: q, tk: itemsToken }).finally(() => {
           setScrollTriggered(false);
         });
       }
     });
 
     return () => unsubscribe();
-  }, [scrollYProgress, pageLoading, nextPageTokens.length, resultsCount]);
+  }, [scrollYProgress, pageLoading, itemsToken, scrollTriggered, q]);
 
-  // -------------------------
-  // set ResultsCount
-  // -------------------------
-
-  useEffect(() => {
-    setResultsCount(items.length);
-  }, [items]);
-
-  // -------------------------
-  // Render
-  // -------------------------
   return (
     <>
       <main
@@ -122,26 +103,20 @@ export default function RandomVideosPage() {
           {!pageError && (
             <>
               {items.map((item, idx) => (
-                <RandomVideosPart
-                  key={idx}
-                  item={item}
-                  videosData={videosData?.[item?.id?.videoId]}
-                  channelsData={channelsData?.[item?.snippet?.channelId]}
-                />
+                <SearchVideosPart key={idx} item={item} />
               ))}
 
               {pageLoading &&
                 [...Array(15)].map((_, i) => <RelatedSkeleton key={i} />)}
             </>
           )}
-          {pageError && (
+
+          {pageError && items.length === 0 && (
             <ErrorPage
-              fetchData={() => {
+              fetchData={async () => {
                 setPageLoading(true);
-                fetchData({
-                  maxResults: Math.floor(80 / queries.length),
-                  nxtPgTokens: nextPageTokens,
-                });
+                await callData({ q, tk: "" });
+                setPageLoading(false);
               }}
             />
           )}

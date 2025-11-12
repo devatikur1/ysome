@@ -27,7 +27,7 @@ const menuItems = [
     section: "you",
     title: "You",
     SectionIcon: <ChevronRight size={18} />,
-    sectionPath: "/liked",
+    sectionPath: "/you",
     items: [
       { icon: <History size={21} />, label: "History", to: "/history" },
       { icon: <Youtube />, label: "Your videos", to: "/you" },

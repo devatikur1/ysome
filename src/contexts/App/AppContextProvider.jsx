@@ -16,11 +16,15 @@ import { GetVideoData } from "../../utils/GetVideoData";
 import { GetChannelData } from "../../utils/GetChannelData";
 
 export default function AppContextProvider({ children }) {
-  let queries = [
-    "pokemon unova region theme song in hindi",
-    "pokemon bw adventures in unova theme song in hindi",
-    "pokemon theme songs",
-  ];
+  const [queries, setQueries] = useState([
+    { text: "islamic content" },
+    ...JSON.parse(localStorage.getItem("queries")),
+  ]);
+
+  // update quraris
+  useEffect(() => {
+    localStorage.setItem("queries", JSON.stringify(queries));
+  }, [queries.length]);
 
   // apikeys
   const apiKeys = [
@@ -219,7 +223,7 @@ export default function AppContextProvider({ children }) {
         setApiKey(newKey);
         setPageLoading(true);
         fetchData({
-          maxResults: Math.floor(100 / queries.length),
+          maxResults: Math.floor(80 / queries.length),
           nxtPgTokens: nextPageTokens,
         });
       }
@@ -235,6 +239,7 @@ export default function AppContextProvider({ children }) {
   // context value
   const value = {
     queries,
+    setQueries,
 
     // Items & Next Page Tokens & Maxmimam result
     items,

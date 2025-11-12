@@ -5,15 +5,25 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import SearchPart from "./SearchPart";
 import { motion, AnimatePresence } from "motion/react";
 import { UiContext } from "../../../contexts/Ui/UiContext";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../../contexts/App/AppContext";
 
-export default function Search({ SearchFeedRef, setIsSearchShow }) {
-  const [inputFocus, setInputFocus] = useState(false); // input focus styling
-  const [parentHeight, setParentHeight] = useState(window.innerHeight); // window height
-  const [searchFeedHeight, setSearchFeedHeight] = useState(0); // window height
-  const [index, setIndex] = useState(10); // কতগুলো result show হবে
-  const inputRef = useRef(null); // input focus detect
-  const searchOptionRef = useRef(null); // scroll container
-  const formRef = useRef(null); // formRef container
+export default function Search({
+  SearchFeedRef,
+  setIsSearchShow,
+  isSearchShow,
+}) {
+  const [inputFocus, setInputFocus] = useState(false);
+  const [parentHeight, setParentHeight] = useState(window.innerHeight);
+  const [searchFeedHeight, setSearchFeedHeight] = useState(0);
+  const [index, setIndex] = useState(10);
+  const inputRef = useRef(null);
+  const searchOptionRef = useRef(null);
+  const formRef = useRef(null);
+  const [prompt, setPrompt] = useState(window.innerHeight);
+  const navigate = useNavigate();
+
+  const { queries, setQueries } = useContext(AppContext);
 
   // resize listener
   useEffect(() => {
@@ -34,35 +44,20 @@ export default function Search({ SearchFeedRef, setIsSearchShow }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const some = [
-    { text: "React Hooks introduction" },
-    { text: "Next.js server actions guide" },
-    { text: "TailwindCSS responsive design tips" },
-    { text: "Firebase vs Supabase: which to choose?" },
-    { text: "How to build a search dropdown UI" },
-    { text: "Debounce vs Throttle in JavaScript" },
-    { text: "Dark mode UI pattern best practices" },
-    { text: "LocalStorage vs SessionStorage difference" },
-    { text: "Web accessibility (a11y) fundamentals" },
-    { text: "React + Motion animations examples" },
-    { text: "Advanced event listeners in JS" },
-    { text: "Custom scrollbar styling with CSS" },
-  ];
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
         setIndex(10);
-        if (some.length === 0) {
+        if (queries.length === 0) {
           setSearchFeedHeight(`${80}px`);
         } else {
-          setSearchFeedHeight(`${40 * some.slice(0, 10).length + 103}px`);
+          setSearchFeedHeight(`${40 * queries.slice(0, 10).length + 103}px`);
           if (window.innerHeight < 621) {
             setSearchFeedHeight(`${window.innerHeight - 70}px`);
           }
         }
       } else {
-        setIndex(some.length);
+        setIndex(queries.length);
         setSearchFeedHeight("100vh");
       }
     };
@@ -79,7 +74,7 @@ export default function Search({ SearchFeedRef, setIsSearchShow }) {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [parentHeight, window.innerHeight, some.length]);
+  }, [parentHeight, window.innerHeight, queries.length]);
 
   return (
     <aside className="fixed top-0 md:top-[62px] w-full flex justify-center items-center z-50">
@@ -114,12 +109,18 @@ export default function Search({ SearchFeedRef, setIsSearchShow }) {
             <input
               ref={inputRef}
               onFocus={() => setInputFocus(true)}
+              onChange={(e) => setPrompt(e.target.value)}
               placeholder="Search..."
               className="w-full bg-bg-Primary px-3 py-2 text-sm outline-none rounded-l-xl"
               type="text"
             />
             <button
-              type="submit"
+              type="button"
+              onClick={() => {
+                setQueries((p) => [{ text: prompt }, ...p]);
+                setIsSearchShow(false);
+                navigate(`/search?q=${encodeURIComponent(prompt)}`);
+              }}
               className={clsx(
                 "bg-bg-pecondary px-3 py-2 border-l transition-all duration-300 rounded-r-xl",
                 inputFocus ? "border-accent" : "border-border"
@@ -134,14 +135,22 @@ export default function Search({ SearchFeedRef, setIsSearchShow }) {
           ref={searchOptionRef}
           className={clsx(
             "flex flex-col h-full border border-border rounded-xl overflow-x-hidden overflow-y-auto custom-scroll",
-            some.length === 0 && "flex md:hidden"
+            queries.length === 0 && "flex md:hidden"
           )}
         >
-          {some.slice(0, index).map((s, i) => {
-            let isLast = some.length - 1 === i;
-            return <SearchPart key={i} isLast={isLast} text={s.text} />;
+          {queries.slice(0, index).map((s, i) => {
+            let isLast = queries.length - 1 === i;
+            return (
+              <SearchPart
+                key={i}
+                isLast={isLast}
+                text={s.text}
+                navigate={navigate}
+                setIsSearchShow={setIsSearchShow}
+              />
+            );
           })}
-          {some.length === 0 && (
+          {queries.length === 0 && (
             <article
               className={clsx(
                 "w-full h-full flex justify-center items-center",
