@@ -3,7 +3,7 @@ import { FirebaseContext } from "../../../contexts/Firebase/FirebaseContext";
 import VdPart from "./part/VdPart";
 import { Link } from "react-router-dom";
 
-export default function LikedComponent({ countData }) {
+export default function LikedComponent({ gridCols, countData }) {
   const { likes } = useContext(FirebaseContext);
   let { userAllLikedVdData } = likes;
 
@@ -30,7 +30,7 @@ export default function LikedComponent({ countData }) {
         </aside>
       </div>
       {userAllLikedVdData.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-rows-1 gap-2">
+        <div className={`grid  ${gridCols} gap-2`}>
           {userAllLikedVdData.slice(0, 4).map((ul, idx) => (
             <VdPart
               key={idx}

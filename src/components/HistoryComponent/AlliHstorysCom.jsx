@@ -3,7 +3,12 @@ import moment from "moment";
 import { RelatedSkeleton } from "../custom/LoadingComponent";
 import HistoryVideoPart from "./part/HistoryVideoPart";
 
-export default function AlliHstorysCom({ historys, activeOptionName, historyLoading }) {
+export default function AlliHstorysCom({
+  gridCols,
+  historys,
+  activeOptionName,
+  historyLoading,
+}) {
   const [subsData, setsubData] = useState([]);
 
   useEffect(() => {
@@ -52,7 +57,9 @@ export default function AlliHstorysCom({ historys, activeOptionName, historyLoad
 
   return (
     <>
-      <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-5 pb-5 border-t border-border pt-5">
+      <section
+        className={`w-full grid ${gridCols} gap-5 pb-5 border-t border-border pt-5 `}
+      >
         {subsData.map((item) => (
           <HistoryVideoPart key={item?.id} item={item?.data} />
         ))}
@@ -63,9 +70,7 @@ export default function AlliHstorysCom({ historys, activeOptionName, historyLoad
 
       {!historyLoading && historys.length === 0 && (
         <div className="w-full flex justify-center items-center">
-          <p className=" text-subtext text-center py-32">
-            No Like Video found...
-          </p>
+          <p className=" text-subtext text-center py-32">No history found...</p>
         </div>
       )}
     </>

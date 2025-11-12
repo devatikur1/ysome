@@ -22,7 +22,8 @@ export default function LikedVideoPage() {
   const selectionRef = useRef(null);
   const optionRef = useRef(null);
   const { auth, likes } = useContext(FirebaseContext);
-  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
+  const { gridCols, HomePageOutletWidth, HomePageHeight } =
+    useContext(UiContext);
 
   let {
     userAllLikedVdData,
@@ -161,6 +162,7 @@ export default function LikedVideoPage() {
           activeOptionName={activeOptionName}
           DeleteLike={DeleteLike}
           LikeLoding={LikeLoding}
+          gridCols={gridCols}
         />
         <AnimatePresence>
           {showActivity && (

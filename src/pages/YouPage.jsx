@@ -7,7 +7,7 @@ import BottomAndVideoPart from "../components/YouPageComponents/BottomAndVideoPa
 import { FullPageLoader } from "../components/custom/LoadingComponent";
 
 export default function YouPage() {
-  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
+  const { HomePageOutletWidth, HomePageHeight, gridCols } = useContext(UiContext);
   const { auth, likes } = useContext(FirebaseContext);
   const { userID, isLogged, userData, setUserData, countData } = auth;
   const { LikeLoding } = likes;
@@ -45,7 +45,7 @@ export default function YouPage() {
             userData={userData}
             countData={countData}
           />
-          <BottomAndVideoPart countData={countData} />
+          <BottomAndVideoPart countData={countData} gridCols={gridCols} />
         </>
       )}
     </div>

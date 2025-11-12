@@ -22,7 +22,7 @@ export default function HistoryPage() {
   const selectionRef = useRef(null);
   const optionRef = useRef(null);
   const { auth, his } = useContext(FirebaseContext);
-  const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
+  const { HomePageOutletWidth, HomePageHeight , gridCols} = useContext(UiContext);
 
   let {
     historys,
@@ -150,6 +150,7 @@ export default function HistoryPage() {
           historys={historys}
           activeOptionName={activeOptionName}
           historyLoading={historyLoading}
+          gridCols={gridCols}
         />
         <AnimatePresence>
           {showActivity && (

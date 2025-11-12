@@ -12,6 +12,9 @@ export default function UiContextProvider({ children }) {
     return saved !== null ? JSON.parse(saved) : true;
   });
 
+  // Grid Columns
+  const [gridCols, setGridCols] = useState("grid-cols-1");
+
   // when chnage this  "isReSideBarShow" then set value in this
   useEffect(() => {
     localStorage.setItem("isReSideBarShow", JSON.stringify(isReSideBarShow));
@@ -19,9 +22,7 @@ export default function UiContextProvider({ children }) {
 
   // some
   const [HomePageWidth, setHomePageWidth] = useState(window.innerWidth);
-  const [HomePageHeight, setHomePageHeight] = useState(
-    window.innerHeight - 60
-  );
+  const [HomePageHeight, setHomePageHeight] = useState(window.innerHeight - 60);
   const [HomePageOutletWidth, setHomePageOutletWidth] = useState(() => {
     if (window.innerWidth <= 768) {
       return window.innerWidth;
@@ -38,7 +39,7 @@ export default function UiContextProvider({ children }) {
   useEffect(() => {
     const handleResize = () => {
       setHomePageWidth(window.innerWidth);
-      
+
       if (window.innerWidth <= 768) {
         setHomePageOutletWidth(window.innerWidth);
         setHomePageHeight(window.innerHeight - 60 - 60);
@@ -62,6 +63,17 @@ export default function UiContextProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReSideBarShow]);
 
+  // -------------------------
+  // Update grid columns
+  // -------------------------
+
+  useEffect(() => {
+    if (HomePageOutletWidth >= 1920) setGridCols("grid-cols-4");
+    else if (HomePageOutletWidth >= 1024) setGridCols("grid-cols-3");
+    else if (HomePageOutletWidth >= 768) setGridCols("grid-cols-2");
+    else setGridCols("grid-cols-1");
+  }, [isReSideBarShow, HomePageOutletWidth]);
+
   // context value
   const value = {
     // Search
@@ -82,6 +94,8 @@ export default function UiContextProvider({ children }) {
     HomePageWidth,
     HomePageHeight,
     HomePageOutletWidth,
+
+    gridCols,
 
     // future values like theme, modalOpen, etc. will go here
   };

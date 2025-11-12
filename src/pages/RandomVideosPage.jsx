@@ -10,7 +10,7 @@ import { RelatedSkeleton } from "../components/custom/LoadingComponent";
 
 export default function RandomVideosPage() {
   // Context
-  const { isReSideBarShow, HomePageOutletWidth, HomePageHeight } =
+  const { gridCols, HomePageOutletWidth, HomePageHeight } =
     useContext(UiContext);
   const {
     queries,
@@ -36,8 +36,7 @@ export default function RandomVideosPage() {
   const containerRef = useRef(null);
   const [scrollTriggered, setScrollTriggered] = useState(false);
 
-  // Grid Columns
-  const [gridCols, setGridCols] = useState("grid-cols-1");
+
 
   // resultsCount
   const [resultsCount, setResultsCount] = useState(0);
@@ -55,16 +54,7 @@ export default function RandomVideosPage() {
     });
   }, []);
 
-  // -------------------------
-  // Update grid columns
-  // -------------------------
 
-  useEffect(() => {
-    if (HomePageOutletWidth >= 1920) setGridCols("grid-cols-4");
-    else if (HomePageOutletWidth >= 1024) setGridCols("grid-cols-3");
-    else if (HomePageOutletWidth >= 768) setGridCols("grid-cols-2");
-    else setGridCols("grid-cols-1");
-  }, [isReSideBarShow, HomePageOutletWidth]);
 
   // ------------------------------
   // Scroll base get videos data

@@ -8,6 +8,7 @@ export default function AllLikedVideoCom({
   activeOptionName,
   DeleteLike,
   LikeLoding,
+  gridCols,
 }) {
   const [subsData, setsubData] = useState([]);
 
@@ -57,7 +58,9 @@ export default function AllLikedVideoCom({
 
   return (
     <>
-      <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-5 pb-5 border-t border-border pt-5">
+      <section
+        className={`"w-full grid gap-5 pb-5 border-t border-border pt-5" ${gridCols}`}
+      >
         {subsData.map((item) => (
           <LikedVideoPart key={item?.id} item={item?.data} />
         ))}

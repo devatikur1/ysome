@@ -3,7 +3,7 @@ import { FirebaseContext } from "../../../contexts/Firebase/FirebaseContext";
 import VdPart from "./part/VdPart";
 import { Link } from "react-router-dom";
 
-export default function HistoryComponent({ countData }) {
+export default function HistoryComponent({ gridCols, countData }) {
   const { his } = useContext(FirebaseContext);
   let { historys } = his;
 
@@ -30,7 +30,9 @@ export default function HistoryComponent({ countData }) {
         </aside>
       </div>
       {historys.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 grid-rows-1 gap-2">
+        <div
+          className={`grid grid-rows-1 gap-2 ${gridCols}`}
+        >
           {historys.slice(0, 4).map((ul, idx) => (
             <VdPart
               key={idx}
