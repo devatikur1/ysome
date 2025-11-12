@@ -40,7 +40,7 @@ export default function TopAndProfilePart({ userID, setUserData, userData, count
           />
           <label
             htmlFor="Edit"
-            className="flex items-center justify-center gap-1 absolute -bottom-2 -right-2 bg-bg-pecondary hover:bg-bg-Primary transition-all duration-300 border border-border px-2 py-1 rounded-xl"
+            className="flex items-center cursor-pointer justify-center gap-1 absolute -bottom-2 -right-2 bg-bg-pecondary hover:bg-bg-Primary transition-all duration-300 border border-border px-2 py-1 rounded-xl"
           >
             <Pencil size={10} />
             <span className="text-xs">Edit</span>

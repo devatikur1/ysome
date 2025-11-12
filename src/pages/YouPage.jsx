@@ -33,10 +33,12 @@ export default function YouPage() {
         minHeight: `${HomePageHeight}px`,
         height: `${HomePageHeight}px`,
       }}
-      className=" overflow-x-hidden overflow-y-auto py-8"
+      className=" overflow-x-hidden overflow-y-auto"
     >
       {LikeLoding ? (
-        <FullPageLoader />
+        <div className="w-full h-full">
+          <FullPageLoader />
+        </div>
       ) : (
         <>
           <TopAndProfilePart

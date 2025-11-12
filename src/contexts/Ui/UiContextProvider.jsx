@@ -42,7 +42,7 @@ export default function UiContextProvider({ children }) {
 
       if (window.innerWidth <= 768) {
         setHomePageOutletWidth(window.innerWidth);
-        setHomePageHeight(window.innerHeight - 60 - 60);
+        setHomePageHeight(window.innerHeight - 60 - 50);
       } else {
         let width = window.innerWidth - (isReSideBarShow ? 260 : 60);
         setHomePageOutletWidth(width);
