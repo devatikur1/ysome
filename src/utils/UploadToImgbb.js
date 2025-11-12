@@ -11,7 +11,6 @@ export async function UploadToImgbb(file) {
 
   const data = await res.json();
   if (data.success) {
-    console.log("Image URL:", data.data.url);
     return data.data.url;
   } else {
     throw new Error("Image upload failed!");

@@ -38,7 +38,6 @@ export default function SearchQueryPage() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const q = params.get("q") || "";
-    console.log(q);
     setQ(q);
 
     async function fetchData() {

@@ -23,7 +23,7 @@ export default function Search({
   const [prompt, setPrompt] = useState(window.innerHeight);
   const navigate = useNavigate();
 
-  const { queries, setQueries } = useContext(AppContext);
+  const { queries, addQuery } = useContext(AppContext);
 
   // resize listener
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function Search({
             <button
               type="button"
               onClick={() => {
-                setQueries((p) => [{ text: prompt }, ...p]);
+                addQuery({ text: prompt });
                 setIsSearchShow(false);
                 navigate(`/search?q=${encodeURIComponent(prompt)}`);
               }}

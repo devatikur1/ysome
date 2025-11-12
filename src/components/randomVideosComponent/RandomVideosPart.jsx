@@ -64,7 +64,7 @@ export default function RandomVideosPart({
               </h3>
             </Link>
 
-            <Link to={`/${username}`}>
+            <Link to={`/channel/${username}`}>
               <p className="text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90">
                 {item?.snippet?.channelTitle}
               </p>

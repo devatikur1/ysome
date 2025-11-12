@@ -2,11 +2,12 @@ import clsx from 'clsx';
 import { SearchIcon } from 'lucide-react';
 import React from 'react'
 
-export default function SearchPart({ navigate, isLast, text, setIsSearchShow }) {
+export default function SearchPart({ navigate, isLast, text, setIsSearchShow, }) {
   return (
     <article
       onClick={() => {
         setIsSearchShow(false);
+
         navigate(`/search?q=${encodeURIComponent(text)}`);
       }}
       className={clsx(

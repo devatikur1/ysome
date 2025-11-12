@@ -65,7 +65,6 @@ export const GoogleAuth = async () => {
       liked: Number(lik),
       subscribe: Number(sub),
     };
-    console.log(countData);
     
 
     // ✅ If existing user

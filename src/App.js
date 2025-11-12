@@ -16,6 +16,7 @@ import YouPage from "./pages/YouPage";
 import HistoryPage from "./pages/HistoryPage";
 import SearchQueryPage from "./pages/SearchQueryPage";
 import ChanalDataPage from "./pages/ChanalDataPage";
+import Four0Four from "./pages/Four0Four";
 
 export default function App() {
   const router = createBrowserRouter(
@@ -30,10 +31,10 @@ export default function App() {
           <Route path="/you" element={<YouPage />} />
           <Route path="/watch" element={<PlayVideoInterFacePage />} />
           <Route path="/search" element={<SearchQueryPage />} />
-          <Route path="/:id" element={<ChanalDataPage />} />
+          <Route path="/channel/:id" element={<ChanalDataPage />} />
         </Route>
         {/* <Route path="watch?v=:id" /> */}
-        <Route path="*" element={<h1>404 | Page Not Found</h1>} />
+        <Route path="*" element={<Four0Four />} />
       </Route>
     )
   );

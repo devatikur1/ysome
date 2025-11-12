@@ -16,15 +16,18 @@ import { GetVideoData } from "../../utils/GetVideoData";
 import { GetChannelData } from "../../utils/GetChannelData";
 
 export default function AppContextProvider({ children }) {
-  const [queries, setQueries] = useState([
-    { text: "islamic content" },
-    ...JSON.parse(localStorage.getItem("queries")),
-  ]);
+  const [queries, setQueries] = useState(() => {
+    const saved = localStorage.getItem("queries") || [];
+    return [{ text: "islamic content" }, ...(saved ? JSON.parse(saved) : [])];
+  });
 
-  // update quraris
-  useEffect(() => {
-    localStorage.setItem("queries", JSON.stringify(queries));
-  }, [queries.length]);
+  const addQuery = (newQuery) => {
+    setQueries((prev) => {
+      const updated = [...prev, newQuery];
+      localStorage.setItem("queries", JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // apikeys
   const apiKeys = [
@@ -86,7 +89,7 @@ export default function AppContextProvider({ children }) {
       const newNextTokens = [];
       const newChannelIds = new Set();
       const newVideoIds = new Set();
-      console.log(results);
+
       // Consider data fetched if any result has a non-empty `items` array
       let isDataFetch = results.some(
         (pc) => pc && Array.isArray(pc.items) && pc.items.length > 0
@@ -269,6 +272,8 @@ export default function AppContextProvider({ children }) {
     fetchData,
 
     apiKey,
+
+    addQuery,
     // future values like theme, modalOpen, etc. will go here
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

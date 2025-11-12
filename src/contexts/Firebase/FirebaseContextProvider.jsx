@@ -113,7 +113,6 @@ export default function FirebaseContextProvider({ children }) {
           pageSize: 20,
           lastDoc: null,
         });
-        console.log(data);
 
         const lastVisible = getLastVisible(data, 20);
 
@@ -379,15 +378,6 @@ export default function FirebaseContextProvider({ children }) {
 
     setHistorys((p) => [{ ...data, id: vdId }, ...p]);
   }
-
-  // ------------------------
-  // ✅ Temp
-  // ------------------------
-
-  useEffect(() => {
-    console.log(subscriptions);
-    console.log(userAllLikedVdData);
-  }, [subscriptions, userAllLikedVdData]);
 
   // ------------------------
   // ✅ Handle Google Sign-In

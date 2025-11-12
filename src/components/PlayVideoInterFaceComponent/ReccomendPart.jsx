@@ -33,7 +33,7 @@ export default function ReccomendPart({ item }) {
           {/* Public Time and Vews */}
           <div className="w-full flex justify-between items-center">
             <Link
-              to={item?.channel?.handle}
+              to={`/channel/${item?.channel?.handle}`}
               className="w-[40%] text-[0.75rem] lg:text-[0.9rem] truncate text-subtext/90 hover:text-text transition-all duration-300"
             >
               {item?.name || item?.channel?.name}

@@ -76,7 +76,6 @@ export default function LikedVideoPage() {
         userAllLikedVdDatalastVisible?.id &&
         !scrollTriggeredRef.current
       ) {
-        console.log("Scroll progress:", value);
         scrollTriggeredRef.current = true;
         setLikeLoding(true);
 

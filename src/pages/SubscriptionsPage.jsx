@@ -75,7 +75,6 @@ export default function SubscriptionsPage() {
         subscriptionslastVisible?.id &&
         !scrollTriggeredRef.current
       ) {
-        console.log("Scroll progress:", value);
         scrollTriggeredRef.current = true;
         setSubLoding(true);
 

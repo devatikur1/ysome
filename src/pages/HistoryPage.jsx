@@ -73,7 +73,6 @@ export default function HistoryPage() {
       historylastVisible?.id &&
       !scrollTriggeredRef.current
     ) {
-      console.log("Scroll progress:", value);
       scrollTriggeredRef.current = true;
       setHistoryLoading(true);
 

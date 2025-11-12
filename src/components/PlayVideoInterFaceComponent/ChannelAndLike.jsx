@@ -74,7 +74,7 @@ export default function ChannelAndLike({ VideoData }) {
         {/* 1️⃣ Channel Data */}
         <div className="flex items-end gap-5 w-[50%]">
           <Link
-            to={`/${VideoData?.channel?.snippet?.customUrl}`}
+            to={`/channel/${VideoData?.channel?.snippet?.customUrl}`}
             className="flex items-center gap-2"
           >
             {/* 🔹 Channel Avatar */}

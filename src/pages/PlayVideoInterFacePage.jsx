@@ -130,7 +130,7 @@ export default function PlayVideoInterFacePage() {
       videoID: id,
       key: process.env.REACT_APP_VIDEO_DETAILS_FN_KEY,
     });
-    console.log(status);
+
 
     if (status === false) {
       setError(true);
@@ -143,9 +143,6 @@ export default function PlayVideoInterFacePage() {
       });
       await AddHistory({ vdId: videoData?.id, Edata: videoData });
       document.title = `${videoData?.snippet?.title}`;
-
-      console.log(cmtData?.items);
-      console.log(videoData);
 
       setVideoData(videoData);
       setVideoDetails(VdDetails);
@@ -270,7 +267,6 @@ export default function PlayVideoInterFacePage() {
 
   const handleScrollChange = useCallback(
     async (value) => {
-      console.log(scrollTriggeredRef.current);
 
       if (
         value > 0.9 &&

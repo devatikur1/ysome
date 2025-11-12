@@ -6,7 +6,10 @@ export default function ChannelCard({ cid, channel, UnSubscribe }) {
   return (
     <article className="flex items-center justify-between w-full gap-5 px-0 md:px-3 py-5 hover:bg-neutral-900/40 rounded-2xl transition-all duration-200 cursor-pointer">
       {/* Left: Photo */}
-      <Link to={`/${channel?.snippet?.customUrl}`} className="flex-shrink-0">
+      <Link
+        to={`/channel/${channel?.snippet?.customUrl}`}
+        className="flex-shrink-0"
+      >
         <img
           src={channel?.snippet?.thumbnails?.high?.url}
           alt={channel?.snippet?.title}
@@ -16,7 +19,7 @@ export default function ChannelCard({ cid, channel, UnSubscribe }) {
 
       {/* Middle: Info */}
       <Link
-        to={`/${channel?.snippet?.customUrl}`}
+        to={`/channel/${channel?.snippet?.customUrl}`}
         className="flex flex-col flex-1 min-w-0"
       >
         <div>

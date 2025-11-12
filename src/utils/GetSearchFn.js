@@ -14,7 +14,6 @@ export async function GetSearchFn({ query, token }) {
   try {
     const res = await fetch(url, options);
     const data = await res.json();
-    console.log("✅ Result:", data);
     return data;
   } catch (err) {
     console.error("❌ Error:", err);

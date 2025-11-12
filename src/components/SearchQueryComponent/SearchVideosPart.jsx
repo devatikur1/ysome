@@ -44,7 +44,7 @@ export default function SearchVideosParts({ item }) {
         {/* Video Info */}
         <article className="flex gap-4">
           <Link
-            to={`/@${item?.channelHandle?.replace("@", "")}`}
+            to={`/channel/@${item?.channelHandle?.replace("@", "")}`}
             className="min-w-10 max-w-10 h-10 max-h-10"
           >
             <img
