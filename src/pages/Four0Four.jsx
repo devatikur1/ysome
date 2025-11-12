@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UiContext } from "../contexts/Ui/UiContext";
 
 export default function Four0Four() {
   const { HomePageOutletWidth, HomePageHeight } = useContext(UiContext);
-  const navigate = useNavigate();
-
   return (
     <div
       style={{
