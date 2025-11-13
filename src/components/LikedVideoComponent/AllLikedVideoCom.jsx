@@ -61,8 +61,8 @@ export default function AllLikedVideoCom({
       <section
         className={`"w-full grid gap-5 pb-5 border-t border-border pt-5" ${gridCols}`}
       >
-        {subsData.map((item) => (
-          <LikedVideoPart key={item?.id} item={item?.data} />
+        {subsData.map((item, id) => (
+          <LikedVideoPart key={id} item={item?.data} />
         ))}
 
         {LikeLoding && [...Array(5)].map((_, i) => <RelatedSkeleton key={i} />)}

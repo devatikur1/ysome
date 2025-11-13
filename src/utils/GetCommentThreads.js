@@ -1,6 +1,6 @@
-export default async function GetCommentThreads({ videoId, key, pageToken }) {
+export default async function GetCommentThreads({ videoId, pageToken }) {
   try {
-    if (!videoId || !key) {
+    if (!videoId) {
       console.error("videoId and key are required");
       return {};
     }
@@ -10,7 +10,7 @@ export default async function GetCommentThreads({ videoId, key, pageToken }) {
     );
     url.searchParams.append("part", "snippet,replies");
     url.searchParams.append("videoId", videoId);
-    url.searchParams.append("key", key);
+    url.searchParams.append("key", "AIzaSyA1C3GciYyNbXO0tsWMRnbnFUPDnbtwIac");
     if (pageToken) url.searchParams.append("pageToken", pageToken);
 
     const res = await fetch(url.toString());

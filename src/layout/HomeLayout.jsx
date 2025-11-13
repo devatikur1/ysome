@@ -61,9 +61,10 @@ export default function HomeLayout() {
         <Outlet />
         <section className="z-50 flex md:hidden fixed bottom-0 w-full bg-bg border-t border-border py-2 px-5 h-[50px] *:select-none">
           <div className="w-full h-full flex justify-between items-center">
-            {menuItems.map((mt) => (
+            {menuItems.map((mt, idx) => (
               <NavLink
-                to={mt.to}
+              to={mt.to}
+              key={idx}
                 className={({ isActive }) =>
                   clsx(
                     "w-[45px] h-full",

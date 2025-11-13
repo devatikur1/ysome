@@ -60,8 +60,8 @@ export default function AlliHstorysCom({
       <section
         className={`w-full grid ${gridCols} gap-5 pb-5 border-t border-border pt-5 `}
       >
-        {subsData.map((item) => (
-          <HistoryVideoPart key={item?.id} item={item?.data} />
+        {subsData.map((item, id) => (
+          <HistoryVideoPart key={id} item={item?.data} />
         ))}
 
         {historyLoading &&

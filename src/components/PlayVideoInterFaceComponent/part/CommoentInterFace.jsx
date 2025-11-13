@@ -18,9 +18,9 @@ export default function CommoentInterFace({
       </article>
 
       {CommentData?.length > 0 &&
-        CommentData.map((item) => (
+        CommentData.map((item, idx) => (
           <CommoentPart
-            key={item.id}
+            key={idx}
             comment={item?.snippet?.topLevelComment.snippet}
             replies={item?.replies?.comments || []}
           />

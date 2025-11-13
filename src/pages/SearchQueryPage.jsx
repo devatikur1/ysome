@@ -103,11 +103,16 @@ export default function SearchQueryPage() {
           {!pageError && (
             <>
               {items.map((item, idx) => (
-                <SearchVideosPart key={idx} item={item} />
+                <SearchVideosPart
+                  key={item?.videoId || `search-item-${idx}`}
+                  item={item}
+                />
               ))}
 
               {pageLoading &&
-                [...Array(15)].map((_, i) => <RelatedSkeleton key={i} />)}
+                [...Array(15)].map((_, i) => (
+                  <RelatedSkeleton key={`skeleton-${i}`} />
+                ))}
             </>
           )}
 

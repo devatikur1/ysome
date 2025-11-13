@@ -15,12 +15,17 @@ export async function GetUsd({
   lastDoc = null,
 }) {
   try {
-    // 🔹 Path: collectionName → userId → subCollection
+    // 🧠 Validation: userId & subCollection must exist
+    if (!userId) throw new Error("❌ Missing userId in GetUsd()");
+    if (!subCollection) throw new Error("❌ Missing subCollection in GetUsd()");
+
+    // 🔹 Build collection path dynamically
     const subColRef = collection(db, "usd", userId, subCollection);
 
-    // 🔹 Query
-    let q = query(subColRef, limit(pageSize));
+    // 🔹 Base query
+    let q = query(subColRef, orderBy("uid", "asc"), limit(pageSize));
 
+    // 🔹 Pagination logic (if lastDoc exists)
     if (lastDoc) {
       q = query(
         subColRef,
@@ -30,15 +35,16 @@ export async function GetUsd({
       );
     }
 
-    // 🔹 Data fetch
+    // 🔹 Fetch data
     const snapshot = await getDocs(q);
 
+    // 🟡 No data found
     if (snapshot.empty) {
-      console.warn("⚠️ No more data found in subCollection");
+      console.warn(`⚠️ No data found in subCollection '${subCollection}'`);
       return [];
     }
 
-    // 🔹 Data map
+    // 🔹 Map documents to array
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
