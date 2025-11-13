@@ -74,18 +74,14 @@ export default function AppContextProvider({ children }) {
         queries.map((q, idx) =>
           GetDataWithSearch({
             maxResults,
-            query: q,
+            query: q.text,
             nxtPgToken: nxtPgTokens?.[idx]?.token || "",
             key: apiKey,
           })
         )
       );
 
-      // const results = JSON.parse(localStorage.getItem("c"));
-      // console.log(results);
-
       // Handle test er loge result
-
       const newNextTokens = [];
       const newChannelIds = new Set();
       const newVideoIds = new Set();
