@@ -1,44 +1,21 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+
 
 export default function SearchVideosParts({ item }) {
-  const [showRich, setShowRich] = useState(false);
-
-  const handleTouch = () => {
-    setShowRich(true);
-    setTimeout(() => setShowRich(false), 3000);
-  };
-
   return (
-    <section
-      className="hover:scale-[1.01] transition-transform duration-300"
-      onMouseEnter={() => setShowRich(true)}
-      onMouseLeave={() => setShowRich(false)}
-      onTouchStart={handleTouch}
-    >
+    <section className="hover:scale-[1.01] transition-transform duration-300">
       <article className="flex flex-col gap-3 w-full">
         {/* Thumbnail */}
         <Link
           to={`/watch?v=${item?.videoId}`}
           className="block w-full aspect-video rounded-xl overflow-hidden border border-border relative"
         >
-          {!showRich ? (
-            <img
-              loading="lazy"
-              className="w-full h-full object-cover rounded-xl transition-opacity duration-300"
-              src={item?.thumbnail?.[1]?.url || item?.thumbnail?.[0]?.url}
-              alt={item?.title}
-            />
-          ) : (
-            item?.richThumbnail?.[0]?.url && (
-              <img
-                loading="lazy"
-                className="absolute top-0 left-0 w-full h-full object-cover rounded-xl transition-opacity duration-300"
-                src={item?.richThumbnail?.[0]?.url}
-                alt="Preview"
-              />
-            )
-          )}
+          <img
+            loading="lazy"
+            className="w-full h-full object-cover rounded-xl transition-opacity duration-300"
+            src={item?.thumbnail?.[1]?.url || item?.thumbnail?.[0]?.url}
+            alt={item?.title}
+          />
         </Link>
 
         {/* Video Info */}

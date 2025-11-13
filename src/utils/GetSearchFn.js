@@ -1,13 +1,13 @@
 export async function GetSearchFn({ query, token }) {
   const url = `https://yt-api.p.rapidapi.com/search?query=${encodeURIComponent(
     query
-  )}&token=${encodeURIComponent(token)}&type=video&duration=medium`;
+  )}&type=video&duration=medium`;
 
   const options = {
     method: "GET",
     headers: {
       "x-rapidapi-host": "yt-api.p.rapidapi.com",
-      "x-rapidapi-key": process.env.REACT_APP_SEARCH_FN_1_KEY,
+      "x-rapidapi-key": "9aaf8f26aamsh3febeacc30b0e5ep119b4ejsnc28a34997cd1",
     },
   };
 

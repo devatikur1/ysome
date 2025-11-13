@@ -31,12 +31,12 @@ export default function AppContextProvider({ children }) {
 
   // apikeys
   const apiKeys = [
-    apiKey8,
-    apiKey7,
     apiKey1,
-    apiKey2,
     apiKey3,
     apiKey4,
+    apiKey2,
+    apiKey8,
+    apiKey7,
     apiKey5,
     apiKey6,
   ];

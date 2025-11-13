@@ -11,8 +11,8 @@ export function FullPageLoader({ message = "Loading..." }) {
 
 export function VideoSkeleton() {
   return (
-    <div className="animate-pulse w-full">
-      <div className="bg-bg-pecondary aspect-video rounded-xl" />
+    <div className="w-full animate-pulse">
+      <div className="aspect-video w-full bg-bg-pecondary rounded-xl" />
     </div>
   );
 }
@@ -88,9 +88,9 @@ export function CommentSkeleton({ count = 4 }) {
 
 export function RelatedSkeleton() {
   return (
-    <aside className="w-full flex flex-col gap-2 animate-fadeIn">
+    <aside className="w-full h-full flex flex-col gap-2 animate-fadeIn">
       {/* 🔹 Thumbnail Skeleton */}
-      <div className="relative w-full h-[170px] sm:h-[180px] md:h-[190px] lg:h-[200px] rounded-xl overflow-hidden bg-surface animate-pulse">
+      <div className="relative w-full min-h-[235px] rounded-xl overflow-hidden bg-surface animate-pulse">
         <div className="absolute inset-0 shimmer" />
       </div>
 

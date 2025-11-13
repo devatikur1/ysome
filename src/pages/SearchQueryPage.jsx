@@ -25,8 +25,9 @@ export default function SearchQueryPage() {
 
   async function callData({ q, tk }) {
     let it = await GetSearchFn({ query: q, token: tk });
-    setItems((p) => [...p, ...it?.data]);
-    setItemsToken(it?.continuation);
+    const nextItems = Array.isArray(it?.data) ? it.data : [];
+    setItems((p) => [...p, ...nextItems]);
+    setItemsToken(it?.continuation || "");
   }
 
   let location = useLocation();

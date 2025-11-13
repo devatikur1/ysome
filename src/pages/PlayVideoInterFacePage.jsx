@@ -128,7 +128,7 @@ export default function PlayVideoInterFacePage() {
 
     const { status, data } = await GetVideoDetails({
       videoID: id,
-      key: process.env.REACT_APP_VIDEO_DETAILS_FN_KEY,
+      key: "9aaf8f26aamsh3febeacc30b0e5ep119b4ejsnc28a34997cd1",
     });
 
 
@@ -325,7 +325,7 @@ export default function PlayVideoInterFacePage() {
           <section
             className={`flex flex-col w-[100%] md:w-[67%] h-auto pl-2 md:px-0`}
           >
-            <article className="w-full min-h-[200px] sm:min-h-[305px] md:min-h-[300px] lg:min-h-[355px] xl:min-h-[700px]">
+            <article className="overflow-hidden aspect-video">
               <VideoSkeleton />
             </article>
             <VideoHeaderSkeleton />
