@@ -17,8 +17,8 @@ import { GetChannelData } from "../../utils/GetChannelData";
 
 export default function AppContextProvider({ children }) {
   const [queries, setQueries] = useState(() => {
-    const saved = localStorage.getItem("queries") || [];
-    return [{ text: "islamic content" }, ...(saved ? JSON.parse(saved) : [])];
+    const saved = JSON.parse(localStorage.getItem("queries")) || [];
+    return [{ text: "islamic content" }, ...saved];
   });
 
   const addQuery = (newQuery) => {
