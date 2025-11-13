@@ -222,8 +222,6 @@ export default function PlayVideoInterFacePage() {
           thumbnails: { ...vd?.thumbnails },
         };
 
-        console.log(vd);
-        console.log(vd?.id);
         
 
         // --- Step 3: Comment Threads -----
